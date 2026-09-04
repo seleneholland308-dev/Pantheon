@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pantheon Divino — Discesa dagli Dèi</title>
-<meta name="description" content="Pantheon Divino: una discesa cinematografica dall'Olimpo agli Inferi, tra gioielli d'oro, argento, bronzo e cristallo, forgiati per gli dèi.">
+<meta name="description" content="Pantheon Divino: una discesa cinematografica dall'Olimpo agli Inferi, tra gioielli d'oro, argento, bronzo e cristallo, forgiati per ciascun dio.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -66,6 +66,7 @@
 <section class="realm" id="olympus" data-realm="olympus">
   <div class="sky">
     <div class="base"></div>
+    <div class="godrays"></div>
     <div class="cloud-layer l1"></div>
     <div class="cloud-layer l2"></div>
     <div class="lightning" id="lightningFlash"></div>
@@ -89,7 +90,10 @@
         </radialGradient>
       </defs>
       <ellipse cx="600" cy="600" rx="420" ry="34" fill="#000" opacity=".35"/>
-      <circle cx="600" cy="230" r="230" fill="url(#glowOlympus)"/>
+      <circle cx="600" cy="230" r="230" fill="url(#glowOlympus)">
+        <animate attributeName="r" values="225;250;225" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.65;1" dur="6s" repeatCount="indefinite"/>
+      </circle>
 
       <!-- Zeus -->
       <g transform="translate(360,0)">
@@ -99,7 +103,10 @@
         <path class="drape d2" d="M60 260 C20 320 10 420 40 520 C55 560 40 590 20 600 L100 600 C120 540 110 470 120 400 C126 350 110 300 60 260 Z" fill="url(#robeZeus)" opacity=".92"/>
         <!-- lightning bolt -->
         <g class="bolt-glow">
-          <path d="M255 120 L225 210 L255 210 L215 320 L280 190 L245 190 Z" fill="#f4dfa3" stroke="#fff8e2" stroke-width="2"/>
+          <path d="M255 120 L225 210 L255 210 L215 320 L280 190 L245 190 Z" fill="#f4dfa3" stroke="#fff8e2" stroke-width="2">
+            <animate attributeName="opacity" values="1;.5;1" dur="1.8s" repeatCount="indefinite"/>
+          </path>
+          <animateTransform attributeName="transform" type="scale" additive="sum" values="1;1.06;1" dur="1.8s" repeatCount="indefinite"/>
         </g>
       </g>
 
@@ -111,13 +118,17 @@
         <!-- peacock fan -->
         <g opacity=".85">
           <path d="M75 150 C10 90 -40 60 -70 -10 C-20 10 20 30 60 90 C90 40 130 20 180 -10 C160 60 110 90 75 150 Z" fill="url(#robeHera)" opacity=".7"/>
-          <circle cx="-40" cy="0" r="8" fill="#7fe0a6" opacity=".6"/>
-          <circle cx="150" cy="10" r="8" fill="#7fe0a6" opacity=".6"/>
+          <animateTransform attributeName="transform" type="rotate" additive="sum" values="-4 75 150;4 75 150;-4 75 150" dur="5s" repeatCount="indefinite"/>
+          <circle cx="-40" cy="0" r="8" fill="#7fe0a6" opacity=".6"><animate attributeName="opacity" values=".3;.85;.3" dur="3.2s" repeatCount="indefinite"/></circle>
+          <circle cx="150" cy="10" r="8" fill="#7fe0a6" opacity=".6"><animate attributeName="opacity" values=".85;.3;.85" dur="3.6s" repeatCount="indefinite"/></circle>
         </g>
       </g>
 
       <!-- soaring eagle -->
-      <path d="M550 80 C580 60 620 60 650 80 C620 70 600 78 585 90 C600 82 615 84 630 92 C610 86 595 92 585 100 C605 96 618 100 630 110 C605 106 585 100 570 88 C560 82 552 84 550 80 Z" fill="#0a1230" opacity=".6"/>
+      <g>
+        <path d="M550 80 C580 60 620 60 650 80 C620 70 600 78 585 90 C600 82 615 84 630 92 C610 86 595 92 585 100 C605 96 618 100 630 110 C605 106 585 100 570 88 C560 82 552 84 550 80 Z" fill="#0a1230" opacity=".6"/>
+        <animateTransform attributeName="transform" type="translate" values="0 0; 46 -16; 0 0" dur="16s" repeatCount="indefinite"/>
+      </g>
     </svg>
   </div>
 
@@ -125,7 +136,10 @@
     <span class="eyebrow fx">Capitolo I</span>
     <h2 class="gold-text fx d1">L'Olimpo Celeste</h2>
     <p class="lede fx d2">Sopra le nubi, dove il cielo si piega in cobalto e i troni sono d'oro battuto, Zeus ed Era dettano il principio di ogni cosa. Qui nasce l'ornamento che non conosce tramonto.</p>
-    <button class="reveal-btn fx d3" data-open="scheda-olympus">Contempla il Dono Divino</button>
+    <div class="realm-actions fx d3">
+      <button class="reveal-btn" data-open="scheda-zeus">Il Dono di Zeus</button>
+      <button class="reveal-btn" data-open="scheda-era">Il Dono di Era</button>
+    </div>
   </div>
 </section>
 
@@ -153,14 +167,20 @@
         </radialGradient>
       </defs>
       <ellipse cx="600" cy="600" rx="420" ry="34" fill="#000" opacity=".4"/>
-      <circle cx="600" cy="230" r="230" fill="url(#glowTemple)"/>
+      <circle cx="600" cy="230" r="230" fill="url(#glowTemple)">
+        <animate attributeName="r" values="225;248;225" dur="5.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.6;1" dur="5.5s" repeatCount="indefinite"/>
+      </circle>
 
       <!-- Ares -->
       <g transform="translate(340,0)">
         <path class="drape" d="M60 600 C40 430 70 320 150 240 C185 210 230 205 255 225 C290 255 290 350 275 430 C262 485 268 550 250 600 Z" fill="url(#robeAres)"/><ellipse cx="165" cy="330" rx="60" ry="150" fill="#fff" opacity=".07"/>
         <circle cx="170" cy="182" r="45" fill="#c79b71"/>
         <rect x="255" y="120" width="10" height="260" rx="4" fill="#cfcfcf"/>
-        <path d="M240 110 L280 110 L270 150 L250 150 Z" fill="#e6c98a"/>
+        <g>
+          <path d="M240 110 L280 110 L270 150 L250 150 Z" fill="#e6c98a"/>
+          <animate attributeName="opacity" values="1;.55;1" dur="2.2s" repeatCount="indefinite"/>
+        </g>
         <path d="M40 300 C20 340 20 400 40 450 L110 430 C100 380 100 330 90 300 Z" fill="#8a6f4d" opacity=".9"/>
       </g>
 
@@ -173,9 +193,13 @@
         <g transform="translate(-30,60)">
           <circle r="16" fill="#e88aa0"/><circle r="10" fill="#c9788a" transform="translate(6,-4)"/>
           <path d="M0 16 Q-6 40 -2 60" stroke="#4a7a4f" stroke-width="3" fill="none"/>
+          <animateTransform attributeName="transform" type="rotate" additive="sum" values="-5 0 60;5 0 60;-5 0 60" dur="4.4s" repeatCount="indefinite"/>
         </g>
         <!-- dove -->
-        <path d="M150 60 C170 48 195 50 205 65 C190 60 178 64 170 74 C182 70 192 74 200 82 C182 80 168 74 160 64 C155 58 152 60 150 60 Z" fill="#f4e9df" opacity=".85"/>
+        <g>
+          <path d="M150 60 C170 48 195 50 205 65 C190 60 178 64 170 74 C182 70 192 74 200 82 C182 80 168 74 160 64 C155 58 152 60 150 60 Z" fill="#f4e9df" opacity=".85"/>
+          <animateTransform attributeName="transform" type="translate" values="0 0; 30 -14; 0 0" dur="10s" repeatCount="indefinite"/>
+        </g>
       </g>
     </svg>
   </div>
@@ -184,7 +208,10 @@
     <span class="eyebrow fx">Capitolo II</span>
     <h2 class="gold-text fx d1">Il Tempio di Ares e Afrodite</h2>
     <p class="lede fx d2">Tra colonne di marmo antico, dove petali di rosa cadono come sangue e desiderio, guerra e bellezza si fondono in un solo giuramento d'argento e rubino.</p>
-    <button class="reveal-btn fx d3" data-open="scheda-temple">Contempla il Dono Divino</button>
+    <div class="realm-actions fx d3">
+      <button class="reveal-btn" data-open="scheda-ares">Il Dono di Ares</button>
+      <button class="reveal-btn" data-open="scheda-afrodite">Il Dono di Afrodite</button>
+    </div>
   </div>
 </section>
 
@@ -210,7 +237,10 @@
           <stop offset="0%" stop-color="#e0a377"/><stop offset="100%" stop-color="#5c3620"/>
         </radialGradient>
       </defs>
-      <circle cx="600" cy="480" r="260" fill="url(#glowForge)"/>
+      <circle cx="600" cy="480" r="260" fill="url(#glowForge)">
+        <animate attributeName="r" values="255;280;255" dur="1.8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.7;1" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
       <ellipse cx="600" cy="600" rx="420" ry="34" fill="#000" opacity=".5"/>
 
       <!-- anvil -->
@@ -225,11 +255,12 @@
         <path class="drape" d="M80 600 C55 420 90 300 175 235 C215 205 265 202 288 225 C320 258 315 355 298 435 C282 490 288 550 268 600 Z" fill="url(#robeHeph)"/><ellipse cx="195" cy="330" rx="60" ry="150" fill="#fff" opacity=".07"/>
         <circle cx="200" cy="180" r="48" fill="url(#skinForge)"/>
         <path d="M155 170 C160 130 240 128 246 170 C250 195 232 150 200 148 C168 148 150 195 155 170 Z" fill="#1c1210"/>
-        <!-- raised arm + hammer -->
+        <!-- raised arm + hammer, hammering motion -->
         <g transform="rotate(-18 260 220)">
           <rect x="252" y="120" width="16" height="140" rx="6" fill="url(#skinForge)"/>
           <rect x="236" y="90" width="48" height="34" rx="4" fill="#3a3a3d"/>
           <rect x="256" y="60" width="8" height="40" fill="#6b5648"/>
+          <animateTransform attributeName="transform" type="rotate" additive="sum" values="-18 260 220;16 260 220;-18 260 220" keyTimes="0;0.55;1" dur="1.9s" repeatCount="indefinite"/>
         </g>
       </g>
 
@@ -238,6 +269,7 @@
         <line x1="700" y1="470" x2="740" y2="430"/>
         <line x1="710" y1="490" x2="760" y2="480"/>
         <line x1="695" y1="510" x2="735" y2="540"/>
+        <animate attributeName="opacity" values=".4;1;.4" dur="1.9s" repeatCount="indefinite"/>
       </g>
     </svg>
   </div>
@@ -246,7 +278,9 @@
     <span class="eyebrow fx">Capitolo III</span>
     <h2 class="gold-text fx d1">Le Fucine di Efesto</h2>
     <p class="lede fx d2">Nel ventre della montagna, dove il metallo canta e la scintilla danza come una preghiera, Efesto piega la materia grezza alla volontà dell'arte.</p>
-    <button class="reveal-btn fx d3" data-open="scheda-forge">Contempla il Dono Divino</button>
+    <div class="realm-actions fx d3">
+      <button class="reveal-btn" data-open="scheda-efesto">Il Dono di Efesto</button>
+    </div>
   </div>
 </section>
 
@@ -267,7 +301,10 @@
           <stop offset="0%" stop-color="#cdd8ff" stop-opacity=".4"/><stop offset="100%" stop-color="#cdd8ff" stop-opacity="0"/>
         </radialGradient>
       </defs>
-      <circle cx="600" cy="220" r="230" fill="url(#glowGrove)"/>
+      <circle cx="600" cy="220" r="230" fill="url(#glowGrove)">
+        <animate attributeName="r" values="225;246;225" dur="6.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.65;1" dur="6.5s" repeatCount="indefinite"/>
+      </circle>
       <ellipse cx="600" cy="600" rx="420" ry="34" fill="#000" opacity=".4"/>
 
       <!-- gnarled olive branches -->
@@ -276,10 +313,10 @@
         <path d="M1050 600 C1070 460 980 400 940 300 C920 250 960 200 940 140"/>
       </g>
       <g fill="#6b7a4f" opacity=".85">
-        <ellipse cx="255" cy="145" rx="20" ry="9" transform="rotate(-30 255 145)"/>
-        <ellipse cx="285" cy="170" rx="20" ry="9" transform="rotate(20 285 170)"/>
-        <ellipse cx="945" cy="145" rx="20" ry="9" transform="rotate(30 945 145)"/>
-        <ellipse cx="915" cy="170" rx="20" ry="9" transform="rotate(-20 915 170)"/>
+        <g><ellipse cx="255" cy="145" rx="20" ry="9" transform="rotate(-30 255 145)"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="-6 255 145;6 255 145;-6 255 145" dur="3.6s" repeatCount="indefinite"/></g>
+        <g><ellipse cx="285" cy="170" rx="20" ry="9" transform="rotate(20 285 170)"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="6 285 170;-6 285 170;6 285 170" dur="4.1s" repeatCount="indefinite"/></g>
+        <g><ellipse cx="945" cy="145" rx="20" ry="9" transform="rotate(30 945 145)"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="6 945 145;-6 945 145;6 945 145" dur="3.8s" repeatCount="indefinite"/></g>
+        <g><ellipse cx="915" cy="170" rx="20" ry="9" transform="rotate(-20 915 170)"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="-6 915 170;6 915 170;-6 915 170" dur="4.4s" repeatCount="indefinite"/></g>
       </g>
 
       <!-- Hermes, solo, centred -->
@@ -287,18 +324,22 @@
         <path class="drape" d="M70 600 C48 420 82 300 165 235 C202 206 250 202 274 224 C305 254 302 350 286 430 C271 486 276 550 258 600 Z" fill="url(#robeHermes)"/><ellipse cx="190" cy="330" rx="60" ry="150" fill="#fff" opacity=".07"/>
         <circle cx="188" cy="180" r="46" fill="#d9b590"/>
         <path d="M145 168 C150 128 228 126 234 168 C238 192 220 145 188 145 C156 145 141 192 145 168 Z" fill="#8a6f4d"/>
-        <!-- winged helm -->
-        <path d="M150 150 C110 130 90 100 95 70 C120 90 135 110 158 128 Z" fill="#f4dfa3" opacity=".85"/>
-        <path d="M228 150 C268 130 288 100 283 70 C258 90 243 110 220 128 Z" fill="#f4dfa3" opacity=".85"/>
+        <!-- winged helm, fluttering -->
+        <g><path d="M150 150 C110 130 90 100 95 70 C120 90 135 110 158 128 Z" fill="#f4dfa3" opacity=".85"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 150 128;-10 150 128;0 150 128" dur="1.6s" repeatCount="indefinite"/></g>
+        <g><path d="M228 150 C268 130 288 100 283 70 C258 90 243 110 220 128 Z" fill="#f4dfa3" opacity=".85"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 228 128;10 228 128;0 228 128" dur="1.6s" repeatCount="indefinite"/></g>
         <!-- caduceus -->
         <g transform="translate(280,150)">
           <rect x="0" y="0" width="8" height="220" fill="#d9b878"/>
-          <path d="M4 20 C-30 40 -30 80 4 100 C38 120 38 160 4 180" stroke="#e6d4ab" stroke-width="4" fill="none"/>
-          <path d="M4 20 C38 40 38 80 4 100 C-30 120 -30 160 4 180" stroke="#e6d4ab" stroke-width="4" fill="none"/>
+          <path d="M4 20 C-30 40 -30 80 4 100 C38 120 38 160 4 180" stroke="#e6d4ab" stroke-width="4" fill="none">
+            <animate attributeName="stroke-opacity" values="1;.4;1" dur="2.4s" repeatCount="indefinite"/>
+          </path>
+          <path d="M4 20 C38 40 38 80 4 100 C-30 120 -30 160 4 180" stroke="#e6d4ab" stroke-width="4" fill="none">
+            <animate attributeName="stroke-opacity" values=".4;1;.4" dur="2.4s" repeatCount="indefinite"/>
+          </path>
           <path d="M-24 0 C-10 -18 18 -18 30 0 C18 -6 -10 -6 -24 0 Z" fill="#f4dfa3"/>
         </g>
         <!-- winged sandals -->
-        <path d="M150 590 C120 580 100 590 95 605 C120 600 140 600 155 605 Z" fill="#f4dfa3" opacity=".85"/>
+        <g><path d="M150 590 C120 580 100 590 95 605 C120 600 140 600 155 605 Z" fill="#f4dfa3" opacity=".85"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 150 597;-8 150 597;0 150 597" dur="1.3s" repeatCount="indefinite"/></g>
       </g>
     </svg>
   </div>
@@ -307,7 +348,9 @@
     <span class="eyebrow fx">Capitolo IV</span>
     <h2 class="gold-text fx d1">L'Albero Sacro di Ermes</h2>
     <p class="lede fx d2">Ai confini del mondo noto, sotto un ulivo millenario che ha visto mille crepuscoli, il messaggero degli dèi cesella ornamenti leggeri come un pensiero in volo.</p>
-    <button class="reveal-btn fx d3" data-open="scheda-grove">Contempla il Dono Divino</button>
+    <div class="realm-actions fx d3">
+      <button class="reveal-btn" data-open="scheda-ermes">Il Dono di Ermes</button>
+    </div>
   </div>
 </section>
 
@@ -315,13 +358,17 @@
 <!-- 5. OLTRETOMBA -->
 <!-- ============================================================ -->
 <section class="realm" id="underworld" data-realm="underworld">
-  <div class="sky"><div class="base"></div></div>
+  <div class="sky"><div class="base"></div><div class="godrays cool"></div></div>
   <div class="chasm-light"></div>
   <div class="crystal-dust" id="dust-underworld"></div>
 
   <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.5" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice">
-    <path class="crack" d="M600 800 L560 620 L610 540 L580 420 L630 320" fill="none" stroke-width="2"/>
-    <path class="crack" d="M600 800 L650 600 L600 500 L640 380" fill="none" stroke-width="2"/>
+    <path class="crack" d="M600 800 L560 620 L610 540 L580 420 L630 320" fill="none" stroke-width="2">
+      <animate attributeName="stroke-opacity" values="1;.4;1" dur="3.2s" repeatCount="indefinite"/>
+    </path>
+    <path class="crack" d="M600 800 L650 600 L600 500 L640 380" fill="none" stroke-width="2">
+      <animate attributeName="stroke-opacity" values=".4;1;.4" dur="3.6s" repeatCount="indefinite"/>
+    </path>
   </svg>
 
   <div class="figure-stage" data-depth="30">
@@ -337,7 +384,10 @@
           <stop offset="0%" stop-color="#7fa8ff" stop-opacity=".35"/><stop offset="100%" stop-color="#7fa8ff" stop-opacity="0"/>
         </radialGradient>
       </defs>
-      <circle cx="600" cy="420" r="260" fill="url(#glowUnderworld)"/>
+      <circle cx="600" cy="420" r="260" fill="url(#glowUnderworld)">
+        <animate attributeName="r" values="255;278;255" dur="4.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;.6;1" dur="4.4s" repeatCount="indefinite"/>
+      </circle>
       <ellipse cx="600" cy="600" rx="420" ry="34" fill="#000" opacity=".6"/>
 
       <!-- Hades -->
@@ -348,7 +398,9 @@
         <!-- bident -->
         <g transform="translate(268,90)">
           <rect x="0" y="0" width="8" height="280" fill="#3a2c50"/>
-          <path d="M-14 -20 L4 20 L22 -20" stroke="#c9a4ff" stroke-width="6" fill="none"/>
+          <path d="M-14 -20 L4 20 L22 -20" stroke="#c9a4ff" stroke-width="6" fill="none">
+            <animate attributeName="stroke-opacity" values="1;.4;1" dur="2.1s" repeatCount="indefinite"/>
+          </path>
         </g>
       </g>
 
@@ -357,21 +409,23 @@
         <path class="drape d2" d="M170 600 C195 415 160 298 92 233 C60 203 10 200 -15 220 C-46 248 -44 344 -25 424 C-10 482 -16 550 3 600 Z" fill="url(#robePersephone)"/><ellipse cx="90" cy="340" rx="55" ry="150" fill="#fff" opacity=".07"/>
         <circle cx="72" cy="176" r="44" fill="#c9b6d6"/>
         <path d="M32 163 C38 126 108 124 114 163 C120 188 100 140 72 140 C44 140 26 188 32 163 Z" fill="#241a3a"/>
-        <!-- pomegranate -->
+        <!-- pomegranate, gentle bob -->
         <g transform="translate(-20,80)">
           <circle r="18" fill="#8a1f3b"/><path d="M-6 -18 L0 -26 L6 -18" stroke="#5a1224" stroke-width="3" fill="none"/>
+          <animateTransform attributeName="transform" type="translate" additive="sum" values="0 0;0 -6;0 0" keyTimes="0;.5;1" dur="3.4s" repeatCount="indefinite"/>
         </g>
         <!-- narcissus flowers -->
         <g transform="translate(120,80)" opacity=".9">
           <circle r="6" fill="#f4dfa3"/><circle cx="10" cy="-4" r="10" fill="#f4e9df"/><circle cx="-10" cy="6" r="10" fill="#f4e9df"/>
+          <animate attributeName="opacity" values=".7;1;.7" dur="3s" repeatCount="indefinite"/>
         </g>
       </g>
 
-      <!-- crystal shards -->
+      <!-- crystal shards, slow rotation -->
       <g fill="#c9a4ff" opacity=".55">
-        <path d="M100 560 L112 520 L124 560 Z"/>
-        <path d="M1080 560 L1094 510 L1108 560 Z"/>
-        <path d="M980 590 L990 560 L1000 590 Z"/>
+        <g transform="translate(112,540)"><path d="M-12 20 L0 -20 L12 20 Z"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 112 540;360 112 540" dur="18s" repeatCount="indefinite"/></g>
+        <g transform="translate(1094,535)"><path d="M-14 25 L0 -25 L14 25 Z"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 1094 535;-360 1094 535" dur="22s" repeatCount="indefinite"/></g>
+        <g transform="translate(990,575)"><path d="M-10 15 L0 -15 L10 15 Z"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 990 575;360 990 575" dur="15s" repeatCount="indefinite"/></g>
       </g>
     </svg>
   </div>
@@ -380,7 +434,10 @@
     <span class="eyebrow fx">Capitolo V</span>
     <h2 class="gold-text fx d1">L'Oltretomba di Ade e Persefone</h2>
     <p class="lede fx d2">La terra si spacca e rivela fiotti di luce eterea, blu e oro contro l'ossidiana. Qui il regno più oscuro custodisce la collezione più preziosa: dove la fine ritorna, sempre, principio.</p>
-    <button class="reveal-btn fx d3" data-open="scheda-underworld">Contempla il Dono Divino</button>
+    <div class="realm-actions fx d3">
+      <button class="reveal-btn" data-open="scheda-ade">Il Dono di Ade</button>
+      <button class="reveal-btn" data-open="scheda-persefone">Il Dono di Persefone</button>
+    </div>
   </div>
 </section>
 
@@ -400,164 +457,372 @@
 </main>
 
 <!-- ============================================================ -->
-<!-- SCHEDE / PRODUCT MODALS -->
+<!-- SCHEDE / PRODUCT MODALS — un gioiello per ciascuna divinità -->
 <!-- ============================================================ -->
 
-<div class="scheda-overlay" id="scheda-olympus" data-realm="olympus">
+<!-- ZEUS -->
+<div class="scheda-overlay" id="scheda-zeus" data-realm="olympus">
   <div class="backdrop" data-close></div>
   <div class="scheda">
     <div class="scheda-visual">
-      <svg class="jewel-piece" viewBox="0 0 200 200"><defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f4dfa3"/><stop offset="100%" stop-color="#a9812f"/></linearGradient></defs>
-        <circle cx="100" cy="100" r="70" fill="none" stroke="url(#gA)" stroke-width="14"/>
-        <circle cx="100" cy="40" r="16" fill="url(#gA)"/><circle cx="100" cy="40" r="6" fill="#fff8e2"/>
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalGoldZeus" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6b5628"/><stop offset="18%" stop-color="#f4e9c9"/><stop offset="38%" stop-color="#d9b878"/><stop offset="55%" stop-color="#8a6f3c"/><stop offset="75%" stop-color="#f4dfa3"/><stop offset="100%" stop-color="#6b5628"/>
+          </linearGradient>
+          <radialGradient id="gemSapphireZeus" cx="38%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#dbeaff"/><stop offset="45%" stop-color="#5c86e0"/><stop offset="100%" stop-color="#101c40"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="100" cy="178" rx="58" ry="12" fill="#000" opacity=".3"/>
+        <path d="M34 150 A66 66 0 1 1 166 150" fill="none" stroke="url(#metalGoldZeus)" stroke-width="18" stroke-linecap="round"/>
+        <circle cx="34" cy="150" r="11" fill="url(#metalGoldZeus)"/>
+        <circle cx="166" cy="150" r="11" fill="url(#metalGoldZeus)"/>
+        <path d="M112 50 L86 98 L106 98 L80 150 L130 92 L108 92 Z" fill="url(#gemSapphireZeus)" stroke="#0a1230" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M112 50 L86 98 L106 98 L80 150 L130 92 L108 92 Z" fill="none" stroke="#dbeaff" stroke-width=".6" opacity=".5"/>
+        <ellipse cx="98" cy="72" rx="5" ry="9" fill="#fff" opacity=".85"><animate attributeName="opacity" values=".85;.25;.85" dur="2.6s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(128,64)">
+          <path d="M0 -7 L2 -2 L7 0 L2 2 L0 7 L-2 2 L-7 0 L-2 -2 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.2s" repeatCount="indefinite"/></path>
+          <animateTransform attributeName="transform" type="rotate" additive="sum" from="0 128 64" to="360 128 64" dur="9s" repeatCount="indefinite"/>
+        </g>
       </svg>
-      <div class="jewel-row">
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#d9b878" stroke-width="4"/><circle cx="50" cy="60" r="18" fill="none" stroke="#d9b878" stroke-width="5"/><path d="M50 78 L50 120" stroke="#d9b878" stroke-width="3"/><circle cx="50" cy="128" r="8" fill="#f4dfa3"/></svg>
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#d9b878" stroke-width="4"/><circle cx="50" cy="60" r="18" fill="none" stroke="#d9b878" stroke-width="5"/><path d="M50 78 L50 120" stroke="#d9b878" stroke-width="3"/><circle cx="50" cy="128" r="8" fill="#f4dfa3"/></svg>
-      </div>
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Olimpo</span>
-      <h3>Effigie del Sovrano dei Cieli</h3>
-      <p class="set-name">Bracciale in oro 18k con effigie &middot; orecchini abbinati</p>
-      <p class="desc">Un bracciale in oro 18 carati, battuto a mano, che reca l'effigie del re degli dèi incisa come un sigillo eterno. Gli orecchini pendenti, in oro puro, catturano la luce come un fulmine trattenuto. Un dono per chi comanda il proprio destino.</p>
+      <span class="eyebrow">Collezione dell'Olimpo — Zeus</span>
+      <h3>Folgore Regale</h3>
+      <p class="set-name">Bracciale rigido in oro 18k con fulmine in zaffiro</p>
+      <p class="desc">Un bracciale rigido in oro 18 carati, aperto come un abbraccio regale, che racchiude uno zaffiro tagliato a forma di fulmine. Il metallo conserva il calore del tuono; la pietra, la sua luce trattenuta.</p>
       <div class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»<span class="translit">Principio e fine di ogni cosa</span></div>
-      <ul class="piece-list">
-        <li>Bracciale Effigie del Cielo — Oro 18k <span class="price">€2.480</span></li>
-        <li>Orecchini Folgore d'Oro <span class="price">€980</span></li>
-      </ul>
       <div class="scheda-actions">
-        <span class="total-price">Set completo: €3.460</span>
-        <button class="add-cart-btn" data-add data-name="Effigie del Sovrano dei Cieli" data-realm="Olimpo" data-price="3460" data-color="#d9b878">Aggiungi alla Teca</button>
+        <span class="total-price">€2.680</span>
+        <button class="add-cart-btn" data-add data-name="Folgore Regale — Bracciale di Zeus" data-realm="Olimpo" data-price="2680" data-color="#d9b878">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="scheda-overlay" id="scheda-temple" data-realm="temple">
+<!-- ERA -->
+<div class="scheda-overlay" id="scheda-era" data-realm="olympus">
   <div class="backdrop" data-close></div>
   <div class="scheda">
     <div class="scheda-visual">
-      <svg class="jewel-piece" viewBox="0 0 200 200"><defs><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8c0c8"/><stop offset="100%" stop-color="#5a1c28"/></linearGradient></defs>
-        <circle cx="100" cy="100" r="70" fill="none" stroke="url(#gB)" stroke-width="14"/>
-        <circle cx="100" cy="40" r="14" fill="#c9282f"/><circle cx="100" cy="40" r="5" fill="#f4c9d4"/>
+      <svg class="jewel-piece" viewBox="0 0 200 160">
+        <defs>
+          <linearGradient id="metalGoldEra" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6b5628"/><stop offset="20%" stop-color="#f4e9c9"/><stop offset="40%" stop-color="#d9b878"/><stop offset="60%" stop-color="#8a6f3c"/><stop offset="80%" stop-color="#f4dfa3"/><stop offset="100%" stop-color="#6b5628"/>
+          </linearGradient>
+          <radialGradient id="gemPearlEra" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#fffdf6"/><stop offset="55%" stop-color="#e8d9c0"/><stop offset="100%" stop-color="#a9812f"/>
+          </radialGradient>
+          <radialGradient id="gemTealEra" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#d7fff0"/><stop offset="50%" stop-color="#4fae8a"/><stop offset="100%" stop-color="#123a2c"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="100" cy="150" rx="70" ry="8" fill="#000" opacity=".25"/>
+        <path d="M18 120 Q60 40 100 34 Q140 40 182 120" fill="none" stroke="url(#metalGoldEra)" stroke-width="6"/>
+        <path d="M18 120 L18 132 M182 120 L182 132" stroke="url(#metalGoldEra)" stroke-width="6" stroke-linecap="round"/>
+        <path d="M56 66 L60 44 L64 66 Z" fill="url(#metalGoldEra)"/>
+        <path d="M136 66 L140 44 L144 66 Z" fill="url(#metalGoldEra)"/>
+        <path d="M96 46 L100 22 L104 46 Z" fill="url(#metalGoldEra)"/>
+        <circle cx="60" cy="70" r="8" fill="url(#gemPearlEra)"/>
+        <circle cx="140" cy="70" r="8" fill="url(#gemPearlEra)"/>
+        <circle cx="100" cy="48" r="12" fill="url(#gemTealEra)"/>
+        <ellipse cx="96" cy="44" rx="3" ry="5" fill="#fff" opacity=".8"><animate attributeName="opacity" values=".8;.2;.8" dur="2.4s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(124,40)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.6s" repeatCount="indefinite"/></path>
+        </g>
       </svg>
-      <div class="jewel-row">
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#9c3a4c" stroke-width="4"/><circle cx="50" cy="60" r="18" fill="none" stroke="#9c3a4c" stroke-width="5"/><path d="M50 78 L50 120" stroke="#9c3a4c" stroke-width="3"/><circle cx="50" cy="128" r="8" fill="#c9282f"/></svg>
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#9c3a4c" stroke-width="4"/><circle cx="50" cy="60" r="18" fill="none" stroke="#9c3a4c" stroke-width="5"/><path d="M50 78 L50 120" stroke="#9c3a4c" stroke-width="3"/><circle cx="50" cy="128" r="8" fill="#c9282f"/></svg>
-      </div>
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione del Tempio</span>
-      <h3>Giuramento di Guerra e Desiderio</h3>
-      <p class="set-name">Bracciale in argento brunito e rubini &middot; orecchini abbinati</p>
-      <p class="desc">Argento brunito lavorato a sbalzo, incastonato con rubini che ardono come petali di rosa caduti sul marmo di un tempio in rovina. Ogni pietra è una battaglia vinta, ogni riflesso una promessa d'amore.</p>
+      <span class="eyebrow">Collezione dell'Olimpo — Era</span>
+      <h3>Corona di Giunone</h3>
+      <p class="set-name">Diadema in oro con perle e pietra verde-pavone</p>
+      <p class="desc">Un diadema in oro con perle candide e uno smeraldo dai riflessi di pavone incastonato al centro, ispirato alle piume che vegliano su ogni segreto dell'Olimpo. Regalità che non chiede permesso.</p>
+      <div class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»<span class="translit">Principio e fine di ogni cosa</span></div>
+      <div class="scheda-actions">
+        <span class="total-price">€3.240</span>
+        <button class="add-cart-btn" data-add data-name="Corona di Giunone — Diadema di Era" data-realm="Olimpo" data-price="3240" data-color="#f4dfa3">Aggiungi alla Teca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ARES -->
+<div class="scheda-overlay" id="scheda-ares" data-realm="temple">
+  <div class="backdrop" data-close></div>
+  <div class="scheda">
+    <div class="scheda-visual">
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalSilverAres" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3a3a42"/><stop offset="18%" stop-color="#eceff4"/><stop offset="38%" stop-color="#aab0bc"/><stop offset="55%" stop-color="#5c5c66"/><stop offset="75%" stop-color="#d6dae2"/><stop offset="100%" stop-color="#3a3a42"/>
+          </linearGradient>
+          <radialGradient id="gemRubyAres" cx="35%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="#ffd9de"/><stop offset="45%" stop-color="#d43041"/><stop offset="100%" stop-color="#420912"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="100" cy="168" rx="46" ry="10" fill="#000" opacity=".28"/>
+        <path d="M46 128 a54 50 0 1 0 108 0 a54 50 0 1 0 -108 0" fill="none" stroke="url(#metalSilverAres)" stroke-width="15"/>
+        <ellipse cx="100" cy="72" rx="30" ry="24" fill="url(#metalSilverAres)"/>
+        <path d="M100 50 L124 72 L100 96 L76 72 Z" fill="url(#gemRubyAres)" stroke="#2c060c" stroke-width="1.5"/>
+        <path d="M100 50 L100 96 M76 72 L124 72 M84 56 L116 88 M116 56 L84 88" stroke="rgba(0,0,0,.3)" stroke-width="1"/>
+        <ellipse cx="90" cy="62" rx="5" ry="3.5" fill="#fff" opacity=".85"><animate attributeName="opacity" values=".85;.3;.85" dur="2.3s" repeatCount="indefinite"/></ellipse>
+        <path d="M78 58 L72 46 M122 58 L128 46 M100 48 L100 36" stroke="url(#metalSilverAres)" stroke-width="4" stroke-linecap="round"/>
+        <g transform="translate(122,50)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.1s" repeatCount="indefinite"/></path>
+        </g>
+      </svg>
+    </div>
+    <div class="scheda-body">
+      <button class="scheda-close" data-close>&times;</button>
+      <span class="eyebrow">Collezione del Tempio — Ares</span>
+      <h3>Lama Ardente</h3>
+      <p class="set-name">Anello in argento brunito con rubino</p>
+      <p class="desc">Un anello in argento brunito, teso come una lama in tensione, incastonato con un rubino sfaccettato che arde come una ferita di guerra mai del tutto rimarginata.</p>
       <div class="greek">«Ἔρος ἀνίκατε μάχαν»<span class="translit">Amore, vincitore nella battaglia</span></div>
-      <ul class="piece-list">
-        <li>Bracciale Giuramento di Rubino — Argento brunito <span class="price">€1.740</span></li>
-        <li>Orecchini Petalo di Fuoco <span class="price">€720</span></li>
-      </ul>
       <div class="scheda-actions">
-        <span class="total-price">Set completo: €2.460</span>
-        <button class="add-cart-btn" data-add data-name="Giuramento di Guerra e Desiderio" data-realm="Tempio" data-price="2460" data-color="#c9788a">Aggiungi alla Teca</button>
+        <span class="total-price">€1.480</span>
+        <button class="add-cart-btn" data-add data-name="Lama Ardente — Anello di Ares" data-realm="Tempio" data-price="1480" data-color="#c9c9d2">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="scheda-overlay" id="scheda-forge" data-realm="forge">
+<!-- AFRODITE -->
+<div class="scheda-overlay" id="scheda-afrodite" data-realm="temple">
   <div class="backdrop" data-close></div>
   <div class="scheda">
     <div class="scheda-visual">
-      <svg class="jewel-piece" viewBox="0 0 200 200"><defs><linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffb15c"/><stop offset="100%" stop-color="#2b1810"/></linearGradient></defs>
-        <circle cx="100" cy="100" r="70" fill="none" stroke="url(#gC)" stroke-width="16"/>
-        <circle cx="100" cy="40" r="14" fill="#241a16"/><circle cx="100" cy="40" r="5" fill="#ff8a3d"/>
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalRoseAfrodite" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6b3c3c"/><stop offset="20%" stop-color="#f4d4c9"/><stop offset="40%" stop-color="#d99a8a"/><stop offset="60%" stop-color="#8a4f3c"/><stop offset="80%" stop-color="#f0b8a3"/><stop offset="100%" stop-color="#6b3c3c"/>
+          </linearGradient>
+          <radialGradient id="gemRubyAfrodite" cx="35%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#ffd9de"/><stop offset="45%" stop-color="#d43041"/><stop offset="100%" stop-color="#420912"/>
+          </radialGradient>
+        </defs>
+        <path d="M22 42 Q100 96 178 42" fill="none" stroke="url(#metalRoseAfrodite)" stroke-width="3" stroke-dasharray="1.5 6" stroke-linecap="round"/>
+        <path d="M100 88 L100 108" stroke="url(#metalRoseAfrodite)" stroke-width="4"/>
+        <ellipse cx="100" cy="142" rx="32" ry="36" fill="url(#metalRoseAfrodite)"/>
+        <path d="M100 118 C120 128 126 152 100 172 C74 152 80 128 100 118 Z" fill="url(#gemRubyAfrodite)" stroke="#2c060c" stroke-width="1.5"/>
+        <ellipse cx="92" cy="132" rx="6" ry="4" fill="#fff" opacity=".8"><animate attributeName="opacity" values=".8;.25;.8" dur="2.5s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(122,116)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite"/></path>
+        </g>
       </svg>
-      <div class="jewel-row">
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#7a3a1c" stroke-width="5"/><circle cx="50" cy="60" r="18" fill="none" stroke="#7a3a1c" stroke-width="6"/><path d="M50 78 L50 120" stroke="#7a3a1c" stroke-width="4"/><circle cx="50" cy="128" r="8" fill="#241a16"/></svg>
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#7a3a1c" stroke-width="5"/><circle cx="50" cy="60" r="18" fill="none" stroke="#7a3a1c" stroke-width="6"/><path d="M50 78 L50 120" stroke="#7a3a1c" stroke-width="4"/><circle cx="50" cy="128" r="8" fill="#241a16"/></svg>
-      </div>
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione delle Fucine</span>
-      <h3>Domata dal Fuoco</h3>
-      <p class="set-name">Bracciale in metallo grezzo e pietre laviche &middot; orecchini da forgia</p>
-      <p class="desc">Metallo grezzo martellato a caldo, ancora segnato dal fuoco che lo ha plasmato, incastonato con pietre laviche opache. Un ornamento che non finge perfezione, ma la conquista, colpo dopo colpo.</p>
+      <span class="eyebrow">Collezione del Tempio — Afrodite</span>
+      <h3>Cuore di Rose</h3>
+      <p class="set-name">Collana in oro rosa con pendente rubino</p>
+      <p class="desc">Una collana in oro rosa con pendente a forma di petalo, incastonato con un rubino che pulsa come una rosa appena recisa. Desiderio reso eterno nel metallo.</p>
+      <div class="greek">«Ἔρος ἀνίκατε μάχαν»<span class="translit">Amore, vincitore nella battaglia</span></div>
+      <div class="scheda-actions">
+        <span class="total-price">€2.140</span>
+        <button class="add-cart-btn" data-add data-name="Cuore di Rose — Collana di Afrodite" data-realm="Tempio" data-price="2140" data-color="#d99a8a">Aggiungi alla Teca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EFESTO -->
+<div class="scheda-overlay" id="scheda-efesto" data-realm="forge">
+  <div class="backdrop" data-close></div>
+  <div class="scheda">
+    <div class="scheda-visual">
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalRawEfesto" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2b1810"/><stop offset="20%" stop-color="#ff9c53"/><stop offset="40%" stop-color="#7a3a1c"/><stop offset="60%" stop-color="#3a1c0e"/><stop offset="80%" stop-color="#c96a2f"/><stop offset="100%" stop-color="#2b1810"/>
+          </linearGradient>
+          <radialGradient id="gemLavaEfesto" cx="35%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="#ffcf9c"/><stop offset="40%" stop-color="#c9601f"/><stop offset="100%" stop-color="#1c0c04"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="100" cy="168" rx="48" ry="10" fill="#000" opacity=".32"/>
+        <path d="M44 126 a56 52 0 1 0 112 0 a56 52 0 1 0 -112 0" fill="none" stroke="url(#metalRawEfesto)" stroke-width="18" stroke-linecap="round"/>
+        <path d="M50 100 L58 108 M146 108 L154 100 M60 158 L54 166 M140 166 L146 158" stroke="#1c0c04" stroke-width="3" opacity=".5"/>
+        <ellipse cx="100" cy="70" rx="28" ry="24" fill="url(#metalRawEfesto)"/>
+        <circle cx="100" cy="70" r="20" fill="url(#gemLavaEfesto)" stroke="#1c0c04" stroke-width="2"/>
+        <ellipse cx="92" cy="62" rx="5" ry="3.5" fill="#ffe4bd" opacity=".85"><animate attributeName="opacity" values=".85;.3;.85" dur="1.8s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(122,50)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#ffb15c"><animate attributeName="opacity" values="0;1;0" dur="1.7s" repeatCount="indefinite"/></path>
+        </g>
+      </svg>
+    </div>
+    <div class="scheda-body">
+      <button class="scheda-close" data-close>&times;</button>
+      <span class="eyebrow">Collezione delle Fucine — Efesto</span>
+      <h3>Morso della Forgia</h3>
+      <p class="set-name">Anello in metallo grezzo con pietra lavica</p>
+      <p class="desc">Un anello massiccio in metallo grezzo, martellato a caldo, che porta ancora i segni dell'incudine. Al centro, una pietra lavica cattura l'ultimo bagliore della fiamma.</p>
       <div class="greek">«Τέχνῃ κρατεῖται φύσις»<span class="translit">L'arte domina la natura</span></div>
-      <ul class="piece-list">
-        <li>Bracciale Forgia Ambrata — Metallo grezzo <span class="price">€1.320</span></li>
-        <li>Orecchini Scintilla Lavica <span class="price">€560</span></li>
-      </ul>
       <div class="scheda-actions">
-        <span class="total-price">Set completo: €1.880</span>
-        <button class="add-cart-btn" data-add data-name="Domata dal Fuoco" data-realm="Fucine" data-price="1880" data-color="#ff8a3d">Aggiungi alla Teca</button>
+        <span class="total-price">€1.120</span>
+        <button class="add-cart-btn" data-add data-name="Morso della Forgia — Anello di Efesto" data-realm="Fucine" data-price="1120" data-color="#c96a2f">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="scheda-overlay" id="scheda-grove" data-realm="grove">
+<!-- ERMES -->
+<div class="scheda-overlay" id="scheda-ermes" data-realm="grove">
   <div class="backdrop" data-close></div>
   <div class="scheda">
     <div class="scheda-visual">
-      <svg class="jewel-piece" viewBox="0 0 200 200"><defs><linearGradient id="gD" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#cdd8ff"/><stop offset="100%" stop-color="#5c66a3"/></linearGradient></defs>
-        <path d="M40 100 C40 60 160 60 160 100 C160 140 40 140 40 100 Z" fill="none" stroke="url(#gD)" stroke-width="12"/>
-        <circle cx="100" cy="100" r="10" fill="#f4dfa3"/>
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalWhiteErmes" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4a4a52"/><stop offset="20%" stop-color="#f4f4f8"/><stop offset="40%" stop-color="#c9c9d2"/><stop offset="60%" stop-color="#7a7a85"/><stop offset="80%" stop-color="#e8e8ec"/><stop offset="100%" stop-color="#4a4a52"/>
+          </linearGradient>
+          <radialGradient id="gemDiamondErmes" cx="35%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="#ffffff"/><stop offset="55%" stop-color="#dce6ff"/><stop offset="100%" stop-color="#8a9ad9"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="100" cy="168" rx="52" ry="10" fill="#000" opacity=".28"/>
+        <path d="M40 140 A60 60 0 1 1 160 140" fill="none" stroke="url(#metalWhiteErmes)" stroke-width="10"/>
+        <path d="M100 78 C72 56 42 48 16 62 C40 64 60 76 82 94 Z" fill="url(#metalWhiteErmes)" opacity=".92"/>
+        <path d="M100 78 C128 56 158 48 184 62 C160 64 140 76 118 94 Z" fill="url(#metalWhiteErmes)" opacity=".92"/>
+        <circle cx="100" cy="80" r="10" fill="url(#gemDiamondErmes)" stroke="#5c6fa3" stroke-width="1.2"/>
+        <circle cx="56" cy="122" r="5" fill="url(#gemDiamondErmes)"/>
+        <circle cx="144" cy="122" r="5" fill="url(#gemDiamondErmes)"/>
+        <ellipse cx="96" cy="76" rx="3.5" ry="2.5" fill="#fff" opacity=".9"><animate attributeName="opacity" values=".9;.3;.9" dur="2s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(128,58)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.4s" repeatCount="indefinite"/></path>
+        </g>
       </svg>
-      <div class="jewel-row">
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#5c66a3" stroke-width="4"/><path d="M30 60 L70 60 L60 90 L40 90 Z" fill="none" stroke="#5c66a3" stroke-width="4"/><circle cx="50" cy="110" r="7" fill="#cdd8ff"/></svg>
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#5c66a3" stroke-width="4"/><path d="M30 60 L70 60 L60 90 L40 90 Z" fill="none" stroke="#5c66a3" stroke-width="4"/><circle cx="50" cy="110" r="7" fill="#cdd8ff"/></svg>
-      </div>
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Ulivo Sacro</span>
-      <h3>Il Sentiero dell'Ingegno</h3>
-      <p class="set-name">Bracciale flessibile a motivi alati &middot; orecchini leggeri</p>
-      <p class="desc">Una maglia flessibile in oro bianco, articolata come una piuma, decorata con calzari alati in miniatura. Leggero al polso come un pensiero veloce, guida chi lo indossa lungo sentieri ancora da scoprire.</p>
+      <span class="eyebrow">Collezione dell'Ulivo Sacro — Ermes</span>
+      <h3>Ali Veloci</h3>
+      <p class="set-name">Bracciale in oro bianco con diamanti</p>
+      <p class="desc">Un bracciale in oro bianco, alato su entrambi i lati, tempestato di piccoli diamanti che scintillano come pensieri in volo. Leggero, veloce, irrequieto.</p>
       <div class="greek">«Νοῦς ὁδὸν εὑρίσκει»<span class="translit">L'ingegno trova la via</span></div>
-      <ul class="piece-list">
-        <li>Bracciale Ali del Messaggero — Oro bianco <span class="price">€1.560</span></li>
-        <li>Orecchini Piuma Celeste <span class="price">€640</span></li>
-      </ul>
       <div class="scheda-actions">
-        <span class="total-price">Set completo: €2.200</span>
-        <button class="add-cart-btn" data-add data-name="Il Sentiero dell'Ingegno" data-realm="Ulivo Sacro" data-price="2200" data-color="#9fb0e8">Aggiungi alla Teca</button>
+        <span class="total-price">€1.780</span>
+        <button class="add-cart-btn" data-add data-name="Ali Veloci — Bracciale di Ermes" data-realm="Ulivo Sacro" data-price="1780" data-color="#c9c9d2">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="scheda-overlay" id="scheda-underworld" data-realm="underworld">
+<!-- ADE -->
+<div class="scheda-overlay" id="scheda-ade" data-realm="underworld">
   <div class="backdrop" data-close></div>
   <div class="scheda">
     <div class="scheda-visual">
-      <svg class="jewel-piece" viewBox="0 0 200 200"><defs><linearGradient id="gE" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c9a4ff"/><stop offset="100%" stop-color="#050208"/></linearGradient></defs>
-        <circle cx="100" cy="100" r="70" fill="none" stroke="url(#gE)" stroke-width="14"/>
-        <path d="M100 20 L110 40 L100 60 L90 40 Z" fill="#7fa8ff"/>
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalAntiqueAde" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#241a10"/><stop offset="20%" stop-color="#c9a355"/><stop offset="40%" stop-color="#8a6f3c"/><stop offset="60%" stop-color="#4a3820"/><stop offset="80%" stop-color="#a9812f"/><stop offset="100%" stop-color="#241a10"/>
+          </linearGradient>
+          <radialGradient id="gemOnyxAde" cx="35%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="#9a86c9"/><stop offset="45%" stop-color="#382a54"/><stop offset="100%" stop-color="#05020a"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="100" cy="168" rx="46" ry="10" fill="#000" opacity=".3"/>
+        <path d="M48 128 a52 48 0 1 0 104 0 a52 48 0 1 0 -104 0" fill="none" stroke="url(#metalAntiqueAde)" stroke-width="14"/>
+        <ellipse cx="100" cy="72" rx="28" ry="22" fill="url(#metalAntiqueAde)"/>
+        <path d="M100 52 L122 72 L100 92 L78 72 Z" fill="url(#gemOnyxAde)" stroke="#05020a" stroke-width="1.5"/>
+        <ellipse cx="91" cy="63" rx="4" ry="3" fill="#cdbcf0" opacity=".8"><animate attributeName="opacity" values=".8;.25;.8" dur="3s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(120,52)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#c9a4ff"><animate attributeName="opacity" values="0;1;0" dur="3.2s" repeatCount="indefinite"/></path>
+        </g>
+      </svg>
+    </div>
+    <div class="scheda-body">
+      <button class="scheda-close" data-close>&times;</button>
+      <span class="eyebrow">Collezione dell'Oltretomba — Ade</span>
+      <h3>Sigillo dell'Abisso</h3>
+      <p class="set-name">Anello in oro antico con onice</p>
+      <p class="desc">Un anello in oro antico ossidato, che custodisce un onice sfaccettato dai riflessi viola. Il sigillo di chi regna dove la luce non osa scendere.</p>
+      <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit">La fine diventa principio</span></div>
+      <div class="scheda-actions">
+        <span class="total-price">€1.960</span>
+        <button class="add-cart-btn" data-add data-name="Sigillo dell'Abisso — Anello di Ade" data-realm="Oltretomba" data-price="1960" data-color="#382a54">Aggiungi alla Teca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PERSEFONE (set completo con orecchini) -->
+<div class="scheda-overlay" id="scheda-persefone" data-realm="underworld">
+  <div class="backdrop" data-close></div>
+  <div class="scheda">
+    <div class="scheda-visual">
+      <svg class="jewel-piece" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="metalAntiquePers" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#241a10"/><stop offset="20%" stop-color="#c9a355"/><stop offset="40%" stop-color="#8a6f3c"/><stop offset="60%" stop-color="#4a3820"/><stop offset="80%" stop-color="#a9812f"/><stop offset="100%" stop-color="#241a10"/>
+          </linearGradient>
+          <radialGradient id="gemGarnetPers" cx="35%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#ffb3c6"/><stop offset="45%" stop-color="#9c1f3d"/><stop offset="100%" stop-color="#2c0a14"/>
+          </radialGradient>
+        </defs>
+        <path d="M22 40 Q100 92 178 40" fill="none" stroke="url(#metalAntiquePers)" stroke-width="3" stroke-dasharray="1.5 6" stroke-linecap="round"/>
+        <path d="M100 86 L100 104" stroke="url(#metalAntiquePers)" stroke-width="4"/>
+        <path d="M88 100 L112 100 L100 88 Z" fill="url(#metalAntiquePers)"/>
+        <circle cx="100" cy="130" r="14" fill="url(#gemGarnetPers)"/>
+        <circle cx="82" cy="146" r="10" fill="url(#gemGarnetPers)"/>
+        <circle cx="118" cy="146" r="10" fill="url(#gemGarnetPers)"/>
+        <circle cx="100" cy="160" r="11" fill="url(#gemGarnetPers)"/>
+        <ellipse cx="94" cy="124" rx="4" ry="3" fill="#fff" opacity=".8"><animate attributeName="opacity" values=".8;.25;.8" dur="2.4s" repeatCount="indefinite"/></ellipse>
+        <g transform="translate(126,110)">
+          <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.6s" repeatCount="indefinite"/></path>
+        </g>
       </svg>
       <div class="jewel-row">
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#5a3a86" stroke-width="4"/><path d="M50 55 L62 80 L50 105 L38 80 Z" fill="none" stroke="#5a3a86" stroke-width="4"/><circle cx="50" cy="115" r="7" fill="#7fa8ff"/></svg>
-        <svg class="jewel-piece earrings" viewBox="0 0 100 140"><path d="M50 10 L50 40" stroke="#5a3a86" stroke-width="4"/><path d="M50 55 L62 80 L50 105 L38 80 Z" fill="none" stroke="#5a3a86" stroke-width="4"/><circle cx="50" cy="115" r="7" fill="#7fa8ff"/></svg>
+        <svg class="jewel-piece earrings" viewBox="0 0 100 150">
+          <defs>
+            <linearGradient id="metalAntiquePersE1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#241a10"/><stop offset="30%" stop-color="#c9a355"/><stop offset="60%" stop-color="#4a3820"/><stop offset="100%" stop-color="#241a10"/>
+            </linearGradient>
+            <radialGradient id="gemCrystalPersE1" cx="35%" cy="25%" r="75%">
+              <stop offset="0%" stop-color="#e3d6ff"/><stop offset="45%" stop-color="#6a4fb3"/><stop offset="100%" stop-color="#1a1030"/>
+            </radialGradient>
+          </defs>
+          <path d="M50 8 C58 8 58 20 50 22 C42 20 42 8 50 8 Z" fill="url(#metalAntiquePersE1)"/>
+          <path d="M50 22 L50 46" stroke="url(#metalAntiquePersE1)" stroke-width="3"/>
+          <path d="M50 46 L66 78 L50 118 L34 78 Z" fill="url(#gemCrystalPersE1)" stroke="#1a1030" stroke-width="1.4"/>
+          <path d="M50 46 L50 118 M34 78 L66 78" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+          <ellipse cx="44" cy="64" rx="4" ry="6" fill="#fff" opacity=".8"><animate attributeName="opacity" values=".8;.2;.8" dur="2.2s" repeatCount="indefinite"/></ellipse>
+        </svg>
+        <svg class="jewel-piece earrings" viewBox="0 0 100 150">
+          <defs>
+            <linearGradient id="metalAntiquePersE2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#241a10"/><stop offset="30%" stop-color="#c9a355"/><stop offset="60%" stop-color="#4a3820"/><stop offset="100%" stop-color="#241a10"/>
+            </linearGradient>
+            <radialGradient id="gemCrystalPersE2" cx="35%" cy="25%" r="75%">
+              <stop offset="0%" stop-color="#e3d6ff"/><stop offset="45%" stop-color="#6a4fb3"/><stop offset="100%" stop-color="#1a1030"/>
+            </radialGradient>
+          </defs>
+          <path d="M50 8 C58 8 58 20 50 22 C42 20 42 8 50 8 Z" fill="url(#metalAntiquePersE2)"/>
+          <path d="M50 22 L50 46" stroke="url(#metalAntiquePersE2)" stroke-width="3"/>
+          <path d="M50 46 L66 78 L50 118 L34 78 Z" fill="url(#gemCrystalPersE2)" stroke="#1a1030" stroke-width="1.4"/>
+          <path d="M50 46 L50 118 M34 78 L66 78" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+          <ellipse cx="44" cy="64" rx="4" ry="6" fill="#fff" opacity=".8"><animate attributeName="opacity" values=".2;.8;.2" dur="2.4s" repeatCount="indefinite"/></ellipse>
+        </svg>
       </div>
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Oltretomba</span>
-      <h3>Corona dell'Ultimo Regno</h3>
-      <p class="set-name">Collezione finale in pietre nere e oro antico &middot; orecchini di cristallo scuro</p>
-      <p class="desc">Oro antico ossidato, incastonato con pietre nere che assorbono la luce come l'oblio, e cristalli scuri che la restituiscono come una promessa. L'ornamento di chi ha attraversato ogni regno e ne è uscito trasformato.</p>
+      <span class="eyebrow">Collezione dell'Oltretomba — Persefone</span>
+      <h3>Semi di Melagrana</h3>
+      <p class="set-name">Collana in oro antico con granati &middot; orecchini in cristallo scuro</p>
+      <p class="desc">Una collana in oro antico con pendente a grappolo di granati, come semi di melagrana appena schiusi, abbinata a orecchini in cristallo scuro che catturano la luce eterea degli Inferi.</p>
       <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit">La fine diventa principio</span></div>
       <ul class="piece-list">
-        <li>Bracciale Corona d'Ossidiana — Oro antico <span class="price">€2.980</span></li>
-        <li>Orecchini Cristallo Eterico <span class="price">€1.140</span></li>
+        <li>Collana Semi di Melagrana — Oro antico <span class="price">€1.980</span></li>
+        <li>Orecchini Cristallo Eterico <span class="price">€1.000</span></li>
       </ul>
       <div class="scheda-actions">
-        <span class="total-price">Set completo: €4.120</span>
-        <button class="add-cart-btn" data-add data-name="Corona dell'Ultimo Regno" data-realm="Oltretomba" data-price="4120" data-color="#c9a4ff">Aggiungi alla Teca</button>
+        <span class="total-price">Set completo: €2.980</span>
+        <button class="add-cart-btn" data-add data-name="Semi di Melagrana — Set di Persefone" data-realm="Oltretomba" data-price="2980" data-color="#6a4fb3">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>

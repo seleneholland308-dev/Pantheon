@@ -198,7 +198,7 @@ button{ font-family: inherit; }
 .cart-item .swatch{ width:52px; height:52px; border-radius:8px; flex-shrink:0; }
 .cart-item .meta{ flex:1; }
 .cart-item .meta .name{ font-family:'Cinzel',serif; font-size:.82rem; color: var(--marble); }
-.cart-item .meta .realm{ font-size:.78rem; color: var(--gold); opacity:.8; font-style:italic; }
+.cart-item .meta .piece-realm{ font-size:.78rem; color: var(--gold); opacity:.8; font-style:italic; }
 .cart-item .price{ font-family:'Cinzel',serif; font-size:.85rem; color: var(--gold-bright); }
 .cart-empty{ color: rgba(239,233,219,.5); font-style: italic; margin-top: 40px; text-align:center; }
 .cart-footer{ padding-top: 20px; border-top: 1px solid rgba(217,184,120,.25); }
@@ -292,6 +292,25 @@ button{ font-family: inherit; }
   to{ transform: translateX(-20%); }
 }
 
+/* rotating god-rays, adds living light to the sky */
+.godrays{
+  position:absolute; inset:-35%; z-index:1; pointer-events:none;
+  background: conic-gradient(from 0deg at 50% 25%,
+    transparent 0deg, rgba(244,223,163,.11) 8deg, transparent 22deg,
+    transparent 160deg, rgba(244,223,163,.08) 172deg, transparent 186deg,
+    transparent 338deg, rgba(244,223,163,.09) 350deg, transparent 360deg);
+  mix-blend-mode: screen;
+  opacity:.75;
+  animation: rayRotate 100s linear infinite;
+}
+.godrays.cool{
+  background: conic-gradient(from 0deg at 50% 78%,
+    transparent 0deg, rgba(127,168,255,.13) 8deg, transparent 22deg,
+    transparent 160deg, rgba(201,164,255,.1) 172deg, transparent 186deg,
+    transparent 338deg, rgba(127,168,255,.11) 350deg, transparent 360deg);
+}
+@keyframes rayRotate{ to{ transform: rotate(360deg); } }
+
 .embers, .sparkles, .petals, .motes, .crystal-dust{
   position:absolute; inset:0; z-index:1; pointer-events:none;
 }
@@ -344,6 +363,10 @@ button{ font-family: inherit; }
 .greek .translit{
   display:block; font-size:.85rem; color: rgba(239,233,219,.55); margin-top:4px; font-style:normal;
   letter-spacing:.08em; text-transform: uppercase;
+}
+
+.realm-actions{
+  display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
 }
 
 .reveal-btn{
@@ -474,9 +497,18 @@ button{ font-family: inherit; }
   border-right: 1px solid rgba(217,184,120,.2);
 }
 @media (max-width: 760px){ .scheda-visual{ border-right:none; border-bottom: 1px solid rgba(217,184,120,.2); } }
-.jewel-piece{ width: 78%; max-width: 220px; filter: drop-shadow(0 12px 30px rgba(0,0,0,.5)); }
-.jewel-piece.earrings{ width: 46%; max-width: 130px; }
+.jewel-piece{
+  width: 78%; max-width: 220px; filter: drop-shadow(0 12px 30px rgba(0,0,0,.5));
+  animation: jewelBob 6s ease-in-out infinite;
+  transform-origin: 50% 55%;
+}
+.jewel-piece.earrings{ width: 46%; max-width: 130px; animation-duration: 4.4s; }
+.jewel-piece.earrings:nth-of-type(2){ animation-delay: -1.4s; }
 .jewel-row{ display:flex; gap: 20px; align-items:flex-end; justify-content:center; flex-wrap:wrap; }
+@keyframes jewelBob{
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-5px) rotate(1.4deg); }
+}
 
 .scheda-body{ padding: 44px 42px; position:relative; }
 .scheda-close{

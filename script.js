@@ -3,6 +3,12 @@
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  if (prefersReduced) {
+    document.querySelectorAll('svg').forEach(svg => {
+      if (typeof svg.pauseAnimations === 'function') svg.pauseAnimations();
+    });
+  }
+
   /* ---------------------------------------------------------------------
      Intro curtain
   --------------------------------------------------------------------- */
@@ -229,7 +235,7 @@
         <div class="swatch" style="background:${item.color}"></div>
         <div class="meta">
           <div class="name">${item.name}</div>
-          <div class="realm">${item.realm}</div>
+          <div class="piece-realm">${item.realm}</div>
         </div>
         <div class="price">${formatEUR(item.price)}</div>
         <button data-remove="${idx}" aria-label="Rimuovi" style="background:none;border:none;color:#8a6f3c;cursor:pointer;font-size:1.1rem;">&times;</button>
