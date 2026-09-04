@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pantheon Divino — Alta Gioielleria Olimpica</title>
+<meta name="description" content="Pantheon Divino: una discesa cinematografica dall'Olimpo agli Inferi. Alta gioielleria ispirata agli dèi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= LOADER ================= -->
+<div id="loader" class="loader">
+  <div class="loader-frame">
+    <svg class="loader-key" viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0,10 H20 V0 H40 V20 H60 V0 H80 V20 H100 V0 H120 V20 H140 V0 H160 V20 H180 V0 H200" /></svg>
+    <h1 class="loader-title">Pantheon <span>Divino</span></h1>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    <p class="loader-sub">La discesa sta per iniziare</p>
+  </div>
+</div>
+
+<!-- ================= AMBIENT PARTICLE CANVAS ================= -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- ================= CUSTOM CURSOR ================= -->
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- ================= SIDE NAVIGATION ================= -->
+<nav class="realm-nav" aria-label="Navigazione dei regni">
+  <ul>
+    <li><a href="#olimpo" data-realm="olimpo" class="active"><span class="dot"></span><span class="label">Olimpo</span></a></li>
+    <li><a href="#tempio" data-realm="tempio"><span class="dot"></span><span class="label">Tempio</span></a></li>
+    <li><a href="#fucine" data-realm="fucine"><span class="dot"></span><span class="label">Fucine</span></a></li>
+    <li><a href="#albero" data-realm="albero"><span class="dot"></span><span class="label">Albero Sacro</span></a></li>
+    <li><a href="#oltretomba" data-realm="oltretomba"><span class="dot"></span><span class="label">Oltretomba</span></a></li>
+  </ul>
+  <div class="realm-nav-track"><div class="realm-nav-progress" id="realm-progress"></div></div>
+</nav>
+
+<!-- ================= BRAND MARK ================= -->
+<header class="brand-mark">
+  <a href="#hero" class="brand-mark-link">Π<span>D</span></a>
+</header>
+
+<!-- ================= SCROLL CUE ================= -->
+<div class="scroll-cue" id="scroll-cue">
+  <span>Discendi</span>
+  <div class="scroll-cue-line"><div class="scroll-cue-drop"></div></div>
+</div>
+
+<main>
+
+  <!-- ================= HERO ================= -->
+  <section class="realm" id="hero" data-bg="hero">
+    <video class="hero-video" autoplay muted loop playsinline poster="assets/img/soglia.jpg">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-veil"></div>
+    <div class="clouds-layer" data-parallax="0.15"></div>
+    <div class="hero-content reveal">
+      <p class="eyelet">Una collezione per pochi eletti</p>
+      <h1 class="hero-title">PANTHEON<br><em>DIVINO</em></h1>
+      <p class="hero-tagline">Dall'Olimpo agli Inferi — un'unica discesa, sette divinità, un'unica alta gioielleria.</p>
+      <a href="#olimpo" class="btn btn-ghost">Inizia la Discesa</a>
+    </div>
+    <div class="vignette"></div>
+  </section>
+
+  <!-- ================= I. OLIMPO CELESTE ================= -->
+  <section class="realm realm--olimpo" id="olimpo" data-bg="olimpo">
+    <div class="sky-gradient"></div>
+    <div class="clouds-layer clouds-layer--1" data-parallax="0.25"></div>
+    <div class="clouds-layer clouds-layer--2" data-parallax="0.45"></div>
+    <div class="realm-intro reveal">
+      <span class="realm-number">I</span>
+      <h2 class="realm-title">L'Olimpo Celeste</h2>
+      <p class="realm-desc">Tra vette di cobalto e nuvole eterne regnano Zeus ed Era, sovrani del cielo e custodi del giuramento sacro.</p>
+    </div>
+
+    <div class="deity-stage">
+      <article class="deity-figure reveal" data-deity="zeus">
+        <div class="figure-frame">
+          <img src="assets/img/zeus.jpg" alt="Zeus, sovrano dell'Olimpo" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-zeus" aria-label="Scopri il gioiello di Zeus">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Zeus</h3>
+        <p class="deity-epithet">Signore del Fulmine</p>
+      </article>
+
+      <article class="deity-figure reveal" data-deity="era">
+        <div class="figure-frame">
+          <img src="assets/img/era.jpg" alt="Era, regina dell'Olimpo" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-era" aria-label="Scopri il gioiello di Era">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Era</h3>
+        <p class="deity-epithet">Regina dei Cieli</p>
+      </article>
+    </div>
+
+    <!-- Luxury Card: Zeus -->
+    <aside class="deity-card" id="card-zeus" data-jewel="gold">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--gold">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--gold"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Olimpo — Oro 18k</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Aegis Regale"</h4>
+        <p class="card-desc">Un bracciale in oro 18 carati, forgiato come un fulmine placato, reca l'effigie di Zeus incisa a bulino su un medaglione centrale. Gli orecchini abbinati, sospesi come gocce d'ambra celeste, chiudono il rito dell'incoronazione.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»</span>
+          <span class="translation">"Principio e fine di ogni cosa"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 18.400</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Luxury Card: Era -->
+    <aside class="deity-card" id="card-era" data-jewel="gold">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--gold">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--gold"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Olimpo — Oro 18k</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Diadema di Era"</h4>
+        <p class="card-desc">Bracciale in oro 18 carati impreziosito dall'effigie della regina dell'Olimpo, con piume di pavone stilizzate lungo il profilo. Gli orecchini abbinati richiamano lo scettro sacro, simbolo di sovranità e fedeltà eterna.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»</span>
+          <span class="translation">"Principio e fine di ogni cosa"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 19.200</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ================= II. TEMPIO DI ARES E AFRODITE ================= -->
+  <section class="realm realm--tempio" id="tempio" data-bg="tempio">
+    <div class="marble-gradient"></div>
+    <div class="columns-layer" aria-hidden="true">
+      <span class="column"></span><span class="column"></span><span class="column"></span>
+      <span class="column"></span><span class="column"></span><span class="column"></span>
+    </div>
+    <div class="petals-layer" id="petals-layer" aria-hidden="true"></div>
+    <div class="realm-intro reveal">
+      <span class="realm-number">II</span>
+      <h2 class="realm-title">Il Tempio di Ares e Afrodite</h2>
+      <p class="realm-desc">Tra colonne di marmo antico, dove i petali di rosa cadono senza sosta, l'amore e la guerra si fondono in un solo respiro.</p>
+    </div>
+
+    <div class="deity-stage">
+      <article class="deity-figure reveal" data-deity="ares">
+        <div class="figure-frame">
+          <img src="assets/img/ares.jpg" alt="Ares, dio della guerra" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow figure-glow--rose"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-ares" aria-label="Scopri il gioiello di Ares">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Ares</h3>
+        <p class="deity-epithet">Il Guerriero Implacabile</p>
+      </article>
+
+      <article class="deity-figure reveal" data-deity="afrodite">
+        <div class="figure-frame">
+          <img src="assets/img/afrodite.jpg" alt="Afrodite, dea dell'amore" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow figure-glow--rose"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-afrodite" aria-label="Scopri il gioiello di Afrodite">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Afrodite</h3>
+        <p class="deity-epithet">Nata dalla Spuma del Mare</p>
+      </article>
+    </div>
+
+    <aside class="deity-card" id="card-ares" data-jewel="silver">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--silver">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--silver"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Tempio — Argento Brunito &amp; Rubini</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Lama di Ares"</h4>
+        <p class="card-desc">Un bracciale in argento brunito, scolpito come una corazza in miniatura, trattiene rubini di sangue incastonati a fuoco vivo. Gli orecchini a lama sottile completano l'armatura del cuore.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Ἔρος ἀνίκατε μάχαν»</span>
+          <span class="translation">"Amore, vincitore nella battaglia"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 12.900</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+
+    <aside class="deity-card" id="card-afrodite" data-jewel="silver">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--silver">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--silver"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Tempio — Argento Brunito &amp; Rubini</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Spuma di Afrodite"</h4>
+        <p class="card-desc">Bracciale in argento brunito modellato a onda, tempestato di rubini che sbocciano come petali di rosa caduti. Orecchini a conchiglia, delicati e sensuali, per portare il mare negli occhi.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Ἔρος ἀνίκατε μάχαν»</span>
+          <span class="translation">"Amore, vincitore nella battaglia"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 13.500</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ================= III. LE FUCINE DI EFESTO ================= -->
+  <section class="realm realm--fucine" id="fucine" data-bg="fucine">
+    <div class="forge-gradient"></div>
+    <canvas id="ember-canvas" class="ember-canvas"></canvas>
+    <div class="realm-intro reveal">
+      <span class="realm-number">III</span>
+      <h2 class="realm-title">Le Fucine di Efesto</h2>
+      <p class="realm-desc">Nel cuore della montagna, tra bagliori d'ambra e scintille eterne, il dio zoppo forgia bellezza dal fuoco grezzo.</p>
+    </div>
+
+    <div class="deity-stage deity-stage--single">
+      <article class="deity-figure reveal" data-deity="efesto">
+        <div class="figure-frame figure-frame--forge">
+          <img src="assets/img/efesto.jpg" alt="Efesto alla forgia" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow figure-glow--ember"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-efesto" aria-label="Scopri il gioiello di Efesto">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Efesto</h3>
+        <p class="deity-epithet">Il Fabbro degli Dèi</p>
+      </article>
+    </div>
+
+    <aside class="deity-card" id="card-efesto" data-jewel="ember">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--ember">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--ember"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Fucine — Metallo Grezzo &amp; Pietra Lavica</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Incudine Sacra"</h4>
+        <p class="card-desc">Un bracciale in metallo grezzo martellato a mano, incastonato di pietre laviche ancora tiepide di memoria. Gli orecchini da forgia, irregolari e vivi, portano l'imperfezione come massima forma d'arte.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Τέχνῃ κρατεῖται φύσις»</span>
+          <span class="translation">"L'arte domina la natura"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 9.800</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ================= IV. L'ALBERO SACRO DI ERMES ================= -->
+  <section class="realm realm--albero" id="albero" data-bg="albero">
+    <div class="dusk-gradient"></div>
+    <div class="olive-tree" aria-hidden="true">
+      <svg viewBox="0 0 800 600" class="olive-svg" preserveAspectRatio="xMidYMax slice">
+        <path class="branch branch--1" d="M400,600 C380,480 330,420 220,380 C160,360 110,330 70,270" />
+        <path class="branch branch--2" d="M400,600 C420,470 470,410 590,370 C650,350 700,310 740,250" />
+        <path class="branch branch--3" d="M400,600 C400,440 400,360 400,230 C400,170 370,110 330,60" />
+        <g class="leaves leaves--1">
+          <ellipse cx="70" cy="270" rx="16" ry="7"/><ellipse cx="110" cy="290" rx="16" ry="7"/><ellipse cx="150" cy="255" rx="16" ry="7"/><ellipse cx="200" cy="320" rx="16" ry="7"/>
+        </g>
+        <g class="leaves leaves--2">
+          <ellipse cx="740" cy="250" rx="16" ry="7"/><ellipse cx="700" cy="280" rx="16" ry="7"/><ellipse cx="660" cy="240" rx="16" ry="7"/><ellipse cx="610" cy="310" rx="16" ry="7"/>
+        </g>
+        <g class="leaves leaves--3">
+          <ellipse cx="330" cy="60" rx="16" ry="7"/><ellipse cx="360" cy="90" rx="16" ry="7"/><ellipse cx="300" cy="110" rx="16" ry="7"/><ellipse cx="400" cy="130" rx="16" ry="7"/>
+        </g>
+      </svg>
+    </div>
+    <div class="fireflies" id="fireflies-layer" aria-hidden="true"></div>
+    <div class="realm-intro reveal">
+      <span class="realm-number">IV</span>
+      <h2 class="realm-title">L'Albero Sacro di Ermes</h2>
+      <p class="realm-desc">Ai confini dei mondi, dove un ulivo millenario intreccia i suoi rami contorti nel crepuscolo, il messaggero attende il passaggio.</p>
+    </div>
+
+    <div class="deity-stage deity-stage--single">
+      <article class="deity-figure reveal" data-deity="ermes">
+        <div class="figure-frame">
+          <img src="assets/img/ermes.jpg" alt="Ermes, messaggero degli dèi" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow figure-glow--dusk"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-ermes" aria-label="Scopri il gioiello di Ermes">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Ermes</h3>
+        <p class="deity-epithet">Il Messaggero Alato</p>
+      </article>
+    </div>
+
+    <aside class="deity-card" id="card-ermes" data-jewel="wing">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--wing">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--wing"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Confini — Oro Bianco &amp; Piuma</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Calzari Alati"</h4>
+        <p class="card-desc">Un bracciale flessibile a motivi alati, leggero come un passo tra i mondi, si avvolge al polso senza mai stringerlo. Gli orecchini, sottili come piume dorate, sussurrano il movimento perenne del messaggero.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Νοῦς ὁδὸν εὑρίσκει»</span>
+          <span class="translation">"L'ingegno trova la via"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 8.600</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ================= V. L'OLTRETOMBA DI ADE E PERSEFONE ================= -->
+  <section class="realm realm--oltretomba" id="oltretomba" data-bg="oltretomba">
+    <div class="void-gradient"></div>
+    <div class="chasm-layer" aria-hidden="true">
+      <div class="chasm-crack"></div>
+      <div class="chasm-light chasm-light--blue"></div>
+      <div class="chasm-light chasm-light--gold"></div>
+    </div>
+    <div class="crystal-layer" id="crystal-layer" aria-hidden="true"></div>
+    <div class="realm-intro reveal">
+      <span class="realm-number">V</span>
+      <h2 class="realm-title">L'Oltretomba di Ade e Persefone</h2>
+      <p class="realm-desc">Sull'ossidiana del fondo, la terra si spacca e lascia sfuggire fiotti di luce eterea: qui regnano il silenzio e la promessa del ritorno.</p>
+    </div>
+
+    <div class="deity-stage deity-stage--single">
+      <article class="deity-figure reveal" data-deity="ade">
+        <div class="figure-frame figure-frame--void">
+          <img src="assets/img/ade.jpg" alt="Ade, signore dell'oltretomba" loading="lazy">
+          <div class="figure-drape"></div>
+          <div class="figure-glow figure-glow--void"></div>
+        </div>
+        <button class="deity-trigger" data-target="card-ade" aria-label="Scopri il gioiello di Ade">
+          <span class="trigger-ring"></span>
+          <span class="trigger-core"></span>
+        </button>
+        <h3 class="deity-name">Ade &amp; Persefone</h3>
+        <p class="deity-epithet">Sovrani del Silenzio Eterno</p>
+      </article>
+    </div>
+
+    <aside class="deity-card" id="card-ade" data-jewel="obsidian">
+      <button class="card-close" aria-label="Chiudi">&times;</button>
+      <div class="card-jewel">
+        <div class="jewel-render jewel-render--bracelet jewel--obsidian">
+          <span class="jewel-effigy"></span>
+        </div>
+        <div class="jewel-render jewel-render--earrings jewel--obsidian"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-kicker">Collezione Finale — Oro Antico &amp; Pietre Nere</p>
+        <h4 class="card-name">Bracciale &amp; Orecchini "Melagrana Eterna"</h4>
+        <p class="card-desc">Il gioiello ultimo del rito: un bracciale in oro antico ossidato, incastonato di pietre nere come la notte dei Campi Elisi, a forma di chicchi di melagrana. Gli orecchini in cristallo scuro catturano l'ultima luce prima del silenzio.</p>
+        <blockquote class="card-quote">
+          <span class="greek">«Τὸ τέλος ἀρχὴ γίνεται»</span>
+          <span class="translation">"La fine diventa principio"</span>
+        </blockquote>
+        <div class="card-footer">
+          <span class="card-price">€ 24.700</span>
+          <button class="btn btn-solid">Aggiungi al Rito</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ================= FOOTER / RITORNO ================= -->
+  <footer class="finale">
+    <img class="finale-bg" src="assets/img/notte-olimpica.jpg" alt="" aria-hidden="true">
+    <div class="finale-veil"></div>
+    <div class="finale-content reveal">
+      <span class="realm-number">✦</span>
+      <h2 class="finale-title">La fine diventa principio</h2>
+      <p class="finale-desc">Il rito si compie, ma il cerchio non si chiude mai. Torna sui tuoi passi, o attendi il richiamo di un nuovo dio.</p>
+      <a href="#hero" class="btn btn-ghost">Risali all'Olimpo</a>
+      <div class="finale-meta">
+        <span>Pantheon Divino</span>
+        <span>Alta Gioielleria Mitologica &mdash; MMXXVI</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script src="js/main.js"></script>
+</body>
+</html>
