@@ -826,4 +826,10 @@ footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(2
   .thread{ display:none; }
   .figure-stage{ height: min(38vh, 360px); max-width: 98vw; }
   body{ font-size: 17px; }
+
+  .brandmark{ font-size: .62rem; letter-spacing: .1em; }
+  .top-controls{ gap: 8px; }
+  .cart-toggle{ padding: 9px 12px; gap: 6px; }
+  .cart-toggle [data-i18n="nav.cart"]{ display:none; }
+  .lang-toggle{ height: 36px; padding: 0 10px; font-size: .6rem; }
 }
