@@ -534,16 +534,6 @@
     return win;
   }
 
-  function greetReturningCustomer() {
-    const saved = loadSavedCustomer();
-    if (saved && saved.firstName) {
-      brandmarkGreeting.textContent = `Bentornato/a, ${saved.firstName}`;
-      brandmarkGreeting.hidden = false;
-    }
-  }
-  const brandmarkGreeting = document.getElementById('brandmarkGreeting');
-  greetReturningCustomer();
-
   function openCheckout() {
     checkoutSummaryItems.innerHTML = cart.map(item => `
       <div class="checkout-summary-item">
@@ -685,7 +675,6 @@
 
     // Remember the devotee for next time — never the card details.
     saveCustomer({ firstName, lastName, email, address, zip, city, country, region, province });
-    greetReturningCustomer();
 
     const paymentNotes = {
       card: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)`,

@@ -21,6 +21,7 @@
 }
 
 *, *::before, *::after{ box-sizing: border-box; }
+[hidden]{ display: none !important; }
 html{ scroll-behavior: smooth; }
 html, body{ margin:0; padding:0; }
 
@@ -171,12 +172,6 @@ button{ font-family: inherit; }
   color: var(--gold-bright);
   opacity: .9;
 }
-.brandmark-greeting{
-  display:block;
-  font-family:'Cormorant Garamond', serif; font-style: italic; letter-spacing: normal;
-  font-size: .85rem; color: rgba(239,233,219,.65); margin-top: 4px;
-}
-
 .cart-drawer{
   position: fixed; top:0; right:0; height: 100vh; width: min(420px, 92vw);
   background: linear-gradient(180deg, #0c0a12, #050408);
