@@ -828,6 +828,103 @@
   </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- CHECKOUT — pagina di pagamento dimostrativa, nessun dato reale -->
+<!-- ============================================================ -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="backdrop" data-checkout-close></div>
+  <div class="checkout-panel">
+    <button class="scheda-close checkout-close" data-checkout-close aria-label="Chiudi">&times;</button>
+    <div class="checkout-demo-badge">Ambiente dimostrativo &middot; nessun pagamento reale &middot; nessun dato viene inviato o conservato</div>
+
+    <div class="checkout-view" id="checkoutFormView">
+      <div class="checkout-grid">
+        <div class="checkout-summary">
+          <span class="eyebrow">Riepilogo dell'Offerta</span>
+          <h3>La Tua Teca</h3>
+          <div class="checkout-summary-items" id="checkoutSummaryItems"></div>
+          <div class="checkout-summary-total">
+            <span>Totale</span>
+            <span id="checkoutSummaryTotal">€0</span>
+          </div>
+        </div>
+
+        <form class="checkout-form" id="checkoutForm" autocomplete="off">
+          <span class="eyebrow">Dati del Devoto</span>
+          <div class="form-row">
+            <div class="field">
+              <label for="ckFirstName">Nome</label>
+              <input type="text" id="ckFirstName" required autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="ckLastName">Cognome</label>
+              <input type="text" id="ckLastName" required autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <label for="ckEmail">Email</label>
+            <input type="email" id="ckEmail" required autocomplete="off">
+          </div>
+          <div class="form-row">
+            <div class="field field-grow">
+              <label for="ckAddress">Indirizzo</label>
+              <input type="text" id="ckAddress" required autocomplete="off">
+            </div>
+            <div class="field field-small">
+              <label for="ckZip">CAP</label>
+              <input type="text" id="ckZip" required autocomplete="off" inputmode="numeric">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="ckCity">Città</label>
+              <input type="text" id="ckCity" required autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="ckCountry">Paese</label>
+              <input type="text" id="ckCountry" required autocomplete="off" value="Italia">
+            </div>
+          </div>
+
+          <span class="eyebrow ck-payment-label">Offerta di Pagamento</span>
+          <div class="field">
+            <label for="ckCardName">Titolare della carta</label>
+            <input type="text" id="ckCardName" required autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="ckCardNumber">Numero carta</label>
+            <input type="text" id="ckCardNumber" required autocomplete="off" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19">
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="ckCardExpiry">Scadenza (MM/AA)</label>
+              <input type="text" id="ckCardExpiry" required autocomplete="off" inputmode="numeric" placeholder="MM/AA" maxlength="5">
+            </div>
+            <div class="field">
+              <label for="ckCardCvv">CVV</label>
+              <input type="text" id="ckCardCvv" required autocomplete="off" inputmode="numeric" placeholder="123" maxlength="4">
+            </div>
+          </div>
+
+          <p class="checkout-error" id="checkoutError" hidden></p>
+
+          <button type="submit" class="checkout-submit-btn">Consacra il Rito — <span id="checkoutSubmitTotal">€0</span></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="checkout-view checkout-success" id="checkoutSuccessView" hidden>
+      <div class="finale-ring"><span>✦</span></div>
+      <span class="eyebrow">Il Rito è Compiuto</span>
+      <h2 class="gold-text">Χαῖρε</h2>
+      <p class="checkout-success-sub">Salve — il tuo omaggio è stato accolto</p>
+      <p class="checkout-success-msg" id="checkoutSuccessMsg"></p>
+      <div class="checkout-order-id">Numero del Rito: <span id="checkoutOrderId"></span></div>
+      <button class="back-to-top" id="checkoutBackBtn">Torna al Pantheon</button>
+    </div>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>

@@ -198,6 +198,7 @@
     if (e.key === 'Escape') {
       overlays.forEach(ov => { if (ov.classList.contains('open')) closeScheda(ov); });
       closeCartDrawer();
+      if (checkoutOverlay.classList.contains('open')) closeCheckout();
     }
   });
 
@@ -294,14 +295,135 @@
 
   document.getElementById('checkoutBtn').addEventListener('click', () => {
     if (cart.length === 0) { showToast('La teca è vuota.'); return; }
-    showToast('Il rito è consacrato. Gli dèi ricevono la tua offerta.');
-    cart = [];
-    saveCart();
-    renderCart();
-    setTimeout(closeCartDrawer, 1400);
+    closeCartDrawer();
+    openCheckout();
   });
 
   renderCart();
+
+  /* ---------------------------------------------------------------------
+     Checkout — demo-only payment page.
+     Pure client-side simulation: nothing here is ever sent over the
+     network or persisted. Card fields are read only long enough to
+     check their shape, then discarded.
+  --------------------------------------------------------------------- */
+  const checkoutOverlay = document.getElementById('checkoutOverlay');
+  const checkoutFormView = document.getElementById('checkoutFormView');
+  const checkoutSuccessView = document.getElementById('checkoutSuccessView');
+  const checkoutForm = document.getElementById('checkoutForm');
+  const checkoutSummaryItems = document.getElementById('checkoutSummaryItems');
+  const checkoutSummaryTotal = document.getElementById('checkoutSummaryTotal');
+  const checkoutSubmitTotal = document.getElementById('checkoutSubmitTotal');
+  const checkoutError = document.getElementById('checkoutError');
+  const checkoutOrderId = document.getElementById('checkoutOrderId');
+  const checkoutSuccessMsg = document.getElementById('checkoutSuccessMsg');
+
+  function openCheckout() {
+    checkoutSummaryItems.innerHTML = cart.map(item => `
+      <div class="checkout-summary-item">
+        <span>
+          <span class="csi-name">${item.name}</span><br>
+          <span class="csi-realm">${item.realm}</span>
+        </span>
+        <span class="csi-price">${formatEUR(item.price)}</span>
+      </div>
+    `).join('');
+    const total = cart.reduce((sum, i) => sum + i.price, 0);
+    checkoutSummaryTotal.textContent = formatEUR(total);
+    checkoutSubmitTotal.textContent = formatEUR(total);
+    checkoutError.hidden = true;
+    checkoutForm.reset();
+    checkoutForm.querySelector('#ckCountry').value = 'Italia';
+    checkoutFormView.hidden = false;
+    checkoutSuccessView.hidden = true;
+    checkoutOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCheckout() {
+    checkoutOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-checkout-close]').forEach(el => {
+    el.addEventListener('click', closeCheckout);
+  });
+  document.getElementById('checkoutBackBtn').addEventListener('click', closeCheckout);
+
+  // cosmetic input formatting — purely visual, nothing is stored
+  const ckCardNumber = document.getElementById('ckCardNumber');
+  ckCardNumber.addEventListener('input', () => {
+    const digits = ckCardNumber.value.replace(/\D/g, '').slice(0, 16);
+    ckCardNumber.value = digits.replace(/(.{4})/g, '$1 ').trim();
+  });
+  const ckCardExpiry = document.getElementById('ckCardExpiry');
+  ckCardExpiry.addEventListener('input', () => {
+    const digits = ckCardExpiry.value.replace(/\D/g, '').slice(0, 4);
+    ckCardExpiry.value = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+  });
+  const ckCardCvv = document.getElementById('ckCardCvv');
+  ckCardCvv.addEventListener('input', () => {
+    ckCardCvv.value = ckCardCvv.value.replace(/\D/g, '').slice(0, 4);
+  });
+  const ckZip = document.getElementById('ckZip');
+  ckZip.addEventListener('input', () => {
+    ckZip.value = ckZip.value.replace(/\D/g, '').slice(0, 5);
+  });
+
+  function showCheckoutError(msg) {
+    checkoutError.textContent = msg;
+    checkoutError.hidden = false;
+  }
+
+  checkoutForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    checkoutError.hidden = true;
+
+    if (!checkoutForm.checkValidity()) {
+      checkoutForm.reportValidity();
+      return;
+    }
+
+    const cardDigits = ckCardNumber.value.replace(/\D/g, '');
+    if (cardDigits.length !== 16) {
+      showCheckoutError('Il numero della carta deve avere 16 cifre.');
+      return;
+    }
+    const expiryMatch = ckCardExpiry.value.match(/^(\d{2})\/(\d{2})$/);
+    if (!expiryMatch) {
+      showCheckoutError('Inserisci la scadenza nel formato MM/AA.');
+      return;
+    }
+    const month = parseInt(expiryMatch[1], 10);
+    const year = 2000 + parseInt(expiryMatch[2], 10);
+    if (month < 1 || month > 12) {
+      showCheckoutError('Il mese di scadenza non è valido.');
+      return;
+    }
+    const now = new Date();
+    const expiryDate = new Date(year, month, 0);
+    if (expiryDate < now) {
+      showCheckoutError('La carta risulta scaduta.');
+      return;
+    }
+    if (!/^\d{3,4}$/.test(ckCardCvv.value)) {
+      showCheckoutError('Il CVV deve avere 3 o 4 cifre.');
+      return;
+    }
+
+    const firstName = document.getElementById('ckFirstName').value.trim();
+    const total = cart.reduce((sum, i) => sum + i.price, 0);
+    const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+    checkoutSuccessMsg.textContent = `Grazie, ${firstName}. La tua offerta di ${formatEUR(total)} è stata accolta dal Pantheon. (Simulazione — nessun addebito reale è stato effettuato.)`;
+    checkoutOrderId.textContent = orderId;
+    checkoutFormView.hidden = true;
+    checkoutSuccessView.hidden = false;
+
+    cart = [];
+    saveCart();
+    renderCart();
+  });
 
   /* ---------------------------------------------------------------------
      Back to top

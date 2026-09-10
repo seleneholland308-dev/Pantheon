@@ -577,6 +577,113 @@ button{ font-family: inherit; }
 .back-to-top:hover{ background: var(--gold); color:#1a1408; }
 footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(239,233,219,.4); }
 
+/* ==========================================================================
+   Checkout — demo-only payment page
+   ========================================================================== */
+.checkout-overlay{
+  position: fixed; inset:0; z-index: 450;
+  display:flex; align-items:center; justify-content:center;
+  padding: 24px;
+  opacity:0; visibility:hidden;
+  transition: opacity .5s var(--ease-silk), visibility .5s;
+}
+.checkout-overlay.open{ opacity:1; visibility:visible; }
+.checkout-overlay .backdrop{ position:absolute; inset:0; background: rgba(3,2,6,.85); backdrop-filter: blur(6px); }
+.checkout-panel{
+  position:relative; z-index:2;
+  width: min(980px, 100%);
+  max-height: 92vh; overflow-y:auto;
+  background: linear-gradient(160deg, #100d16 0%, #050408 100%);
+  border: 1px solid rgba(217,184,120,.4);
+  box-shadow: 0 40px 120px rgba(0,0,0,.7);
+  padding: 54px 44px 44px;
+  transform: scale(.94) translateY(20px);
+  transition: transform .55s var(--ease-silk);
+}
+.checkout-overlay.open .checkout-panel{ transform: scale(1) translateY(0); }
+.checkout-close{ z-index: 3; }
+
+.checkout-demo-badge{
+  display:inline-block;
+  font-family:'Cinzel', serif; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+  color: var(--gold-bright);
+  background: rgba(217,184,120,.1);
+  border: 1px solid rgba(217,184,120,.4);
+  border-radius: 999px;
+  padding: 8px 18px;
+  margin-bottom: 30px;
+}
+
+.checkout-grid{ display:grid; grid-template-columns: .8fr 1.2fr; gap: 44px; }
+@media (max-width: 760px){ .checkout-grid{ grid-template-columns: 1fr; gap: 32px; } }
+
+.checkout-summary h3{ font-size: 1.4rem; color: var(--marble); margin: 10px 0 20px; }
+.checkout-summary-items{ display:flex; flex-direction:column; gap:14px; margin-bottom: 20px; }
+.checkout-summary-item{
+  display:flex; justify-content:space-between; gap: 10px;
+  font-size:.92rem; color: rgba(239,233,219,.85);
+  border-bottom: 1px dashed rgba(217,184,120,.2); padding-bottom: 12px;
+}
+.checkout-summary-item .csi-name{ font-family:'Cinzel', serif; font-size:.8rem; color: var(--marble); }
+.checkout-summary-item .csi-realm{ font-style: italic; color: var(--gold); opacity:.8; font-size:.78rem; }
+.checkout-summary-item .csi-price{ font-family:'Cinzel', serif; color: var(--gold-bright); white-space:nowrap; }
+.checkout-summary-total{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:'Cinzel', serif; color: var(--gold-bright); font-size:1.1rem;
+  border-top: 1px solid rgba(217,184,120,.3); padding-top: 16px;
+}
+
+.checkout-form{ display:flex; flex-direction:column; gap: 16px; }
+.checkout-form .eyebrow{ display:block; margin-top: 6px; }
+.ck-payment-label{ margin-top: 10px; }
+.form-row{ display:flex; gap: 14px; }
+.form-row .field{ flex:1; min-width: 0; }
+.field.field-small{ flex: 0 0 110px; }
+.field label{
+  display:block; font-family:'Cinzel', serif; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase;
+  color: rgba(239,233,219,.6); margin-bottom: 6px;
+}
+.field input{
+  width:100%; padding: 12px 14px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(217,184,120,.3);
+  border-radius: 4px;
+  color: var(--marble);
+  font-family:'Cormorant Garamond', serif; font-size: 1rem;
+  transition: border-color .3s, background .3s;
+}
+.field input::placeholder{ color: rgba(239,233,219,.3); }
+.field input:focus{
+  outline:none; border-color: var(--gold-bright); background: rgba(217,184,120,.06);
+}
+.checkout-error{
+  color:#e07a7a; font-size:.85rem; font-style:italic; margin:0;
+}
+.checkout-submit-btn{
+  margin-top: 8px; padding: 17px 24px;
+  background: linear-gradient(120deg,#a9812f,var(--gold-bright),var(--gold));
+  border:none; border-radius: 4px; color:#1a1408; font-family:'Cinzel', serif;
+  letter-spacing:.16em; text-transform:uppercase; font-size:.72rem; cursor:pointer;
+  transition: filter .3s, transform .3s;
+}
+.checkout-submit-btn:hover{ filter: brightness(1.12); transform: translateY(-2px); }
+
+.checkout-success{ text-align:center; padding: 30px 10px; display:flex; flex-direction:column; align-items:center; }
+.checkout-success .finale-ring{
+  width: 92px; height:92px; border-radius:50%; border: 1px solid var(--gold);
+  display:flex; align-items:center; justify-content:center; margin-bottom: 22px;
+  animation: spin 40s linear infinite;
+}
+.checkout-success .finale-ring span{ color: var(--gold-bright); font-size: 1.3rem; }
+.checkout-success h2{ font-size: 2.2rem; margin: 12px 0 4px; }
+.checkout-success-sub{ font-style: italic; color: rgba(239,233,219,.6); margin: 0 0 20px; }
+.checkout-success-msg{ color: rgba(239,233,219,.85); max-width: 460px; margin: 0 0 18px; }
+.checkout-order-id{
+  font-family:'Cinzel', serif; font-size:.82rem; color: var(--gold-bright);
+  border: 1px dashed rgba(217,184,120,.4); border-radius: 999px;
+  padding: 10px 22px; margin-bottom: 30px;
+}
+
 /* toast */
 .toast{
   position: fixed; bottom: 30px; left:50%; transform: translateX(-50%) translateY(20px);
