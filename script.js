@@ -279,6 +279,35 @@
     });
   });
 
+  /* ---------------------------------------------------------------------
+     Persefone — choose set / necklace only / earrings only
+  --------------------------------------------------------------------- */
+  const persOptions = document.getElementById('persOptions');
+  if (persOptions) {
+    const persAddBtn = document.querySelector('#scheda-persefone .add-cart-btn');
+    const persTotalPrice = document.getElementById('persTotalPrice');
+    const persNecklaceVisual = document.getElementById('persNecklaceVisual');
+    const persEarringsVisual = document.getElementById('persEarringsVisual');
+
+    function applyPersOption(radio) {
+      persAddBtn.dataset.name = radio.dataset.name;
+      persAddBtn.dataset.price = radio.dataset.price;
+      persTotalPrice.textContent = formatEUR(parseInt(radio.dataset.price, 10));
+      persOptions.querySelectorAll('.option-card').forEach(card => card.classList.remove('active'));
+      radio.closest('.option-card').classList.add('active');
+
+      const showNecklace = radio.value === 'set' || radio.value === 'necklace';
+      const showEarrings = radio.value === 'set' || radio.value === 'earrings';
+      persNecklaceVisual.classList.toggle('dimmed', !showNecklace);
+      persEarringsVisual.classList.toggle('dimmed', !showEarrings);
+    }
+
+    persOptions.querySelectorAll('input[name="persOption"]').forEach(radio => {
+      radio.addEventListener('change', () => applyPersOption(radio));
+    });
+    applyPersOption(persOptions.querySelector('input[name="persOption"]:checked'));
+  }
+
   const cartToggle = document.getElementById('cartToggle');
   const closeCartBtn = document.getElementById('closeCart');
   function openCartDrawer() {

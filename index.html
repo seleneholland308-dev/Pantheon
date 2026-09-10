@@ -756,7 +756,7 @@
   <div class="backdrop" data-close></div>
   <div class="scheda">
     <div class="scheda-visual">
-      <svg class="jewel-piece" viewBox="0 0 200 200">
+      <svg class="jewel-piece" id="persNecklaceVisual" viewBox="0 0 200 200">
         <defs>
           <linearGradient id="metalAntiquePers" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#241a10"/><stop offset="20%" stop-color="#c9a355"/><stop offset="40%" stop-color="#8a6f3c"/><stop offset="60%" stop-color="#4a3820"/><stop offset="80%" stop-color="#a9812f"/><stop offset="100%" stop-color="#241a10"/>
@@ -777,7 +777,7 @@
           <path d="M0 -6 L1.6 -1.6 L6 0 L1.6 1.6 L0 6 L-1.6 1.6 L-6 0 L-1.6 -1.6 Z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="2.6s" repeatCount="indefinite"/></path>
         </g>
       </svg>
-      <div class="jewel-row">
+      <div class="jewel-row" id="persEarringsVisual">
         <svg class="jewel-piece earrings" viewBox="0 0 100 150">
           <defs>
             <linearGradient id="metalAntiquePersE1" x1="0" y1="0" x2="1" y2="1">
@@ -817,12 +817,25 @@
       <p class="set-name">Collana in oro antico con granati &middot; orecchini in cristallo scuro</p>
       <p class="desc">Una collana in oro antico con pendente a grappolo di granati, come semi di melagrana appena schiusi, abbinata a orecchini in cristallo scuro che catturano la luce eterea degli Inferi.</p>
       <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit">La fine diventa principio</span></div>
-      <ul class="piece-list">
-        <li>Collana Semi di Melagrana — Oro antico <span class="price">€1.980</span></li>
-        <li>Orecchini Cristallo Eterico <span class="price">€1.000</span></li>
-      </ul>
+      <div class="option-group" id="persOptions">
+        <label class="option-card">
+          <input type="radio" name="persOption" value="set" data-name="Semi di Melagrana — Set di Persefone" data-price="2980" checked>
+          <span class="option-label">Set completo — Collana e Orecchini</span>
+          <span class="option-price">€2.980</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="persOption" value="necklace" data-name="Semi di Melagrana — Collana di Persefone" data-price="1980">
+          <span class="option-label">Solo la Collana</span>
+          <span class="option-price">€1.980</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="persOption" value="earrings" data-name="Semi di Melagrana — Orecchini di Persefone" data-price="1000">
+          <span class="option-label">Solo gli Orecchini</span>
+          <span class="option-price">€1.000</span>
+        </label>
+      </div>
       <div class="scheda-actions">
-        <span class="total-price">Set completo: €2.980</span>
+        <span class="total-price" id="persTotalPrice">€2.980</span>
         <button class="add-cart-btn" data-add data-name="Semi di Melagrana — Set di Persefone" data-realm="Oltretomba" data-price="2980" data-color="#6a4fb3">Aggiungi alla Teca</button>
       </div>
     </div>
