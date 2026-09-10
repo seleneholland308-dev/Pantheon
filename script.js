@@ -549,8 +549,10 @@
 
     const firstName = document.getElementById('ckFirstName').value.trim();
     const lastName = document.getElementById('ckLastName').value.trim();
+    const itemCount = cart.length;
     const total = cart.reduce((sum, i) => sum + i.price, 0);
     const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
+    const itemWord = itemCount === 1 ? 'oggetto' : 'oggetti';
 
     // Remember the devotee for next time — never the card details.
     saveCustomer({
@@ -566,12 +568,12 @@
     greetReturningCustomer();
 
     const paymentNotes = {
-      card: `La tua offerta di ${formatEUR(total)} è stata accolta dal Pantheon. (Simulazione — nessun addebito reale è stato effettuato.)`,
-      cod: `La tua offerta di ${formatEUR(total)} sarà saldata al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)`,
-      bank: `La tua offerta di ${formatEUR(total)} sarà completata tramite bonifico. (Simulazione — nessuna email reale viene inviata.)`,
+      card: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)`,
+      cod: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa: pagherai al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)`,
+      bank: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa, da completare tramite bonifico. (Simulazione — nessuna email reale viene inviata.)`,
     };
 
-    checkoutSuccessName.textContent = `${firstName} ${lastName}`.trim();
+    checkoutSuccessName.textContent = `Grazie, ${firstName}`;
     checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
     checkoutOrderId.textContent = orderId;
     checkoutFormView.hidden = true;

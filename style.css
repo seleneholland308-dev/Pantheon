@@ -221,7 +221,9 @@ button{ font-family: inherit; }
 }
 .cart-empty{ color: rgba(239,233,219,.5); font-style: italic; margin-top: 40px; text-align:center; }
 .cart-footer{ padding-top: 20px; border-top: 1px solid rgba(217,184,120,.25); }
+.cart-shipping{ display:flex; justify-content:space-between; font-size:.82rem; color: rgba(239,233,219,.7); margin-bottom:10px; }
 .cart-total{ display:flex; justify-content:space-between; font-family:'Cinzel',serif; color:var(--gold-bright); margin-bottom:16px; }
+.shipping-free{ color:#7fe0a6; font-style:italic; }
 .checkout-btn{
   width:100%; padding: 15px; background: linear-gradient(120deg,#a9812f,var(--gold-bright),var(--gold));
   border:none; border-radius: 4px; color:#1a1408; font-family:'Cinzel',serif;
@@ -632,6 +634,10 @@ footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(2
 .checkout-summary-item .csi-name{ font-family:'Cinzel', serif; font-size:.8rem; color: var(--marble); }
 .checkout-summary-item .csi-realm{ font-style: italic; color: var(--gold); opacity:.8; font-size:.78rem; }
 .checkout-summary-item .csi-price{ font-family:'Cinzel', serif; color: var(--gold-bright); white-space:nowrap; }
+.checkout-summary-shipping{
+  display:flex; justify-content:space-between;
+  font-size:.85rem; color: rgba(239,233,219,.7); margin-bottom: 12px;
+}
 .checkout-summary-total{
   display:flex; justify-content:space-between; align-items:baseline;
   font-family:'Cinzel', serif; color: var(--gold-bright); font-size:1.1rem;
