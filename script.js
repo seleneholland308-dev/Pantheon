@@ -358,7 +358,11 @@
   const ckCardFields = document.getElementById('ckCardFields');
   const checkoutCodNote = document.getElementById('checkoutCodNote');
   const checkoutBankNote = document.getElementById('checkoutBankNote');
+  const checkoutCodFeeRow = document.getElementById('checkoutCodFeeRow');
   const cardOnlyInputs = ['ckCardName', 'ckCardNumber', 'ckCardExpiry', 'ckCardCvv'].map(id => document.getElementById(id));
+  const COD_FEE = 5;
+  function cartSubtotal() { return cart.reduce((sum, i) => sum + i.price, 0); }
+  function checkoutTotal() { return cartSubtotal() + (ckPaymentMethodEl.value === 'cod' ? COD_FEE : 0); }
 
   /* -- countries, grouped by region -- */
   const COUNTRY_GROUPS = {
@@ -437,6 +441,10 @@
     cardOnlyInputs.forEach(input => { input.required = isCard; });
     checkoutCodNote.hidden = method !== 'cod';
     checkoutBankNote.hidden = method !== 'bank';
+    checkoutCodFeeRow.hidden = method !== 'cod';
+    const total = checkoutTotal();
+    checkoutSummaryTotal.textContent = formatEUR(total);
+    checkoutSubmitTotal.textContent = formatEUR(total);
   }
   ckPaymentMethodEl.addEventListener('change', togglePaymentMethod);
 
@@ -540,6 +548,7 @@
     <div class="items">
       ${itemsHtml}
       <div class="row"><span>Spedizione</span><span style="color:#7fe0a6;font-style:italic;">Gratuita</span></div>
+      ${data.codFee ? `<div class="row"><span>Contrassegno</span><span>+${formatEUR(data.codFee)}</span></div>` : ''}
       <div class="row total-row"><span>Totale</span><span>${formatEUR(data.total)}</span></div>
     </div>
     <div class="codes">
@@ -571,9 +580,6 @@
         <span class="csi-price">${formatEUR(item.price)}</span>
       </div>
     `).join('');
-    const total = cart.reduce((sum, i) => sum + i.price, 0);
-    checkoutSummaryTotal.textContent = formatEUR(total);
-    checkoutSubmitTotal.textContent = formatEUR(total);
     checkoutError.hidden = true;
     checkoutForm.reset();
     ckPaymentMethodEl.value = 'card';
@@ -670,7 +676,8 @@
     const province = ckProvinceEl.value;
     const newsletter = document.getElementById('ckNewsletter').checked;
     const itemCount = cart.length;
-    const total = cart.reduce((sum, i) => sum + i.price, 0);
+    const codFee = paymentMethod === 'cod' ? COD_FEE : 0;
+    const total = cartSubtotal() + codFee;
     const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
     const trackingNumber = randomTrackingCode();
     const itemWord = itemCount === 1 ? 'oggetto' : 'oggetti';
@@ -686,12 +693,12 @@
 
     const paymentNotes = {
       card: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)`,
-      cod: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa: pagherai al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)`,
+      cod: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)} (spedizione gratuita, supplemento contrassegno di ${formatEUR(codFee)} incluso): pagherai al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)`,
       bank: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa, da completare tramite bonifico. (Simulazione — nessuna email reale viene inviata.)`,
     };
 
     const popup = openConfirmationWindow({
-      firstName, email, orderId, trackingNumber, itemCount, total,
+      firstName, email, orderId, trackingNumber, itemCount, total, codFee,
       items: orderItemsSnapshot, shippingAddress, paymentLabel, newsletter,
     });
 
