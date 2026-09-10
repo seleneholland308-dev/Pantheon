@@ -359,7 +359,6 @@
   const checkoutCodNote = document.getElementById('checkoutCodNote');
   const checkoutBankNote = document.getElementById('checkoutBankNote');
   const cardOnlyInputs = ['ckCardName', 'ckCardNumber', 'ckCardExpiry', 'ckCardCvv'].map(id => document.getElementById(id));
-  const CUSTOMER_KEY = 'pantheon-divino-customer';
 
   /* -- countries, grouped by region -- */
   const COUNTRY_GROUPS = {
@@ -440,13 +439,6 @@
     checkoutBankNote.hidden = method !== 'bank';
   }
   ckPaymentMethodEl.addEventListener('change', togglePaymentMethod);
-
-  function loadSavedCustomer() {
-    try { return JSON.parse(localStorage.getItem(CUSTOMER_KEY)); } catch (e) { return null; }
-  }
-  function saveCustomer(data) {
-    try { localStorage.setItem(CUSTOMER_KEY, JSON.stringify(data)); } catch (e) {}
-  }
 
   // A short history of past devotees, used only to power the optional
   // <datalist> suggestions on the checkout form — never enforced.
@@ -586,24 +578,6 @@
     ckPaymentMethodEl.value = 'card';
     togglePaymentMethod();
     toggleItalyFields();
-    updateProvinceOptions('');
-
-    const saved = loadSavedCustomer();
-    if (saved) {
-      document.getElementById('ckFirstName').value = saved.firstName || '';
-      document.getElementById('ckLastName').value = saved.lastName || '';
-      document.getElementById('ckEmail').value = saved.email || '';
-      document.getElementById('ckAddress').value = saved.address || '';
-      document.getElementById('ckZip').value = saved.zip || '';
-      document.getElementById('ckCity').value = saved.city || '';
-      if (saved.country) ckCountryEl.value = saved.country;
-      toggleItalyFields();
-      if (saved.region) {
-        ckRegionEl.value = saved.region;
-        updateProvinceOptions(saved.region, saved.province);
-      }
-    }
-
     checkoutFormView.hidden = false;
     checkoutSuccessView.hidden = true;
     checkoutOverlay.classList.add('open');
@@ -703,8 +677,8 @@
     const shippingAddress = `${address}, ${zip} ${city}${province ? ' (' + province + ')' : ''}, ${country}`;
     const orderItemsSnapshot = cart.map(i => ({ name: i.name, realm: i.realm, price: i.price }));
 
-    // Remember the devotee for next time — never the card details.
-    saveCustomer({ firstName, lastName, email, address, zip, city, country, region, province });
+    // Keep a light history for the optional suggestions only — the form
+    // itself never prefills, and card details are never stored anywhere.
     addToCustomerHistory({ firstName, lastName, email, address, city });
     populateSuggestionDatalists();
 

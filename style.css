@@ -663,6 +663,11 @@ footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(2
 .form-row{ display:flex; gap: 14px; }
 .form-row .field{ flex:1; min-width: 0; }
 .field.field-small{ flex: 0 0 110px; }
+.field.field-grow{ flex: 2.5; }
+@media (max-width: 640px){
+  .form-row{ flex-direction: column; gap: 16px; }
+  .field.field-small{ flex: 1 1 auto; }
+}
 .field label{
   display:block; font-family:'Cinzel', serif; font-size:.64rem; letter-spacing:.14em; text-transform:uppercase;
   color: rgba(239,233,219,.6); margin-bottom: 6px;
