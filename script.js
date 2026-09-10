@@ -325,39 +325,81 @@
 
   /* ---------------------------------------------------------------------
      Ambient soundscape — synthesized via Web Audio API, not licensed
-     music. A soft drone + harmonic pair per realm, crossfading as you
+     music. A soft, reverb-washed pad (root + fifth + sub, all sine, very
+     gently detuned for chorus warmth) crossfades in tone per realm as you
      scroll. Muted by default until the visitor opts in.
   --------------------------------------------------------------------- */
   const AUDIO_PREF_KEY = 'pantheon-divino-audio';
   const REALM_AUDIO = {
-    olympus:    { f1: 220,   f2: 330,   filter: 1800, lfoRate: .07, lfoDepth: 300 },
-    temple:     { f1: 196,   f2: 294,   filter: 1200, lfoRate: .12, lfoDepth: 250 },
-    forge:      { f1: 98,    f2: 146.8, filter: 700,  lfoRate: .55, lfoDepth: 220 },
-    grove:      { f1: 261.6, f2: 392,   filter: 2400, lfoRate: .05, lfoDepth: 350 },
-    underworld: { f1: 65.4,  f2: 98,    filter: 380,  lfoRate: .035,lfoDepth: 120 },
+    olympus:    { f1: 220,   f2: 330,   filter: 1500, lfoRate: .06, lfoDepth: 160 },
+    temple:     { f1: 196,   f2: 294,   filter: 1050, lfoRate: .1,  lfoDepth: 140 },
+    forge:      { f1: 98,    f2: 146.8, filter: 620,  lfoRate: .4,  lfoDepth: 120 },
+    grove:      { f1: 261.6, f2: 392,   filter: 1900, lfoRate: .045,lfoDepth: 180 },
+    underworld: { f1: 65.4,  f2: 98,    filter: 340,  lfoRate: .03, lfoDepth: 70 },
   };
   const audioToggleBtn = document.getElementById('audioToggle');
-  let audioCtx, masterGain, filterNode, osc1, osc2, lfoOsc, lfoGain;
+  let audioCtx, masterGain, filterNode, osc1, osc2, subOsc, lfoOsc, lfoGain, swellGain;
   let audioInitialized = false;
   let audioEnabled = false;
+
+  // Procedural reverb impulse — a short burst of noise shaped by an
+  // exponential decay, so the pad has soft room space without needing to
+  // ship or fetch any audio file.
+  function createReverbImpulse(ctx, duration, decay) {
+    const rate = ctx.sampleRate;
+    const length = Math.floor(rate * duration);
+    const impulse = ctx.createBuffer(2, length, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = impulse.getChannelData(ch);
+      for (let i = 0; i < length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+      }
+    }
+    return impulse;
+  }
 
   function initAudio() {
     if (audioInitialized) return;
     audioInitialized = true;
     try {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
       masterGain = audioCtx.createGain();
       masterGain.gain.value = 0;
       masterGain.connect(audioCtx.destination);
 
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -20;
+      compressor.knee.value = 26;
+      compressor.ratio.value = 3;
+      compressor.connect(masterGain);
+
+      // swellGain carries the slow tremolo "breathing"; masterGain stays
+      // dedicated to the on/off fade so the two never fight each other.
+      swellGain = audioCtx.createGain();
+      swellGain.gain.value = 1;
+      swellGain.connect(compressor);
+
       filterNode = audioCtx.createBiquadFilter();
       filterNode.type = 'lowpass';
-      filterNode.Q.value = 0.7;
+      filterNode.Q.value = 0.35;
       filterNode.frequency.value = REALM_AUDIO.olympus.filter;
-      filterNode.connect(masterGain);
+
+      const dryGain = audioCtx.createGain();
+      dryGain.gain.value = 0.68;
+      filterNode.connect(dryGain);
+      dryGain.connect(swellGain);
+
+      const convolver = audioCtx.createConvolver();
+      convolver.buffer = createReverbImpulse(audioCtx, 3.4, 2.4);
+      const wetGain = audioCtx.createGain();
+      wetGain.gain.value = 0.34;
+      filterNode.connect(convolver);
+      convolver.connect(wetGain);
+      wetGain.connect(swellGain);
 
       const osc1Gain = audioCtx.createGain();
-      osc1Gain.gain.value = 0.6;
+      osc1Gain.gain.value = 0.48;
       osc1 = audioCtx.createOscillator();
       osc1.type = 'sine';
       osc1.frequency.value = REALM_AUDIO.olympus.f1;
@@ -365,12 +407,21 @@
       osc1Gain.connect(filterNode);
 
       const osc2Gain = audioCtx.createGain();
-      osc2Gain.gain.value = 0.28;
+      osc2Gain.gain.value = 0.3;
       osc2 = audioCtx.createOscillator();
-      osc2.type = 'triangle';
+      osc2.type = 'sine';
+      osc2.detune.value = 6; // a few cents of chorus warmth, not a harsh beat
       osc2.frequency.value = REALM_AUDIO.olympus.f2;
       osc2.connect(osc2Gain);
       osc2Gain.connect(filterNode);
+
+      const subGain = audioCtx.createGain();
+      subGain.gain.value = 0.2;
+      subOsc = audioCtx.createOscillator();
+      subOsc.type = 'sine';
+      subOsc.frequency.value = REALM_AUDIO.olympus.f1 / 2;
+      subOsc.connect(subGain);
+      subGain.connect(filterNode);
 
       lfoOsc = audioCtx.createOscillator();
       lfoOsc.frequency.value = REALM_AUDIO.olympus.lfoRate;
@@ -379,7 +430,14 @@
       lfoOsc.connect(lfoGain);
       lfoGain.connect(filterNode.frequency);
 
-      osc1.start(); osc2.start(); lfoOsc.start();
+      const tremoloOsc = audioCtx.createOscillator();
+      tremoloOsc.frequency.value = 0.08;
+      const tremoloGain = audioCtx.createGain();
+      tremoloGain.gain.value = 0.05;
+      tremoloOsc.connect(tremoloGain);
+      tremoloGain.connect(swellGain.gain);
+
+      osc1.start(); osc2.start(); subOsc.start(); lfoOsc.start(); tremoloOsc.start();
     } catch (e) { audioInitialized = false; }
   }
 
@@ -388,11 +446,12 @@
     const preset = REALM_AUDIO[realmId];
     if (!preset) return;
     const now = audioCtx.currentTime;
-    osc1.frequency.setTargetAtTime(preset.f1, now, 1);
-    osc2.frequency.setTargetAtTime(preset.f2, now, 1);
-    filterNode.frequency.setTargetAtTime(preset.filter, now, 1);
-    lfoOsc.frequency.setTargetAtTime(preset.lfoRate, now, 1);
-    lfoGain.gain.setTargetAtTime(preset.lfoDepth, now, 1);
+    osc1.frequency.setTargetAtTime(preset.f1, now, 1.4);
+    osc2.frequency.setTargetAtTime(preset.f2, now, 1.4);
+    subOsc.frequency.setTargetAtTime(preset.f1 / 2, now, 1.4);
+    filterNode.frequency.setTargetAtTime(preset.filter, now, 1.4);
+    lfoOsc.frequency.setTargetAtTime(preset.lfoRate, now, 1.4);
+    lfoGain.gain.setTargetAtTime(preset.lfoDepth, now, 1.4);
   }
 
   function setAudioEnabled(enabled) {
@@ -403,7 +462,7 @@
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const now = audioCtx.currentTime;
       masterGain.gain.cancelScheduledValues(now);
-      masterGain.gain.setTargetAtTime(enabled ? 0.1 : 0, now, 1.2);
+      masterGain.gain.setTargetAtTime(enabled ? 0.09 : 0, now, 1.2);
       if (enabled) {
         const activeDot = threadDots.find(d => d.classList.contains('active'));
         setRealmAudio(activeDot ? activeDot.dataset.target : 'olympus');
@@ -499,20 +558,12 @@
   });
 
   /* ---------------------------------------------------------------------
-     Olympus lightning flicker
+     Olympus lightning — the sky flash and bolt strikes are fully CSS-
+     driven and synced together (see skyFlash / boltStrike in style.css).
   --------------------------------------------------------------------- */
-  const lightning = document.getElementById('lightningFlash');
-  if (lightning && !prefersReduced) {
-    function flicker() {
-      lightning.style.transition = 'none';
-      lightning.style.background = 'rgba(220,230,255,.55)';
-      requestAnimationFrame(() => {
-        lightning.style.transition = 'background 0.6s ease-out';
-        lightning.style.background = 'rgba(220,230,255,0)';
-      });
-      setTimeout(flicker, 6000 + Math.random() * 9000);
-    }
-    setTimeout(flicker, 3000);
+  if (prefersReduced) {
+    const lightningEl = document.getElementById('lightningFlash');
+    if (lightningEl) lightningEl.style.display = 'none';
   }
 
   /* ---------------------------------------------------------------------
