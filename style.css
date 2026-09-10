@@ -518,14 +518,14 @@ button{ font-family: inherit; }
 /* Forge: heat shimmer */
 #forge .heat-shimmer{
   position:absolute; inset:0; z-index:1; pointer-events:none;
-  background: linear-gradient(0deg, rgba(255,120,40,.12), transparent 60%);
+  background: linear-gradient(0deg, rgba(232,70,45,.14), transparent 60%);
   animation: shimmerHeat 4s ease-in-out infinite;
 }
 @keyframes shimmerHeat{ 0%,100%{ opacity:.6; } 50%{ opacity:1; } }
 #forge .anvil-glow{
   position:absolute; bottom:0; left:50%; transform:translateX(-50%);
   width: 60vw; height: 40vh; z-index:1; pointer-events:none;
-  background: radial-gradient(ellipse at 50% 100%, rgba(255,140,50,.45), transparent 70%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(226,66,40,.48), transparent 70%);
   animation: pulseGlow 2.6s ease-in-out infinite;
 }
 @keyframes pulseGlow{ 0%,100%{ opacity:.7; } 50%{ opacity:1; } }

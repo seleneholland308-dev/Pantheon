@@ -392,7 +392,7 @@
 
   spawnParticles(document.getElementById('motes-olympus'), 26, { minSize: 2, maxSize: 5, minDur: 14, maxDur: 26, drift: 60, color: 'rgba(244,223,163,.8)', glow: true, keyframe: 'floatUp' });
   spawnParticles(document.getElementById('petals-temple'), 20, { minSize: 8, maxSize: 16, minDur: 10, maxDur: 20, drift: 120, color: '#c9788a', glow: false, keyframe: 'fallDown' });
-  spawnParticles(document.getElementById('sparkles-forge'), 30, { minSize: 2, maxSize: 4, minDur: 3, maxDur: 7, drift: 80, color: '#ffb15c', glow: true, keyframe: 'riseSpark' });
+  spawnParticles(document.getElementById('sparkles-forge'), 42, { minSize: 2, maxSize: 4, minDur: 2.6, maxDur: 6, drift: 90, color: '#ff8a4d', glow: true, keyframe: 'riseSpark' });
   spawnParticles(document.getElementById('motes-grove'), 18, { minSize: 2, maxSize: 5, minDur: 16, maxDur: 28, drift: 50, color: 'rgba(205,216,255,.8)', glow: true, keyframe: 'floatUp' });
   spawnParticles(document.getElementById('dust-underworld'), 24, { minSize: 2, maxSize: 4, minDur: 12, maxDur: 22, drift: 40, color: 'rgba(127,168,255,.85)', glow: true, keyframe: 'driftDust' });
 
