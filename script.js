@@ -126,7 +126,6 @@
       'checkout.noteCard': 'Hai consacrato {count} {word} per un totale di {total}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)',
       'checkout.noteCod': 'Hai consacrato {count} {word} per un totale di {total} (spedizione gratuita, supplemento contrassegno di {fee} incluso): pagherai al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)',
       'checkout.noteBank': 'Hai consacrato {count} {word} per un totale di {total}, spedizione gratuita inclusa, da completare tramite bonifico. (Simulazione — nessuna email reale viene inviata.)',
-      'audio.enable': 'Attiva audio ambientale', 'audio.disable': 'Disattiva audio ambientale',
       'lang.switchAria': 'Switch language / Cambia lingua',
       'popup.title': 'Pantheon Divino — Conferma del Rito',
       'popup.demoBadge': 'Ambiente dimostrativo — nessun addebito reale',
@@ -243,7 +242,6 @@
       'checkout.noteCard': 'You consecrated {count} {word} for a total of {total}, free shipping included. (Simulation — no real charge was made.)',
       'checkout.noteCod': 'You consecrated {count} {word} for a total of {total} (free shipping, {fee} cash-on-delivery surcharge included): you will pay the courier on delivery. (Simulation — no real shipment will occur.)',
       'checkout.noteBank': 'You consecrated {count} {word} for a total of {total}, free shipping included, to complete via bank transfer. (Simulation — no real email is sent.)',
-      'audio.enable': 'Enable ambient audio', 'audio.disable': 'Disable ambient audio',
       'lang.switchAria': 'Switch language / Cambia lingua',
       'popup.title': 'Pantheon Divino — Rite Confirmation',
       'popup.demoBadge': 'Demo environment — no real charge',
@@ -272,9 +270,6 @@
     curtain.classList.add('hidden');
     curtain.style.pointerEvents = 'none';
     document.body.style.overflow = '';
-    let wantsAudio = false;
-    try { wantsAudio = localStorage.getItem('pantheon-divino-audio') === '1'; } catch (e) {}
-    if (wantsAudio) setAudioEnabled(true);
   }
   document.body.style.overflow = 'hidden';
   enterBtn.addEventListener('click', dismissCurtain);
@@ -317,162 +312,10 @@
         entry.target.classList.add('in-view');
         const id = entry.target.id;
         threadDots.forEach(d => d.classList.toggle('active', d.dataset.target === id));
-        setRealmAudio(id);
       }
     });
   }, { threshold: 0.35 });
   realms.forEach(r => sectionObserver.observe(r));
-
-  /* ---------------------------------------------------------------------
-     Ambient soundscape — synthesized via Web Audio API, not licensed
-     music. A soft, reverb-washed pad (root + fifth + sub, all sine, very
-     gently detuned for chorus warmth) crossfades in tone per realm as you
-     scroll. Muted by default until the visitor opts in.
-  --------------------------------------------------------------------- */
-  const AUDIO_PREF_KEY = 'pantheon-divino-audio';
-  const REALM_AUDIO = {
-    olympus:    { f1: 220,   f2: 330,   filter: 1500, lfoRate: .06, lfoDepth: 160 },
-    temple:     { f1: 196,   f2: 294,   filter: 1050, lfoRate: .1,  lfoDepth: 140 },
-    forge:      { f1: 98,    f2: 146.8, filter: 620,  lfoRate: .4,  lfoDepth: 120 },
-    grove:      { f1: 261.6, f2: 392,   filter: 1900, lfoRate: .045,lfoDepth: 180 },
-    underworld: { f1: 65.4,  f2: 98,    filter: 340,  lfoRate: .03, lfoDepth: 70 },
-  };
-  const audioToggleBtn = document.getElementById('audioToggle');
-  let audioCtx, masterGain, filterNode, osc1, osc2, subOsc, lfoOsc, lfoGain, swellGain;
-  let audioInitialized = false;
-  let audioEnabled = false;
-
-  // Procedural reverb impulse — a short burst of noise shaped by an
-  // exponential decay, so the pad has soft room space without needing to
-  // ship or fetch any audio file.
-  function createReverbImpulse(ctx, duration, decay) {
-    const rate = ctx.sampleRate;
-    const length = Math.floor(rate * duration);
-    const impulse = ctx.createBuffer(2, length, rate);
-    for (let ch = 0; ch < 2; ch++) {
-      const data = impulse.getChannelData(ch);
-      for (let i = 0; i < length; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
-      }
-    }
-    return impulse;
-  }
-
-  function initAudio() {
-    if (audioInitialized) return;
-    audioInitialized = true;
-    try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-      masterGain = audioCtx.createGain();
-      masterGain.gain.value = 0;
-      masterGain.connect(audioCtx.destination);
-
-      const compressor = audioCtx.createDynamicsCompressor();
-      compressor.threshold.value = -20;
-      compressor.knee.value = 26;
-      compressor.ratio.value = 3;
-      compressor.connect(masterGain);
-
-      // swellGain carries the slow tremolo "breathing"; masterGain stays
-      // dedicated to the on/off fade so the two never fight each other.
-      swellGain = audioCtx.createGain();
-      swellGain.gain.value = 1;
-      swellGain.connect(compressor);
-
-      filterNode = audioCtx.createBiquadFilter();
-      filterNode.type = 'lowpass';
-      filterNode.Q.value = 0.35;
-      filterNode.frequency.value = REALM_AUDIO.olympus.filter;
-
-      const dryGain = audioCtx.createGain();
-      dryGain.gain.value = 0.68;
-      filterNode.connect(dryGain);
-      dryGain.connect(swellGain);
-
-      const convolver = audioCtx.createConvolver();
-      convolver.buffer = createReverbImpulse(audioCtx, 3.4, 2.4);
-      const wetGain = audioCtx.createGain();
-      wetGain.gain.value = 0.34;
-      filterNode.connect(convolver);
-      convolver.connect(wetGain);
-      wetGain.connect(swellGain);
-
-      const osc1Gain = audioCtx.createGain();
-      osc1Gain.gain.value = 0.48;
-      osc1 = audioCtx.createOscillator();
-      osc1.type = 'sine';
-      osc1.frequency.value = REALM_AUDIO.olympus.f1;
-      osc1.connect(osc1Gain);
-      osc1Gain.connect(filterNode);
-
-      const osc2Gain = audioCtx.createGain();
-      osc2Gain.gain.value = 0.3;
-      osc2 = audioCtx.createOscillator();
-      osc2.type = 'sine';
-      osc2.detune.value = 6; // a few cents of chorus warmth, not a harsh beat
-      osc2.frequency.value = REALM_AUDIO.olympus.f2;
-      osc2.connect(osc2Gain);
-      osc2Gain.connect(filterNode);
-
-      const subGain = audioCtx.createGain();
-      subGain.gain.value = 0.2;
-      subOsc = audioCtx.createOscillator();
-      subOsc.type = 'sine';
-      subOsc.frequency.value = REALM_AUDIO.olympus.f1 / 2;
-      subOsc.connect(subGain);
-      subGain.connect(filterNode);
-
-      lfoOsc = audioCtx.createOscillator();
-      lfoOsc.frequency.value = REALM_AUDIO.olympus.lfoRate;
-      lfoGain = audioCtx.createGain();
-      lfoGain.gain.value = REALM_AUDIO.olympus.lfoDepth;
-      lfoOsc.connect(lfoGain);
-      lfoGain.connect(filterNode.frequency);
-
-      const tremoloOsc = audioCtx.createOscillator();
-      tremoloOsc.frequency.value = 0.08;
-      const tremoloGain = audioCtx.createGain();
-      tremoloGain.gain.value = 0.05;
-      tremoloOsc.connect(tremoloGain);
-      tremoloGain.connect(swellGain.gain);
-
-      osc1.start(); osc2.start(); subOsc.start(); lfoOsc.start(); tremoloOsc.start();
-    } catch (e) { audioInitialized = false; }
-  }
-
-  function setRealmAudio(realmId) {
-    if (!audioCtx || !audioEnabled) return;
-    const preset = REALM_AUDIO[realmId];
-    if (!preset) return;
-    const now = audioCtx.currentTime;
-    osc1.frequency.setTargetAtTime(preset.f1, now, 1.4);
-    osc2.frequency.setTargetAtTime(preset.f2, now, 1.4);
-    subOsc.frequency.setTargetAtTime(preset.f1 / 2, now, 1.4);
-    filterNode.frequency.setTargetAtTime(preset.filter, now, 1.4);
-    lfoOsc.frequency.setTargetAtTime(preset.lfoRate, now, 1.4);
-    lfoGain.gain.setTargetAtTime(preset.lfoDepth, now, 1.4);
-  }
-
-  function setAudioEnabled(enabled) {
-    audioEnabled = enabled;
-    try { localStorage.setItem(AUDIO_PREF_KEY, enabled ? '1' : '0'); } catch (e) {}
-    if (enabled) initAudio();
-    if (audioCtx) {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const now = audioCtx.currentTime;
-      masterGain.gain.cancelScheduledValues(now);
-      masterGain.gain.setTargetAtTime(enabled ? 0.09 : 0, now, 1.2);
-      if (enabled) {
-        const activeDot = threadDots.find(d => d.classList.contains('active'));
-        setRealmAudio(activeDot ? activeDot.dataset.target : 'olympus');
-      }
-    }
-    audioToggleBtn.classList.toggle('muted', !enabled);
-    audioToggleBtn.setAttribute('aria-label', enabled ? t('audio.disable') : t('audio.enable'));
-  }
-
-  audioToggleBtn.addEventListener('click', () => setAudioEnabled(!audioEnabled));
 
   /* ---------------------------------------------------------------------
      Parallax on figure stages + mouse drift
@@ -1213,8 +1056,6 @@
       langCur.textContent = currentLang === 'en' ? 'EN' : 'IT';
       langOther.textContent = currentLang === 'en' ? 'IT' : 'EN';
     }
-
-    audioToggleBtn.setAttribute('aria-label', audioEnabled ? t('audio.disable') : t('audio.enable'));
 
     applyCountryLanguage(currentLang);
     applyRegionProvincePlaceholders();
