@@ -200,6 +200,20 @@ button{ font-family: inherit; }
 .cart-item .meta .name{ font-family:'Cinzel',serif; font-size:.82rem; color: var(--marble); }
 .cart-item .meta .piece-realm{ font-size:.78rem; color: var(--gold); opacity:.8; font-style:italic; }
 .cart-item .price{ font-family:'Cinzel',serif; font-size:.85rem; color: var(--gold-bright); }
+.remove-btn{
+  width: 34px; height: 34px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(217,184,120,.08);
+  border: 1px solid rgba(217,184,120,.3);
+  border-radius: 50%;
+  color: var(--gold);
+  font-size: 1.3rem; line-height:1;
+  cursor: pointer;
+  transition: background .3s, border-color .3s, color .3s;
+}
+.remove-btn:hover, .remove-btn:focus-visible{
+  background: rgba(217,184,120,.22); border-color: var(--gold-bright); color: var(--gold-bright);
+}
 .cart-empty{ color: rgba(239,233,219,.5); font-style: italic; margin-top: 40px; text-align:center; }
 .cart-footer{ padding-top: 20px; border-top: 1px solid rgba(217,184,120,.25); }
 .cart-total{ display:flex; justify-content:space-between; font-family:'Cinzel',serif; color:var(--gold-bright); margin-bottom:16px; }

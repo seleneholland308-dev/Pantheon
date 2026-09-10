@@ -238,7 +238,7 @@
           <div class="piece-realm">${item.realm}</div>
         </div>
         <div class="price">${formatEUR(item.price)}</div>
-        <button data-remove="${idx}" aria-label="Rimuovi" style="background:none;border:none;color:#8a6f3c;cursor:pointer;font-size:1.1rem;">&times;</button>
+        <button class="remove-btn" data-remove="${idx}" aria-label="Rimuovi ${item.name}">&times;</button>
       </div>
     `).join('');
     const total = cart.reduce((sum, i) => sum + i.price, 0);
