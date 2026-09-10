@@ -693,9 +693,6 @@ footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(2
   transition: border-color .3s, background-color .3s;
 }
 .field select option{ background: #100d16; color: var(--marble); }
-.checkout-welcome{
-  font-style: italic; color: var(--gold-bright); font-size:.9rem; margin: -6px 0 4px;
-}
 .checkout-cod-note{
   font-style: italic; color: rgba(239,233,219,.6); font-size:.85rem; margin: -4px 0 0;
 }

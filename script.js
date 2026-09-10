@@ -350,7 +350,6 @@
   const checkoutPopupNote = document.getElementById('checkoutPopupNote');
   const checkoutSuccessMsg = document.getElementById('checkoutSuccessMsg');
   const checkoutSuccessName = document.getElementById('checkoutSuccessName');
-  const checkoutWelcome = document.getElementById('checkoutWelcome');
   const ckItalyFields = document.getElementById('ckItalyFields');
   const ckRegionEl = document.getElementById('ckRegion');
   const ckProvinceEl = document.getElementById('ckProvince');
@@ -568,10 +567,6 @@
         ckRegionEl.value = saved.region;
         updateProvinceOptions(saved.region, saved.province);
       }
-      checkoutWelcome.textContent = `Bentornato/a, ${saved.firstName}. Abbiamo precompilato i tuoi dati.`;
-      checkoutWelcome.hidden = false;
-    } else {
-      checkoutWelcome.hidden = true;
     }
 
     checkoutFormView.hidden = false;
