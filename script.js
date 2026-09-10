@@ -316,6 +316,9 @@
   const checkoutSubmitTotal = document.getElementById('checkoutSubmitTotal');
   const checkoutError = document.getElementById('checkoutError');
   const checkoutOrderId = document.getElementById('checkoutOrderId');
+  const checkoutTrackingId = document.getElementById('checkoutTrackingId');
+  const checkoutEmailNote = document.getElementById('checkoutEmailNote');
+  const checkoutPopupNote = document.getElementById('checkoutPopupNote');
   const checkoutSuccessMsg = document.getElementById('checkoutSuccessMsg');
   const checkoutSuccessName = document.getElementById('checkoutSuccessName');
   const checkoutWelcome = document.getElementById('checkoutWelcome');
@@ -415,6 +418,91 @@
   }
   function saveCustomer(data) {
     try { localStorage.setItem(CUSTOMER_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function randomTrackingCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 10; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return 'TRK-' + code;
+  }
+
+  // Opens the order confirmation as its own browser tab, styled like the
+  // rest of the site. Pure client-side: built from a template string and
+  // written into a blank tab, nothing is ever sent anywhere. All
+  // user-typed fields are HTML-escaped before insertion.
+  function openConfirmationWindow(data) {
+    const itemsHtml = data.items.map(i => `
+      <div class="conf-item"><span>${escapeHtml(i.name)}<br><em>${escapeHtml(i.realm)}</em></span><span>${formatEUR(i.price)}</span></div>
+    `).join('');
+    const html = `<!doctype html>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pantheon Divino — Conferma del Rito</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
+  *{box-sizing:border-box;}
+  body{ margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;
+    background: radial-gradient(ellipse at 50% 20%, #140f22, #050408 70%);
+    font-family:'Cormorant Garamond', serif; color:#efe9db; }
+  .card{ max-width:560px; width:100%; background: linear-gradient(160deg,#100d16,#050408);
+    border:1px solid rgba(217,184,120,.4); border-radius:6px; padding:44px 38px; text-align:center;
+    box-shadow: 0 30px 90px rgba(0,0,0,.6); }
+  .badge{ display:inline-block; font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.1em; text-transform:uppercase;
+    color:#f4dfa3; background:rgba(217,184,120,.1); border:1px solid rgba(217,184,120,.4); border-radius:999px; padding:7px 16px; margin-bottom:24px; }
+  .ring{ width:80px; height:80px; border-radius:50%; border:1px solid #d9b878; margin:0 auto 20px;
+    display:flex; align-items:center; justify-content:center; color:#f4dfa3; font-size:1.3rem; }
+  .eyebrow{ font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; color:#d9b878; opacity:.85; }
+  h1{ font-family:'Cinzel',serif; font-size:2rem; color:#f4dfa3; margin:14px 0 2px; }
+  .sub{ font-style:italic; color:rgba(239,233,219,.6); margin:0 0 6px; }
+  h2{ font-family:'Cinzel',serif; font-size:1.3rem; color:#f4dfa3; margin:0 0 20px; }
+  .msg{ color:rgba(239,233,219,.85); margin-bottom:22px; }
+  .items{ text-align:left; margin:0 0 16px; }
+  .conf-item{ display:flex; justify-content:space-between; gap:10px; font-size:.92rem; padding:10px 0; border-bottom:1px dashed rgba(217,184,120,.2); }
+  .conf-item em{ font-style:italic; color:#d9b878; opacity:.8; font-size:.82rem; }
+  .row{ display:flex; justify-content:space-between; font-family:'Cinzel',serif; font-size:.85rem; padding:10px 0; }
+  .total-row{ border-top:1px solid rgba(217,184,120,.3); color:#f4dfa3; font-size:1.05rem; }
+  .codes{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:26px 0; }
+  .code-pill{ font-family:'Cinzel',serif; font-size:.75rem; color:#f4dfa3; border:1px dashed rgba(217,184,120,.4); border-radius:999px; padding:9px 18px; }
+  .email-note{ font-style:italic; color:rgba(239,233,219,.65); font-size:.9rem; margin-bottom:26px; }
+  .addr{ font-size:.88rem; color:rgba(239,233,219,.75); margin-bottom:26px; }
+  button{ font-family:'Cinzel',serif; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:#f4dfa3;
+    background:transparent; border:1px solid #d9b878; padding:13px 32px; border-radius:4px; cursor:pointer; }
+  button:hover{ background:#d9b878; color:#1a1408; }
+</style></head>
+<body>
+  <div class="card">
+    <div class="badge">Ambiente dimostrativo — nessun addebito reale</div>
+    <div class="ring">✦</div>
+    <span class="eyebrow">Il Rito è Compiuto</span>
+    <h1>Χαῖρε</h1>
+    <p class="sub">Salve — il tuo omaggio è stato accolto</p>
+    <h2>Grazie, ${escapeHtml(data.firstName)}</h2>
+    <p class="msg">Hai consacrato ${data.itemCount} ${data.itemCount === 1 ? 'oggetto' : 'oggetti'} per un totale di ${formatEUR(data.total)}, con spedizione gratuita.</p>
+    <div class="items">
+      ${itemsHtml}
+      <div class="row"><span>Spedizione</span><span style="color:#7fe0a6;font-style:italic;">Gratuita</span></div>
+      <div class="row total-row"><span>Totale</span><span>${formatEUR(data.total)}</span></div>
+    </div>
+    <div class="codes">
+      <div class="code-pill">Ordine: ${escapeHtml(data.orderId)}</div>
+      <div class="code-pill">Tracciamento: ${escapeHtml(data.trackingNumber)}</div>
+    </div>
+    <p class="addr">Spedizione a: ${escapeHtml(data.shippingAddress)}<br>Pagamento: ${escapeHtml(data.paymentLabel)}</p>
+    <p class="email-note">Ti abbiamo inviato un'email di conferma a <strong>${escapeHtml(data.email)}</strong>. (Simulazione — nessuna email reale è stata inviata.)</p>
+    <button onclick="window.close()">Chiudi questa finestra</button>
+  </div>
+</body></html>`;
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+    }
+    return win;
   }
 
   function greetReturningCustomer() {
@@ -549,22 +637,25 @@
 
     const firstName = document.getElementById('ckFirstName').value.trim();
     const lastName = document.getElementById('ckLastName').value.trim();
+    const email = document.getElementById('ckEmail').value.trim();
+    const address = document.getElementById('ckAddress').value.trim();
+    const zip = document.getElementById('ckZip').value.trim();
+    const city = document.getElementById('ckCity').value.trim();
+    const country = ckCountryEl.value;
+    const region = ckRegionEl.value;
+    const province = ckProvinceEl.value;
     const itemCount = cart.length;
     const total = cart.reduce((sum, i) => sum + i.price, 0);
     const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
+    const trackingNumber = randomTrackingCode();
     const itemWord = itemCount === 1 ? 'oggetto' : 'oggetti';
+    const paymentLabels = { card: 'Carta di credito/debito', cod: 'Contrassegno alla consegna', bank: 'Bonifico bancario' };
+    const paymentLabel = paymentLabels[paymentMethod] || paymentLabels.card;
+    const shippingAddress = `${address}, ${zip} ${city}${province ? ' (' + province + ')' : ''}, ${country}`;
+    const orderItemsSnapshot = cart.map(i => ({ name: i.name, realm: i.realm, price: i.price }));
 
     // Remember the devotee for next time — never the card details.
-    saveCustomer({
-      firstName, lastName,
-      email: document.getElementById('ckEmail').value.trim(),
-      address: document.getElementById('ckAddress').value.trim(),
-      zip: document.getElementById('ckZip').value.trim(),
-      city: document.getElementById('ckCity').value.trim(),
-      country: ckCountryEl.value,
-      region: ckRegionEl.value,
-      province: ckProvinceEl.value,
-    });
+    saveCustomer({ firstName, lastName, email, address, zip, city, country, region, province });
     greetReturningCustomer();
 
     const paymentNotes = {
@@ -576,8 +667,16 @@
     checkoutSuccessName.textContent = `Grazie, ${firstName}`;
     checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
     checkoutOrderId.textContent = orderId;
+    checkoutTrackingId.textContent = trackingNumber;
+    checkoutEmailNote.textContent = `Ti abbiamo inviato un'email di conferma a ${email}. (Simulazione — nessuna email reale è stata inviata.)`;
     checkoutFormView.hidden = true;
     checkoutSuccessView.hidden = false;
+
+    const popup = openConfirmationWindow({
+      firstName, email, orderId, trackingNumber, itemCount, total,
+      items: orderItemsSnapshot, shippingAddress, paymentLabel,
+    });
+    checkoutPopupNote.hidden = !popup;
 
     cart = [];
     saveCart();
