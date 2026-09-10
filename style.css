@@ -171,6 +171,11 @@ button{ font-family: inherit; }
   color: var(--gold-bright);
   opacity: .9;
 }
+.brandmark-greeting{
+  display:block;
+  font-family:'Cormorant Garamond', serif; font-style: italic; letter-spacing: normal;
+  font-size: .85rem; color: rgba(239,233,219,.65); margin-top: 4px;
+}
 
 .cart-drawer{
   position: fixed; top:0; right:0; height: 100vh; width: min(420px, 92vw);
@@ -653,8 +658,27 @@ footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(2
   transition: border-color .3s, background .3s;
 }
 .field input::placeholder{ color: rgba(239,233,219,.3); }
-.field input:focus{
+.field input:focus, .field select:focus{
   outline:none; border-color: var(--gold-bright); background: rgba(217,184,120,.06);
+}
+.field select{
+  width:100%; padding: 12px 36px 12px 14px;
+  background-color: rgba(255,255,255,.03);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23d9b878'><path d='M5 7l5 6 5-6z'/></svg>");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+  appearance: none; -webkit-appearance: none;
+  border: 1px solid rgba(217,184,120,.3);
+  border-radius: 4px;
+  color: var(--marble);
+  font-family:'Cormorant Garamond', serif; font-size: 1rem;
+  transition: border-color .3s, background-color .3s;
+}
+.field select option{ background: #100d16; color: var(--marble); }
+.checkout-welcome{
+  font-style: italic; color: var(--gold-bright); font-size:.9rem; margin: -6px 0 4px;
+}
+.checkout-cod-note{
+  font-style: italic; color: rgba(239,233,219,.6); font-size:.85rem; margin: -4px 0 0;
 }
 .checkout-error{
   color:#e07a7a; font-size:.85rem; font-style:italic; margin:0;
@@ -676,7 +700,11 @@ footer.credits{ text-align:center; padding: 30px; font-size:.8rem; color: rgba(2
 }
 .checkout-success .finale-ring span{ color: var(--gold-bright); font-size: 1.3rem; }
 .checkout-success h2{ font-size: 2.2rem; margin: 12px 0 4px; }
-.checkout-success-sub{ font-style: italic; color: rgba(239,233,219,.6); margin: 0 0 20px; }
+.checkout-success-sub{ font-style: italic; color: rgba(239,233,219,.6); margin: 0 0 6px; }
+.checkout-success-name{
+  font-family:'Cinzel', serif; font-size: 1.3rem; letter-spacing:.04em;
+  color: var(--gold-bright); margin: 0 0 18px;
+}
 .checkout-success-msg{ color: rgba(239,233,219,.85); max-width: 460px; margin: 0 0 18px; }
 .checkout-order-id{
   font-family:'Cinzel', serif; font-size:.82rem; color: var(--gold-bright);

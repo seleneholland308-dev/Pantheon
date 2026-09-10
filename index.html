@@ -27,7 +27,7 @@
 </div>
 
 <!-- BRAND + CART -->
-<div class="brandmark">Pantheon Divino</div>
+<div class="brandmark">Pantheon Divino<span class="brandmark-greeting" id="brandmarkGreeting" hidden></span></div>
 <button class="cart-toggle" id="cartToggle" aria-label="Apri la teca">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
   Teca <span class="cart-count" id="cartCount">0</span>
@@ -851,6 +851,7 @@
 
         <form class="checkout-form" id="checkoutForm" autocomplete="off">
           <span class="eyebrow">Dati del Devoto</span>
+          <p class="checkout-welcome" id="checkoutWelcome" hidden></p>
           <div class="form-row">
             <div class="field">
               <label for="ckFirstName">Nome</label>
@@ -882,29 +883,52 @@
             </div>
             <div class="field">
               <label for="ckCountry">Paese</label>
-              <input type="text" id="ckCountry" required autocomplete="off" value="Italia">
+              <select id="ckCountry" required></select>
+            </div>
+          </div>
+          <div class="form-row" id="ckItalyFields">
+            <div class="field">
+              <label for="ckRegion">Regione</label>
+              <select id="ckRegion"></select>
+            </div>
+            <div class="field">
+              <label for="ckProvince">Provincia</label>
+              <select id="ckProvince"></select>
             </div>
           </div>
 
-          <span class="eyebrow ck-payment-label">Offerta di Pagamento</span>
+          <span class="eyebrow ck-payment-label">Modalità di Pagamento</span>
           <div class="field">
-            <label for="ckCardName">Titolare della carta</label>
-            <input type="text" id="ckCardName" required autocomplete="off">
+            <label for="ckPaymentMethod">Scegli come pagare</label>
+            <select id="ckPaymentMethod">
+              <option value="card">Carta di credito / debito</option>
+              <option value="cod">Contrassegno — paga alla consegna</option>
+              <option value="bank">Bonifico bancario</option>
+            </select>
           </div>
-          <div class="field">
-            <label for="ckCardNumber">Numero carta</label>
-            <input type="text" id="ckCardNumber" required autocomplete="off" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19">
-          </div>
-          <div class="form-row">
+
+          <div id="ckCardFields">
             <div class="field">
-              <label for="ckCardExpiry">Scadenza (MM/AA)</label>
-              <input type="text" id="ckCardExpiry" required autocomplete="off" inputmode="numeric" placeholder="MM/AA" maxlength="5">
+              <label for="ckCardName">Titolare della carta</label>
+              <input type="text" id="ckCardName" autocomplete="off">
             </div>
             <div class="field">
-              <label for="ckCardCvv">CVV</label>
-              <input type="text" id="ckCardCvv" required autocomplete="off" inputmode="numeric" placeholder="123" maxlength="4">
+              <label for="ckCardNumber">Numero carta</label>
+              <input type="text" id="ckCardNumber" autocomplete="off" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19">
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="ckCardExpiry">Scadenza (MM/AA)</label>
+                <input type="text" id="ckCardExpiry" autocomplete="off" inputmode="numeric" placeholder="MM/AA" maxlength="5">
+              </div>
+              <div class="field">
+                <label for="ckCardCvv">CVV</label>
+                <input type="text" id="ckCardCvv" autocomplete="off" inputmode="numeric" placeholder="123" maxlength="4">
+              </div>
             </div>
           </div>
+          <p class="checkout-cod-note" id="checkoutCodNote" hidden>Pagherai in contanti o con carta direttamente al corriere alla consegna.</p>
+          <p class="checkout-cod-note" id="checkoutBankNote" hidden>Riceverai le coordinate bancarie via email per completare il bonifico (simulazione).</p>
 
           <p class="checkout-error" id="checkoutError" hidden></p>
 
@@ -918,6 +942,7 @@
       <span class="eyebrow">Il Rito è Compiuto</span>
       <h2 class="gold-text">Χαῖρε</h2>
       <p class="checkout-success-sub">Salve — il tuo omaggio è stato accolto</p>
+      <p class="checkout-success-name" id="checkoutSuccessName"></p>
       <p class="checkout-success-msg" id="checkoutSuccessMsg"></p>
       <div class="checkout-order-id">Numero del Rito: <span id="checkoutOrderId"></span></div>
       <button class="back-to-top" id="checkoutBackBtn">Torna al Pantheon</button>

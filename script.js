@@ -317,6 +317,115 @@
   const checkoutError = document.getElementById('checkoutError');
   const checkoutOrderId = document.getElementById('checkoutOrderId');
   const checkoutSuccessMsg = document.getElementById('checkoutSuccessMsg');
+  const checkoutSuccessName = document.getElementById('checkoutSuccessName');
+  const checkoutWelcome = document.getElementById('checkoutWelcome');
+  const ckItalyFields = document.getElementById('ckItalyFields');
+  const ckRegionEl = document.getElementById('ckRegion');
+  const ckProvinceEl = document.getElementById('ckProvince');
+  const ckCountryEl = document.getElementById('ckCountry');
+  const ckPaymentMethodEl = document.getElementById('ckPaymentMethod');
+  const ckCardFields = document.getElementById('ckCardFields');
+  const checkoutCodNote = document.getElementById('checkoutCodNote');
+  const checkoutBankNote = document.getElementById('checkoutBankNote');
+  const cardOnlyInputs = ['ckCardName', 'ckCardNumber', 'ckCardExpiry', 'ckCardCvv'].map(id => document.getElementById(id));
+  const CUSTOMER_KEY = 'pantheon-divino-customer';
+
+  /* -- countries, grouped by region -- */
+  const COUNTRY_GROUPS = {
+    'Europa': ['Albania','Andorra','Austria','Belgio','Bielorussia','Bosnia ed Erzegovina','Bulgaria','Cipro','Città del Vaticano','Croazia','Danimarca','Estonia','Finlandia','Francia','Germania','Grecia','Irlanda','Islanda','Kosovo','Lettonia','Liechtenstein','Lituania','Lussemburgo','Macedonia del Nord','Malta','Moldavia','Monaco','Montenegro','Norvegia','Paesi Bassi','Polonia','Portogallo','Regno Unito','Repubblica Ceca','Romania','San Marino','Serbia','Slovacchia','Slovenia','Spagna','Svezia','Svizzera','Ucraina','Ungheria'],
+    'Americhe': ['Argentina','Bolivia','Brasile','Canada','Cile','Colombia','Costa Rica','Cuba','Ecuador','El Salvador','Giamaica','Guatemala','Guyana','Honduras','Messico','Nicaragua','Panama','Paraguay','Perù','Repubblica Dominicana','Stati Uniti','Uruguay','Venezuela'],
+    'Asia': ['Arabia Saudita','Armenia','Azerbaigian','Bahrein','Bangladesh','Cina','Corea del Sud','Emirati Arabi Uniti','Filippine','Georgia','Giappone','Giordania','India','Indonesia','Iran','Iraq','Israele','Kazakistan','Kuwait','Libano','Malesia','Mongolia','Nepal','Oman','Pakistan','Qatar','Singapore','Siria','Sri Lanka','Tailandia','Taiwan','Turchia','Vietnam','Yemen'],
+    'Africa': ['Algeria','Angola','Camerun','Costa d\'Avorio','Egitto','Etiopia','Ghana','Kenya','Libia','Marocco','Mozambico','Nigeria','Repubblica Democratica del Congo','Senegal','Sudafrica','Tanzania','Tunisia','Uganda'],
+    'Oceania': ['Australia','Nuova Zelanda'],
+  };
+
+  /* -- Italian regions and their provinces -- */
+  const ITALY_REGIONS = {
+    'Abruzzo': ['Chieti','L\'Aquila','Pescara','Teramo'],
+    'Basilicata': ['Matera','Potenza'],
+    'Calabria': ['Catanzaro','Cosenza','Crotone','Reggio Calabria','Vibo Valentia'],
+    'Campania': ['Avellino','Benevento','Caserta','Napoli','Salerno'],
+    'Emilia-Romagna': ['Bologna','Ferrara','Forlì-Cesena','Modena','Parma','Piacenza','Ravenna','Reggio Emilia','Rimini'],
+    'Friuli-Venezia Giulia': ['Gorizia','Pordenone','Trieste','Udine'],
+    'Lazio': ['Frosinone','Latina','Rieti','Roma','Viterbo'],
+    'Liguria': ['Genova','Imperia','La Spezia','Savona'],
+    'Lombardia': ['Bergamo','Brescia','Como','Cremona','Lecco','Lodi','Mantova','Milano','Monza e Brianza','Pavia','Sondrio','Varese'],
+    'Marche': ['Ancona','Ascoli Piceno','Fermo','Macerata','Pesaro e Urbino'],
+    'Molise': ['Campobasso','Isernia'],
+    'Piemonte': ['Alessandria','Asti','Biella','Cuneo','Novara','Torino','Verbano-Cusio-Ossola','Vercelli'],
+    'Puglia': ['Bari','Barletta-Andria-Trani','Brindisi','Foggia','Lecce','Taranto'],
+    'Sardegna': ['Cagliari','Nuoro','Oristano','Sassari','Sud Sardegna'],
+    'Sicilia': ['Agrigento','Caltanissetta','Catania','Enna','Messina','Palermo','Ragusa','Siracusa','Trapani'],
+    'Toscana': ['Arezzo','Firenze','Grosseto','Livorno','Lucca','Massa-Carrara','Pisa','Pistoia','Prato','Siena'],
+    'Trentino-Alto Adige': ['Bolzano','Trento'],
+    'Umbria': ['Perugia','Terni'],
+    "Valle d'Aosta": ['Aosta'],
+    'Veneto': ['Belluno','Padova','Rovigo','Treviso','Venezia','Verona','Vicenza'],
+  };
+
+  function populateSelectOptions() {
+    // countries: Italia pinned first, then grouped by continent
+    const italiaOpt = new Option('Italia', 'Italia', true, true);
+    ckCountryEl.appendChild(italiaOpt);
+    Object.keys(COUNTRY_GROUPS).forEach(groupName => {
+      const group = document.createElement('optgroup');
+      group.label = groupName;
+      COUNTRY_GROUPS[groupName].forEach(name => group.appendChild(new Option(name, name)));
+      ckCountryEl.appendChild(group);
+    });
+
+    // regions
+    ckRegionEl.appendChild(new Option('Seleziona la regione', '', true, true));
+    Object.keys(ITALY_REGIONS).sort().forEach(region => {
+      ckRegionEl.appendChild(new Option(region, region));
+    });
+    ckProvinceEl.appendChild(new Option('Seleziona prima la regione', '', true, true));
+  }
+  populateSelectOptions();
+
+  function updateProvinceOptions(region, selectedProvince) {
+    ckProvinceEl.innerHTML = '';
+    const provinces = ITALY_REGIONS[region];
+    if (!provinces) {
+      ckProvinceEl.appendChild(new Option('Seleziona prima la regione', '', true, true));
+      return;
+    }
+    ckProvinceEl.appendChild(new Option('Seleziona la provincia', '', true, true));
+    provinces.forEach(p => ckProvinceEl.appendChild(new Option(p, p, false, p === selectedProvince)));
+  }
+  ckRegionEl.addEventListener('change', () => updateProvinceOptions(ckRegionEl.value));
+
+  function toggleItalyFields() {
+    ckItalyFields.hidden = ckCountryEl.value !== 'Italia';
+  }
+  ckCountryEl.addEventListener('change', toggleItalyFields);
+
+  function togglePaymentMethod() {
+    const method = ckPaymentMethodEl.value;
+    const isCard = method === 'card';
+    ckCardFields.hidden = !isCard;
+    cardOnlyInputs.forEach(input => { input.required = isCard; });
+    checkoutCodNote.hidden = method !== 'cod';
+    checkoutBankNote.hidden = method !== 'bank';
+  }
+  ckPaymentMethodEl.addEventListener('change', togglePaymentMethod);
+
+  function loadSavedCustomer() {
+    try { return JSON.parse(localStorage.getItem(CUSTOMER_KEY)); } catch (e) { return null; }
+  }
+  function saveCustomer(data) {
+    try { localStorage.setItem(CUSTOMER_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  function greetReturningCustomer() {
+    const saved = loadSavedCustomer();
+    if (saved && saved.firstName) {
+      brandmarkGreeting.textContent = `Bentornato/a, ${saved.firstName}`;
+      brandmarkGreeting.hidden = false;
+    }
+  }
+  const brandmarkGreeting = document.getElementById('brandmarkGreeting');
+  greetReturningCustomer();
 
   function openCheckout() {
     checkoutSummaryItems.innerHTML = cart.map(item => `
@@ -333,7 +442,31 @@
     checkoutSubmitTotal.textContent = formatEUR(total);
     checkoutError.hidden = true;
     checkoutForm.reset();
-    checkoutForm.querySelector('#ckCountry').value = 'Italia';
+    ckPaymentMethodEl.value = 'card';
+    togglePaymentMethod();
+    toggleItalyFields();
+    updateProvinceOptions('');
+
+    const saved = loadSavedCustomer();
+    if (saved) {
+      document.getElementById('ckFirstName').value = saved.firstName || '';
+      document.getElementById('ckLastName').value = saved.lastName || '';
+      document.getElementById('ckEmail').value = saved.email || '';
+      document.getElementById('ckAddress').value = saved.address || '';
+      document.getElementById('ckZip').value = saved.zip || '';
+      document.getElementById('ckCity').value = saved.city || '';
+      if (saved.country) ckCountryEl.value = saved.country;
+      toggleItalyFields();
+      if (saved.region) {
+        ckRegionEl.value = saved.region;
+        updateProvinceOptions(saved.region, saved.province);
+      }
+      checkoutWelcome.textContent = `Bentornato/a, ${saved.firstName}. Abbiamo precompilato i tuoi dati.`;
+      checkoutWelcome.hidden = false;
+    } else {
+      checkoutWelcome.hidden = true;
+    }
+
     checkoutFormView.hidden = false;
     checkoutSuccessView.hidden = true;
     checkoutOverlay.classList.add('open');
@@ -384,38 +517,62 @@
       return;
     }
 
-    const cardDigits = ckCardNumber.value.replace(/\D/g, '');
-    if (cardDigits.length !== 16) {
-      showCheckoutError('Il numero della carta deve avere 16 cifre.');
-      return;
-    }
-    const expiryMatch = ckCardExpiry.value.match(/^(\d{2})\/(\d{2})$/);
-    if (!expiryMatch) {
-      showCheckoutError('Inserisci la scadenza nel formato MM/AA.');
-      return;
-    }
-    const month = parseInt(expiryMatch[1], 10);
-    const year = 2000 + parseInt(expiryMatch[2], 10);
-    if (month < 1 || month > 12) {
-      showCheckoutError('Il mese di scadenza non è valido.');
-      return;
-    }
-    const now = new Date();
-    const expiryDate = new Date(year, month, 0);
-    if (expiryDate < now) {
-      showCheckoutError('La carta risulta scaduta.');
-      return;
-    }
-    if (!/^\d{3,4}$/.test(ckCardCvv.value)) {
-      showCheckoutError('Il CVV deve avere 3 o 4 cifre.');
-      return;
+    const paymentMethod = ckPaymentMethodEl.value;
+    if (paymentMethod === 'card') {
+      const cardDigits = document.getElementById('ckCardNumber').value.replace(/\D/g, '');
+      if (cardDigits.length !== 16) {
+        showCheckoutError('Il numero della carta deve avere 16 cifre.');
+        return;
+      }
+      const expiryMatch = document.getElementById('ckCardExpiry').value.match(/^(\d{2})\/(\d{2})$/);
+      if (!expiryMatch) {
+        showCheckoutError('Inserisci la scadenza nel formato MM/AA.');
+        return;
+      }
+      const month = parseInt(expiryMatch[1], 10);
+      const year = 2000 + parseInt(expiryMatch[2], 10);
+      if (month < 1 || month > 12) {
+        showCheckoutError('Il mese di scadenza non è valido.');
+        return;
+      }
+      const now = new Date();
+      const expiryDate = new Date(year, month, 0);
+      if (expiryDate < now) {
+        showCheckoutError('La carta risulta scaduta.');
+        return;
+      }
+      if (!/^\d{3,4}$/.test(document.getElementById('ckCardCvv').value)) {
+        showCheckoutError('Il CVV deve avere 3 o 4 cifre.');
+        return;
+      }
     }
 
     const firstName = document.getElementById('ckFirstName').value.trim();
+    const lastName = document.getElementById('ckLastName').value.trim();
     const total = cart.reduce((sum, i) => sum + i.price, 0);
     const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
 
-    checkoutSuccessMsg.textContent = `Grazie, ${firstName}. La tua offerta di ${formatEUR(total)} è stata accolta dal Pantheon. (Simulazione — nessun addebito reale è stato effettuato.)`;
+    // Remember the devotee for next time — never the card details.
+    saveCustomer({
+      firstName, lastName,
+      email: document.getElementById('ckEmail').value.trim(),
+      address: document.getElementById('ckAddress').value.trim(),
+      zip: document.getElementById('ckZip').value.trim(),
+      city: document.getElementById('ckCity').value.trim(),
+      country: ckCountryEl.value,
+      region: ckRegionEl.value,
+      province: ckProvinceEl.value,
+    });
+    greetReturningCustomer();
+
+    const paymentNotes = {
+      card: `La tua offerta di ${formatEUR(total)} è stata accolta dal Pantheon. (Simulazione — nessun addebito reale è stato effettuato.)`,
+      cod: `La tua offerta di ${formatEUR(total)} sarà saldata al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)`,
+      bank: `La tua offerta di ${formatEUR(total)} sarà completata tramite bonifico. (Simulazione — nessuna email reale viene inviata.)`,
+    };
+
+    checkoutSuccessName.textContent = `${firstName} ${lastName}`.trim();
+    checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
     checkoutOrderId.textContent = orderId;
     checkoutFormView.hidden = true;
     checkoutSuccessView.hidden = false;
