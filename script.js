@@ -448,9 +448,44 @@
     try { localStorage.setItem(CUSTOMER_KEY, JSON.stringify(data)); } catch (e) {}
   }
 
+  // A short history of past devotees, used only to power the optional
+  // <datalist> suggestions on the checkout form — never enforced.
+  const CUSTOMER_HISTORY_KEY = 'pantheon-divino-customer-history';
+  const HISTORY_FIELDS = [
+    ['ckFirstName', 'dlFirstName', 'firstName'],
+    ['ckLastName', 'dlLastName', 'lastName'],
+    ['ckEmail', 'dlEmail', 'email'],
+    ['ckAddress', 'dlAddress', 'address'],
+    ['ckCity', 'dlCity', 'city'],
+  ];
+
+  function loadCustomerHistory() {
+    try { return JSON.parse(localStorage.getItem(CUSTOMER_HISTORY_KEY)) || []; } catch (e) { return []; }
+  }
+  function addToCustomerHistory(entry) {
+    const history = loadCustomerHistory().filter(h =>
+      !(h.firstName === entry.firstName && h.lastName === entry.lastName && h.email === entry.email)
+    );
+    history.unshift(entry);
+    try { localStorage.setItem(CUSTOMER_HISTORY_KEY, JSON.stringify(history.slice(0, 8))); } catch (e) {}
+  }
+  function populateSuggestionDatalists() {
+    const history = loadCustomerHistory();
+    HISTORY_FIELDS.forEach(([, datalistId, key]) => {
+      const seen = new Set();
+      const options = [];
+      history.forEach(entry => {
+        const value = entry[key];
+        if (value && !seen.has(value)) { seen.add(value); options.push(value); }
+      });
+      document.getElementById(datalistId).innerHTML = options.map(v => `<option value="${escapeHtml(v)}"></option>`).join('');
+    });
+  }
+
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
+  populateSuggestionDatalists();
 
   function randomTrackingCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -670,6 +705,8 @@
 
     // Remember the devotee for next time — never the card details.
     saveCustomer({ firstName, lastName, email, address, zip, city, country, region, province });
+    addToCustomerHistory({ firstName, lastName, email, address, city });
+    populateSuggestionDatalists();
 
     const paymentNotes = {
       card: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)`,

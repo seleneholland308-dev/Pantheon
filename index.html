@@ -869,21 +869,25 @@
           <div class="form-row">
             <div class="field">
               <label for="ckFirstName">Nome</label>
-              <input type="text" id="ckFirstName" required autocomplete="off">
+              <input type="text" id="ckFirstName" required autocomplete="off" list="dlFirstName">
+              <datalist id="dlFirstName"></datalist>
             </div>
             <div class="field">
               <label for="ckLastName">Cognome</label>
-              <input type="text" id="ckLastName" required autocomplete="off">
+              <input type="text" id="ckLastName" required autocomplete="off" list="dlLastName">
+              <datalist id="dlLastName"></datalist>
             </div>
           </div>
           <div class="field">
             <label for="ckEmail">Email</label>
-            <input type="email" id="ckEmail" required autocomplete="off">
+            <input type="email" id="ckEmail" required autocomplete="off" list="dlEmail">
+            <datalist id="dlEmail"></datalist>
           </div>
           <div class="form-row">
             <div class="field field-grow">
               <label for="ckAddress">Indirizzo</label>
-              <input type="text" id="ckAddress" required autocomplete="off">
+              <input type="text" id="ckAddress" required autocomplete="off" list="dlAddress">
+              <datalist id="dlAddress"></datalist>
             </div>
             <div class="field field-small">
               <label for="ckZip">CAP</label>
@@ -893,7 +897,8 @@
           <div class="form-row">
             <div class="field">
               <label for="ckCity">Città</label>
-              <input type="text" id="ckCity" required autocomplete="off">
+              <input type="text" id="ckCity" required autocomplete="off" list="dlCity">
+              <datalist id="dlCity"></datalist>
             </div>
             <div class="field">
               <label for="ckCountry">Paese</label>
