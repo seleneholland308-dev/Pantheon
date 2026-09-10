@@ -548,6 +548,7 @@
     </div>
     <p class="addr">Spedizione a: ${escapeHtml(data.shippingAddress)}<br>Pagamento: ${escapeHtml(data.paymentLabel)}</p>
     <p class="email-note">Ti abbiamo inviato un'email di conferma a <strong>${escapeHtml(data.email)}</strong>. (Simulazione — nessuna email reale è stata inviata.)</p>
+    ${data.newsletter ? `<p class="email-note">Ti sei iscritto/a anche alla newsletter del Pantheon. (Simulazione — nessuna iscrizione reale è stata effettuata.)</p>` : ''}
     <button onclick="window.close()">Chiudi questa finestra</button>
   </div>
 </body></html>`;
@@ -667,6 +668,7 @@
     const country = ckCountryEl.value;
     const region = ckRegionEl.value;
     const province = ckProvinceEl.value;
+    const newsletter = document.getElementById('ckNewsletter').checked;
     const itemCount = cart.length;
     const total = cart.reduce((sum, i) => sum + i.price, 0);
     const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
@@ -690,7 +692,7 @@
 
     const popup = openConfirmationWindow({
       firstName, email, orderId, trackingNumber, itemCount, total,
-      items: orderItemsSnapshot, shippingAddress, paymentLabel,
+      items: orderItemsSnapshot, shippingAddress, paymentLabel, newsletter,
     });
 
     if (popup) {
@@ -705,7 +707,8 @@
       checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
       checkoutOrderId.textContent = orderId;
       checkoutTrackingId.textContent = trackingNumber;
-      checkoutEmailNote.textContent = `Ti abbiamo inviato un'email di conferma a ${email}. (Simulazione — nessuna email reale è stata inviata.)`;
+      checkoutEmailNote.textContent = `Ti abbiamo inviato un'email di conferma a ${email}. (Simulazione — nessuna email reale è stata inviata.)`
+        + (newsletter ? ' Ti sei iscritto/a anche alla newsletter del Pantheon. (Simulazione.)' : '');
       checkoutPopupNote.hidden = true;
       checkoutFormView.hidden = true;
       checkoutSuccessView.hidden = false;
