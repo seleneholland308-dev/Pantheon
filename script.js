@@ -10,6 +10,260 @@
   }
 
   /* ---------------------------------------------------------------------
+     Language — IT/EN toggle. All static copy lives in I18N; dynamic
+     strings (toasts, validation, the order-confirmation popup) are
+     assembled with t() at the moment they're needed, so they always
+     reflect the language active when the user acts.
+  --------------------------------------------------------------------- */
+  const LANG_KEY = 'pantheon-divino-lang';
+  let currentLang = 'it';
+  try { currentLang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'it'; } catch (e) {}
+
+  const I18N = {
+    it: {
+      'curtain.subtitle': "Una discesa dall'Olimpo agli Inferi, in oro, marmo e ombra.",
+      'curtain.enter': 'Varca la Soglia',
+      'nav.cart': 'Teca',
+      'nav.cartAria': 'Apri la teca',
+      'thread.olympus': 'Olimpo', 'thread.temple': 'Tempio', 'thread.forge': 'Fucine',
+      'thread.grove': 'Ulivo Sacro', 'thread.underworld': 'Oltretomba',
+      'cart.title': 'La Tua Teca Sacra',
+      'cart.empty': 'La teca è vuota. Nessuna offerta è stata ancora scelta.',
+      'cart.checkoutBtn': "Consacra l'Acquisto",
+      'cart.emptyToast': 'La teca è vuota.',
+      'cart.addedSuffix': ' è stata posta nella teca',
+      'cart.removeAria': 'Rimuovi ',
+      'checkout.shippingLabel': 'Spedizione', 'checkout.shippingFree': 'Gratuita',
+      'checkout.totalLabel': 'Totale',
+      'btn.addToCart': 'Aggiungi alla Teca',
+      'btn.added': 'Aggiunto ✦',
+      'realm.olympus.chapter': 'Capitolo I', 'realm.olympus.title': "L'Olimpo Celeste",
+      'realm.olympus.lede': "Sopra le nubi, dove il cielo si piega in cobalto e i troni sono d'oro battuto, Zeus ed Era dettano il principio di ogni cosa. Qui nasce l'ornamento che non conosce tramonto.",
+      'realm.olympus.btnZeus': 'Il Dono di Zeus', 'realm.olympus.btnEra': 'Il Dono di Era',
+      'realm.temple.chapter': 'Capitolo II', 'realm.temple.title': 'Il Tempio di Ares e Afrodite',
+      'realm.temple.lede': "Tra colonne di marmo antico, dove petali di rosa cadono come sangue e desiderio, guerra e bellezza si fondono in un solo giuramento d'argento e rubino.",
+      'realm.temple.btnAres': 'Il Dono di Ares', 'realm.temple.btnAfrodite': 'Il Dono di Afrodite',
+      'realm.forge.chapter': 'Capitolo III', 'realm.forge.title': 'Le Fucine di Efesto',
+      'realm.forge.lede': "Nel ventre della montagna, dove il metallo canta e la scintilla danza come una preghiera, Efesto piega la materia grezza alla volontà dell'arte.",
+      'realm.forge.btnEfesto': 'Il Dono di Efesto',
+      'realm.grove.chapter': 'Capitolo IV', 'realm.grove.title': "L'Albero Sacro di Ermes",
+      'realm.grove.lede': 'Ai confini del mondo noto, sotto un ulivo millenario che ha visto mille crepuscoli, il messaggero degli dèi cesella ornamenti leggeri come un pensiero in volo.',
+      'realm.grove.btnErmes': 'Il Dono di Ermes',
+      'realm.underworld.chapter': 'Capitolo V', 'realm.underworld.title': "L'Oltretomba di Ade e Persefone",
+      'realm.underworld.lede': "La terra si spacca e rivela fiotti di luce eterea, blu e oro contro l'ossidiana. Qui il regno più oscuro custodisce la collezione più preziosa: dove la fine ritorna, sempre, principio.",
+      'realm.underworld.btnAde': 'Il Dono di Ade', 'realm.underworld.btnPersefone': 'Il Dono di Persefone',
+      'finale.eyebrow': 'Epilogo',
+      'finale.text': '"La fine diventa principio." Il tuo viaggio attraverso il Pantheon si chiude qui — ma ogni gioiello scelto porta con sé il seme di un nuovo inizio.',
+      'finale.button': "Risali all'Olimpo",
+      'footer.text': "Pantheon Divino — un'esperienza immersiva. Ogni pezzo è forgiato su ordinazione, come un mito che si racconta una sola volta.",
+      'product.zeus.eyebrow': "Collezione dell'Olimpo — Zeus", 'product.zeus.title': 'Folgore Regale',
+      'product.zeus.setname': 'Bracciale rigido in oro 18k con fulmine in zaffiro',
+      'product.zeus.desc': "Un bracciale rigido in oro 18 carati, aperto come un abbraccio regale, che racchiude uno zaffiro tagliato a forma di fulmine. Il metallo conserva il calore del tuono; la pietra, la sua luce trattenuta.",
+      'product.era.eyebrow': "Collezione dell'Olimpo — Era", 'product.era.title': 'Corona di Giunone',
+      'product.era.setname': 'Diadema in oro con perle e pietra verde-pavone',
+      'product.era.desc': "Un diadema in oro con perle candide e uno smeraldo dai riflessi di pavone incastonato al centro, ispirato alle piume che vegliano su ogni segreto dell'Olimpo. Regalità che non chiede permesso.",
+      'product.ares.eyebrow': 'Collezione del Tempio — Ares', 'product.ares.title': 'Lama Ardente',
+      'product.ares.setname': 'Anello in argento brunito con rubino',
+      'product.ares.desc': 'Un anello in argento brunito, teso come una lama in tensione, incastonato con un rubino sfaccettato che arde come una ferita di guerra mai del tutto rimarginata.',
+      'product.afrodite.eyebrow': 'Collezione del Tempio — Afrodite', 'product.afrodite.title': 'Cuore di Rose',
+      'product.afrodite.setname': 'Collana in oro rosa con pendente rubino',
+      'product.afrodite.desc': 'Una collana in oro rosa con pendente a forma di petalo, incastonato con un rubino che pulsa come una rosa appena recisa. Desiderio reso eterno nel metallo.',
+      'product.efesto.eyebrow': 'Collezione delle Fucine — Efesto', 'product.efesto.title': 'Morso della Forgia',
+      'product.efesto.setname': 'Anello in metallo grezzo con pietra lavica',
+      'product.efesto.desc': "Un anello massiccio in metallo grezzo, martellato a caldo, che porta ancora i segni dell'incudine. Al centro, una pietra lavica cattura l'ultimo bagliore della fiamma.",
+      'product.ermes.eyebrow': "Collezione dell'Ulivo Sacro — Ermes", 'product.ermes.title': 'Ali Veloci',
+      'product.ermes.setname': 'Bracciale in oro bianco con diamanti',
+      'product.ermes.desc': 'Un bracciale in oro bianco, alato su entrambi i lati, tempestato di piccoli diamanti che scintillano come pensieri in volo. Leggero, veloce, irrequieto.',
+      'product.ade.eyebrow': "Collezione dell'Oltretomba — Ade", 'product.ade.title': "Sigillo dell'Abisso",
+      'product.ade.setname': 'Anello in oro antico con onice',
+      'product.ade.desc': 'Un anello in oro antico ossidato, che custodisce un onice sfaccettato dai riflessi viola. Il sigillo di chi regna dove la luce non osa scendere.',
+      'product.persefone.eyebrow': "Collezione dell'Oltretomba — Persefone", 'product.persefone.title': 'Semi di Melagrana',
+      'product.persefone.setname': 'Collana in oro antico con granati · orecchini in cristallo scuro',
+      'product.persefone.desc': 'Una collana in oro antico con pendente a grappolo di granati, come semi di melagrana appena schiusi, abbinata a orecchini in cristallo scuro che catturano la luce eterea degli Inferi.',
+      'translit.Principioefinediogni': 'Principio e fine di ogni cosa',
+      'translit.Amore,vincitorenella': 'Amore, vincitore nella battaglia',
+      'translit.Lartedominalanatura': "L'arte domina la natura",
+      'translit.Lingegnotrovalavia': "L'ingegno trova la via",
+      'translit.Lafinediventaprincip': 'La fine diventa principio',
+      'persOpt.set': 'Set completo — Collana e Orecchini',
+      'persOpt.necklace': 'Solo la Collana',
+      'persOpt.earrings': 'Solo gli Orecchini',
+      'checkout.demoBadge': 'Ambiente dimostrativo · nessun pagamento reale · nessun dato viene inviato o conservato',
+      'checkout.summaryEyebrow': "Riepilogo dell'Offerta", 'checkout.summaryTitle': 'La Tua Teca',
+      'checkout.codFeeLabel': 'Contrassegno',
+      'checkout.dataEyebrow': 'Dati del Devoto',
+      'checkout.firstName': 'Nome', 'checkout.lastName': 'Cognome', 'checkout.email': 'Email',
+      'checkout.newsletter': 'Desidero iscrivermi alla newsletter del Pantheon, per ricevere in anteprima nuove collezioni e offerte.',
+      'checkout.address': 'Indirizzo', 'checkout.zip': 'CAP', 'checkout.city': 'Città',
+      'checkout.country': 'Paese', 'checkout.region': 'Regione', 'checkout.province': 'Provincia',
+      'checkout.paymentEyebrow': 'Modalità di Pagamento', 'checkout.chooseMethod': 'Scegli come pagare',
+      'checkout.payCard': 'Carta di credito / debito', 'checkout.payCod': 'Contrassegno — paga alla consegna',
+      'checkout.payBank': 'Bonifico bancario',
+      'checkout.cardName': 'Titolare della carta', 'checkout.cardNumber': 'Numero carta',
+      'checkout.cardExpiry': 'Scadenza (MM/AA)', 'checkout.cardCvv': 'CVV',
+      'checkout.codNote': 'Pagherai in contanti o con carta direttamente al corriere alla consegna. Il contrassegno prevede un supplemento di €5.',
+      'checkout.bankNote': 'Riceverai le coordinate bancarie via email per completare il bonifico (simulazione).',
+      'checkout.submitPrefix': 'Consacra il Rito —',
+      'checkout.successEyebrow': 'Il Rito è Compiuto',
+      'checkout.successSub': 'Salve — il tuo omaggio è stato accolto',
+      'checkout.popupNote': "Abbiamo aperto anche una scheda separata con il riepilogo completo dell'ordine.",
+      'checkout.backBtn': 'Torna al Pantheon',
+      'checkout.selectRegion': 'Seleziona la regione', 'checkout.selectProvince': 'Seleziona la provincia',
+      'checkout.selectProvinceFirst': 'Seleziona prima la regione', 'checkout.countryItaly': 'Italia',
+      'checkout.errorCardDigits': 'Il numero della carta deve avere 16 cifre.',
+      'checkout.errorExpiryFormat': 'Inserisci la scadenza nel formato MM/AA.',
+      'checkout.errorExpiryMonth': 'Il mese di scadenza non è valido.',
+      'checkout.errorExpired': 'La carta risulta scaduta.',
+      'checkout.errorCvv': 'Il CVV deve avere 3 o 4 cifre.',
+      'checkout.payLabelCard': 'Carta di credito/debito', 'checkout.payLabelCod': 'Contrassegno alla consegna',
+      'checkout.payLabelBank': 'Bonifico bancario',
+      'checkout.itemSingular': 'oggetto', 'checkout.itemPlural': 'oggetti',
+      'checkout.thanksPrefix': 'Grazie, ',
+      'checkout.thanksToastSuffix': '! Controlla la nuova scheda per la conferma del tuo Rito.',
+      'checkout.emailNotePrefix': "Ti abbiamo inviato un'email di conferma a ",
+      'checkout.emailNoteSuffix': '. (Simulazione — nessuna email reale è stata inviata.)',
+      'checkout.newsletterNote': ' Ti sei iscritto/a anche alla newsletter del Pantheon. (Simulazione.)',
+      'checkout.noteCard': 'Hai consacrato {count} {word} per un totale di {total}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)',
+      'checkout.noteCod': 'Hai consacrato {count} {word} per un totale di {total} (spedizione gratuita, supplemento contrassegno di {fee} incluso): pagherai al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)',
+      'checkout.noteBank': 'Hai consacrato {count} {word} per un totale di {total}, spedizione gratuita inclusa, da completare tramite bonifico. (Simulazione — nessuna email reale viene inviata.)',
+      'audio.enable': 'Attiva audio ambientale', 'audio.disable': 'Disattiva audio ambientale',
+      'lang.switchAria': 'Switch language / Cambia lingua',
+      'popup.title': 'Pantheon Divino — Conferma del Rito',
+      'popup.demoBadge': 'Ambiente dimostrativo — nessun addebito reale',
+      'popup.h1': 'Χαῖρε',
+      'popup.msg': 'Hai consacrato {count} {word} per un totale di {total}, con spedizione gratuita.',
+      'popup.orderLabel': 'Ordine:', 'popup.trackingLabel': 'Tracciamento:',
+      'popup.addrLine': 'Spedizione a: {addr}<br>Pagamento: {payment}',
+      'popup.newsletterNote': 'Ti sei iscritto/a anche alla newsletter del Pantheon. (Simulazione — nessuna iscrizione reale è stata effettuata.)',
+      'popup.closeBtn': 'Chiudi questa finestra',
+    },
+    en: {
+      'curtain.subtitle': 'A descent from Olympus to the Underworld, in gold, marble and shadow.',
+      'curtain.enter': 'Cross the Threshold',
+      'nav.cart': 'Case',
+      'nav.cartAria': 'Open the case',
+      'thread.olympus': 'Olympus', 'thread.temple': 'Temple', 'thread.forge': 'Forge',
+      'thread.grove': 'Sacred Grove', 'thread.underworld': 'Underworld',
+      'cart.title': 'Your Sacred Case',
+      'cart.empty': 'The case is empty. No offering has been chosen yet.',
+      'cart.checkoutBtn': 'Consecrate the Purchase',
+      'cart.emptyToast': 'The case is empty.',
+      'cart.addedSuffix': ' has been placed in the case',
+      'cart.removeAria': 'Remove ',
+      'checkout.shippingLabel': 'Shipping', 'checkout.shippingFree': 'Free',
+      'checkout.totalLabel': 'Total',
+      'btn.addToCart': 'Add to the Case',
+      'btn.added': 'Added ✦',
+      'realm.olympus.chapter': 'Chapter I', 'realm.olympus.title': 'Celestial Olympus',
+      'realm.olympus.lede': 'Above the clouds, where the sky bends to cobalt and the thrones are of beaten gold, Zeus and Hera decree the principle of all things. Here is born the ornament that knows no dusk.',
+      'realm.olympus.btnZeus': 'The Gift of Zeus', 'realm.olympus.btnEra': 'The Gift of Hera',
+      'realm.temple.chapter': 'Chapter II', 'realm.temple.title': 'The Temple of Ares and Aphrodite',
+      'realm.temple.lede': 'Among columns of ancient marble, where rose petals fall like blood and desire, war and beauty merge into a single oath of silver and ruby.',
+      'realm.temple.btnAres': 'The Gift of Ares', 'realm.temple.btnAfrodite': 'The Gift of Aphrodite',
+      'realm.forge.chapter': 'Chapter III', 'realm.forge.title': 'The Forge of Hephaestus',
+      'realm.forge.lede': "In the mountain's belly, where metal sings and sparks dance like a prayer, Hephaestus bends raw matter to the will of art.",
+      'realm.forge.btnEfesto': 'The Gift of Hephaestus',
+      'realm.grove.chapter': 'Chapter IV', 'realm.grove.title': "Hermes' Sacred Tree",
+      'realm.grove.lede': "At the edge of the known world, beneath a thousand-year olive tree that has seen a thousand dusks, the messenger of the gods carves ornaments as light as a thought in flight.",
+      'realm.grove.btnErmes': 'The Gift of Hermes',
+      'realm.underworld.chapter': 'Chapter V', 'realm.underworld.title': 'The Underworld of Hades and Persephone',
+      'realm.underworld.lede': 'The earth splits and reveals streams of ethereal light, blue and gold against obsidian. Here the darkest realm guards the most precious collection: where the end returns, always, to the beginning.',
+      'realm.underworld.btnAde': 'The Gift of Hades', 'realm.underworld.btnPersefone': 'The Gift of Persephone',
+      'finale.eyebrow': 'Epilogue',
+      'finale.text': '"The end becomes the beginning." Your journey through the Pantheon closes here — but every jewel chosen carries within it the seed of a new start.',
+      'finale.button': 'Return to Olympus',
+      'footer.text': 'Pantheon Divino — an immersive experience. Every piece is forged to order, like a myth told only once.',
+      'product.zeus.eyebrow': 'Olympus Collection — Zeus', 'product.zeus.title': 'Regal Thunderbolt',
+      'product.zeus.setname': 'Rigid 18k gold bracelet with sapphire lightning bolt',
+      'product.zeus.desc': "A rigid 18-karat gold bracelet, open like a regal embrace, cradling a sapphire cut into the shape of a lightning bolt. The metal keeps the warmth of thunder; the stone, its captured light.",
+      'product.era.eyebrow': 'Olympus Collection — Hera', 'product.era.title': "Juno's Crown",
+      'product.era.setname': 'Gold diadem with pearls and a peacock-green stone',
+      'product.era.desc': "A gold diadem with candid pearls and a peacock-hued emerald set at its centre, inspired by the feathers that watch over every secret of Olympus. Regality that asks no permission.",
+      'product.ares.eyebrow': 'Temple Collection — Ares', 'product.ares.title': 'Burning Blade',
+      'product.ares.setname': 'Burnished silver ring with ruby',
+      'product.ares.desc': 'A burnished silver ring, taut as a blade under tension, set with a faceted ruby that burns like a wound of war never quite healed.',
+      'product.afrodite.eyebrow': 'Temple Collection — Aphrodite', 'product.afrodite.title': 'Heart of Roses',
+      'product.afrodite.setname': 'Rose gold necklace with ruby pendant',
+      'product.afrodite.desc': 'A rose gold necklace with a petal-shaped pendant, set with a ruby that pulses like a freshly cut rose. Desire made eternal in metal.',
+      'product.efesto.eyebrow': 'Forge Collection — Hephaestus', 'product.efesto.title': "The Forge's Bite",
+      'product.efesto.setname': 'Raw metal ring with volcanic stone',
+      'product.efesto.desc': "A massive ring of raw metal, hot-hammered, still bearing the marks of the anvil. At its centre, a volcanic stone captures the flame's last glow.",
+      'product.ermes.eyebrow': 'Sacred Grove Collection — Hermes', 'product.ermes.title': 'Swift Wings',
+      'product.ermes.setname': 'White gold bracelet with diamonds',
+      'product.ermes.desc': 'A white gold bracelet, winged on both sides, studded with small diamonds that sparkle like thoughts in flight. Light, swift, restless.',
+      'product.ade.eyebrow': 'Underworld Collection — Hades', 'product.ade.title': 'Seal of the Abyss',
+      'product.ade.setname': 'Antique gold ring with onyx',
+      'product.ade.desc': 'An oxidized antique gold ring, cradling a faceted onyx with violet glints. The seal of one who reigns where light dares not descend.',
+      'product.persefone.eyebrow': 'Underworld Collection — Persephone', 'product.persefone.title': 'Pomegranate Seeds',
+      'product.persefone.setname': 'Antique gold necklace with garnets · dark crystal earrings',
+      'product.persefone.desc': 'An antique gold necklace with a cluster pendant of garnets, like freshly opened pomegranate seeds, paired with dark crystal earrings that catch the ethereal light of the Underworld.',
+      'translit.Principioefinediogni': 'Beginning and end of all things',
+      'translit.Amore,vincitorenella': 'Love, victor in battle',
+      'translit.Lartedominalanatura': 'Art masters nature',
+      'translit.Lingegnotrovalavia': 'Ingenuity finds the way',
+      'translit.Lafinediventaprincip': 'The end becomes the beginning',
+      'persOpt.set': 'Full Set — Necklace and Earrings',
+      'persOpt.necklace': 'Necklace Only',
+      'persOpt.earrings': 'Earrings Only',
+      'checkout.demoBadge': 'Demo environment · no real payment · no data is sent or stored',
+      'checkout.summaryEyebrow': 'Order Summary', 'checkout.summaryTitle': 'Your Case',
+      'checkout.codFeeLabel': 'Cash on delivery',
+      'checkout.dataEyebrow': 'Devotee Details',
+      'checkout.firstName': 'First name', 'checkout.lastName': 'Last name', 'checkout.email': 'Email',
+      'checkout.newsletter': "I'd like to subscribe to the Pantheon newsletter, to get an early look at new collections and offers.",
+      'checkout.address': 'Address', 'checkout.zip': 'ZIP / Postal code', 'checkout.city': 'City',
+      'checkout.country': 'Country', 'checkout.region': 'Region', 'checkout.province': 'Province',
+      'checkout.paymentEyebrow': 'Payment Method', 'checkout.chooseMethod': 'Choose how to pay',
+      'checkout.payCard': 'Credit / debit card', 'checkout.payCod': 'Cash on delivery',
+      'checkout.payBank': 'Bank transfer',
+      'checkout.cardName': 'Cardholder name', 'checkout.cardNumber': 'Card number',
+      'checkout.cardExpiry': 'Expiry (MM/YY)', 'checkout.cardCvv': 'CVV',
+      'checkout.codNote': 'You will pay in cash or by card directly to the courier on delivery. Cash on delivery carries a €5 surcharge.',
+      'checkout.bankNote': "You'll receive the bank details by email to complete the transfer (simulation).",
+      'checkout.submitPrefix': 'Consecrate the Rite —',
+      'checkout.successEyebrow': 'The Rite is Complete',
+      'checkout.successSub': 'Hail — your offering has been received',
+      'checkout.popupNote': 'We also opened a separate tab with the full order summary.',
+      'checkout.backBtn': 'Return to the Pantheon',
+      'checkout.selectRegion': 'Select region', 'checkout.selectProvince': 'Select province',
+      'checkout.selectProvinceFirst': 'Select a region first', 'checkout.countryItaly': 'Italy',
+      'checkout.errorCardDigits': 'The card number must have 16 digits.',
+      'checkout.errorExpiryFormat': 'Enter the expiry date in MM/YY format.',
+      'checkout.errorExpiryMonth': 'The expiry month is not valid.',
+      'checkout.errorExpired': 'The card has expired.',
+      'checkout.errorCvv': 'The CVV must have 3 or 4 digits.',
+      'checkout.payLabelCard': 'Credit/debit card', 'checkout.payLabelCod': 'Cash on delivery',
+      'checkout.payLabelBank': 'Bank transfer',
+      'checkout.itemSingular': 'item', 'checkout.itemPlural': 'items',
+      'checkout.thanksPrefix': 'Thank you, ',
+      'checkout.thanksToastSuffix': '! Check the new tab for confirmation of your Rite.',
+      'checkout.emailNotePrefix': 'We sent a confirmation email to ',
+      'checkout.emailNoteSuffix': '. (Simulation — no real email was sent.)',
+      'checkout.newsletterNote': " You've also subscribed to the Pantheon newsletter. (Simulation.)",
+      'checkout.noteCard': 'You consecrated {count} {word} for a total of {total}, free shipping included. (Simulation — no real charge was made.)',
+      'checkout.noteCod': 'You consecrated {count} {word} for a total of {total} (free shipping, {fee} cash-on-delivery surcharge included): you will pay the courier on delivery. (Simulation — no real shipment will occur.)',
+      'checkout.noteBank': 'You consecrated {count} {word} for a total of {total}, free shipping included, to complete via bank transfer. (Simulation — no real email is sent.)',
+      'audio.enable': 'Enable ambient audio', 'audio.disable': 'Disable ambient audio',
+      'lang.switchAria': 'Switch language / Cambia lingua',
+      'popup.title': 'Pantheon Divino — Rite Confirmation',
+      'popup.demoBadge': 'Demo environment — no real charge',
+      'popup.h1': 'Χαῖρε',
+      'popup.msg': 'You consecrated {count} {word} for a total of {total}, with free shipping.',
+      'popup.orderLabel': 'Order:', 'popup.trackingLabel': 'Tracking:',
+      'popup.addrLine': 'Shipping to: {addr}<br>Payment: {payment}',
+      'popup.newsletterNote': "You've also subscribed to the Pantheon newsletter. (Simulation — no real subscription was made.)",
+      'popup.closeBtn': 'Close this window',
+    },
+  };
+
+  function t(key) {
+    return (I18N[currentLang] && I18N[currentLang][key]) || I18N.it[key] || key;
+  }
+  function tf(key, vars) {
+    return t(key).replace(/\{(\w+)\}/g, (m, name) => (vars && vars[name] !== undefined) ? vars[name] : m);
+  }
+
+  /* ---------------------------------------------------------------------
      Intro curtain
   --------------------------------------------------------------------- */
   const curtain = document.getElementById('curtain');
@@ -18,6 +272,9 @@
     curtain.classList.add('hidden');
     curtain.style.pointerEvents = 'none';
     document.body.style.overflow = '';
+    let wantsAudio = false;
+    try { wantsAudio = localStorage.getItem('pantheon-divino-audio') === '1'; } catch (e) {}
+    if (wantsAudio) setAudioEnabled(true);
   }
   document.body.style.overflow = 'hidden';
   enterBtn.addEventListener('click', dismissCurtain);
@@ -60,10 +317,103 @@
         entry.target.classList.add('in-view');
         const id = entry.target.id;
         threadDots.forEach(d => d.classList.toggle('active', d.dataset.target === id));
+        setRealmAudio(id);
       }
     });
   }, { threshold: 0.35 });
   realms.forEach(r => sectionObserver.observe(r));
+
+  /* ---------------------------------------------------------------------
+     Ambient soundscape — synthesized via Web Audio API, not licensed
+     music. A soft drone + harmonic pair per realm, crossfading as you
+     scroll. Muted by default until the visitor opts in.
+  --------------------------------------------------------------------- */
+  const AUDIO_PREF_KEY = 'pantheon-divino-audio';
+  const REALM_AUDIO = {
+    olympus:    { f1: 220,   f2: 330,   filter: 1800, lfoRate: .07, lfoDepth: 300 },
+    temple:     { f1: 196,   f2: 294,   filter: 1200, lfoRate: .12, lfoDepth: 250 },
+    forge:      { f1: 98,    f2: 146.8, filter: 700,  lfoRate: .55, lfoDepth: 220 },
+    grove:      { f1: 261.6, f2: 392,   filter: 2400, lfoRate: .05, lfoDepth: 350 },
+    underworld: { f1: 65.4,  f2: 98,    filter: 380,  lfoRate: .035,lfoDepth: 120 },
+  };
+  const audioToggleBtn = document.getElementById('audioToggle');
+  let audioCtx, masterGain, filterNode, osc1, osc2, lfoOsc, lfoGain;
+  let audioInitialized = false;
+  let audioEnabled = false;
+
+  function initAudio() {
+    if (audioInitialized) return;
+    audioInitialized = true;
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0;
+      masterGain.connect(audioCtx.destination);
+
+      filterNode = audioCtx.createBiquadFilter();
+      filterNode.type = 'lowpass';
+      filterNode.Q.value = 0.7;
+      filterNode.frequency.value = REALM_AUDIO.olympus.filter;
+      filterNode.connect(masterGain);
+
+      const osc1Gain = audioCtx.createGain();
+      osc1Gain.gain.value = 0.6;
+      osc1 = audioCtx.createOscillator();
+      osc1.type = 'sine';
+      osc1.frequency.value = REALM_AUDIO.olympus.f1;
+      osc1.connect(osc1Gain);
+      osc1Gain.connect(filterNode);
+
+      const osc2Gain = audioCtx.createGain();
+      osc2Gain.gain.value = 0.28;
+      osc2 = audioCtx.createOscillator();
+      osc2.type = 'triangle';
+      osc2.frequency.value = REALM_AUDIO.olympus.f2;
+      osc2.connect(osc2Gain);
+      osc2Gain.connect(filterNode);
+
+      lfoOsc = audioCtx.createOscillator();
+      lfoOsc.frequency.value = REALM_AUDIO.olympus.lfoRate;
+      lfoGain = audioCtx.createGain();
+      lfoGain.gain.value = REALM_AUDIO.olympus.lfoDepth;
+      lfoOsc.connect(lfoGain);
+      lfoGain.connect(filterNode.frequency);
+
+      osc1.start(); osc2.start(); lfoOsc.start();
+    } catch (e) { audioInitialized = false; }
+  }
+
+  function setRealmAudio(realmId) {
+    if (!audioCtx || !audioEnabled) return;
+    const preset = REALM_AUDIO[realmId];
+    if (!preset) return;
+    const now = audioCtx.currentTime;
+    osc1.frequency.setTargetAtTime(preset.f1, now, 1);
+    osc2.frequency.setTargetAtTime(preset.f2, now, 1);
+    filterNode.frequency.setTargetAtTime(preset.filter, now, 1);
+    lfoOsc.frequency.setTargetAtTime(preset.lfoRate, now, 1);
+    lfoGain.gain.setTargetAtTime(preset.lfoDepth, now, 1);
+  }
+
+  function setAudioEnabled(enabled) {
+    audioEnabled = enabled;
+    try { localStorage.setItem(AUDIO_PREF_KEY, enabled ? '1' : '0'); } catch (e) {}
+    if (enabled) initAudio();
+    if (audioCtx) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setTargetAtTime(enabled ? 0.1 : 0, now, 1.2);
+      if (enabled) {
+        const activeDot = threadDots.find(d => d.classList.contains('active'));
+        setRealmAudio(activeDot ? activeDot.dataset.target : 'olympus');
+      }
+    }
+    audioToggleBtn.classList.toggle('muted', !enabled);
+    audioToggleBtn.setAttribute('aria-label', enabled ? t('audio.disable') : t('audio.enable'));
+  }
+
+  audioToggleBtn.addEventListener('click', () => setAudioEnabled(!audioEnabled));
 
   /* ---------------------------------------------------------------------
      Parallax on figure stages + mouse drift
@@ -227,7 +577,7 @@
   function renderCart() {
     cartCountEl.textContent = cart.length;
     if (cart.length === 0) {
-      cartItemsEl.innerHTML = '<p class="cart-empty">La teca è vuota. Nessuna offerta è stata ancora scelta.</p>';
+      cartItemsEl.innerHTML = `<p class="cart-empty">${escapeHtml(t('cart.empty'))}</p>`;
       cartTotalEl.textContent = formatEUR(0);
       return;
     }
@@ -239,7 +589,7 @@
           <div class="piece-realm">${item.realm}</div>
         </div>
         <div class="price">${formatEUR(item.price)}</div>
-        <button class="remove-btn" data-remove="${idx}" aria-label="Rimuovi ${item.name}">&times;</button>
+        <button class="remove-btn" data-remove="${idx}" aria-label="${escapeHtml(t('cart.removeAria'))}${escapeHtml(item.name)}">&times;</button>
       </div>
     `).join('');
     const total = cart.reduce((sum, i) => sum + i.price, 0);
@@ -273,8 +623,8 @@
       renderCart();
       btn.classList.add('added');
       const original = btn.textContent;
-      btn.textContent = 'Aggiunto ✦';
-      showToast(`${btn.dataset.name} è stata posta nella teca`);
+      btn.textContent = t('btn.added');
+      showToast(`${btn.dataset.name}${t('cart.addedSuffix')}`);
       setTimeout(() => { btn.classList.remove('added'); btn.textContent = original; }, 1800);
     });
   });
@@ -323,7 +673,7 @@
   scrim.addEventListener('click', closeCartDrawer);
 
   document.getElementById('checkoutBtn').addEventListener('click', () => {
-    if (cart.length === 0) { showToast('La teca è vuota.'); return; }
+    if (cart.length === 0) { showToast(t('cart.emptyToast')); return; }
     closeCartDrawer();
     openCheckout();
   });
@@ -397,6 +747,37 @@
     'Veneto': ['Belluno','Padova','Rovigo','Treviso','Venezia','Verona','Vicenza'],
   };
 
+  /* -- English display names for the country selector (values stay Italian & stable) -- */
+  const COUNTRY_EN = {
+    'Albania':'Albania','Andorra':'Andorra','Austria':'Austria','Belgio':'Belgium','Bielorussia':'Belarus',
+    'Bosnia ed Erzegovina':'Bosnia and Herzegovina','Bulgaria':'Bulgaria','Cipro':'Cyprus','Città del Vaticano':'Vatican City',
+    'Croazia':'Croatia','Danimarca':'Denmark','Estonia':'Estonia','Finlandia':'Finland','Francia':'France','Germania':'Germany',
+    'Grecia':'Greece','Irlanda':'Ireland','Islanda':'Iceland','Kosovo':'Kosovo','Lettonia':'Latvia','Liechtenstein':'Liechtenstein',
+    'Lituania':'Lithuania','Lussemburgo':'Luxembourg','Macedonia del Nord':'North Macedonia','Malta':'Malta','Moldavia':'Moldova',
+    'Monaco':'Monaco','Montenegro':'Montenegro','Norvegia':'Norway','Paesi Bassi':'Netherlands','Polonia':'Poland',
+    'Portogallo':'Portugal','Regno Unito':'United Kingdom','Repubblica Ceca':'Czech Republic','Romania':'Romania',
+    'San Marino':'San Marino','Serbia':'Serbia','Slovacchia':'Slovakia','Slovenia':'Slovenia','Spagna':'Spain','Svezia':'Sweden',
+    'Svizzera':'Switzerland','Ucraina':'Ukraine','Ungheria':'Hungary',
+    'Argentina':'Argentina','Bolivia':'Bolivia','Brasile':'Brazil','Canada':'Canada','Cile':'Chile','Colombia':'Colombia',
+    'Costa Rica':'Costa Rica','Cuba':'Cuba','Ecuador':'Ecuador','El Salvador':'El Salvador','Giamaica':'Jamaica',
+    'Guatemala':'Guatemala','Guyana':'Guyana','Honduras':'Honduras','Messico':'Mexico','Nicaragua':'Nicaragua','Panama':'Panama',
+    'Paraguay':'Paraguay','Perù':'Peru','Repubblica Dominicana':'Dominican Republic','Stati Uniti':'United States',
+    'Uruguay':'Uruguay','Venezuela':'Venezuela',
+    'Arabia Saudita':'Saudi Arabia','Armenia':'Armenia','Azerbaigian':'Azerbaijan','Bahrein':'Bahrain','Bangladesh':'Bangladesh',
+    'Cina':'China','Corea del Sud':'South Korea','Emirati Arabi Uniti':'United Arab Emirates','Filippine':'Philippines',
+    'Georgia':'Georgia','Giappone':'Japan','Giordania':'Jordan','India':'India','Indonesia':'Indonesia','Iran':'Iran',
+    'Iraq':'Iraq','Israele':'Israel','Kazakistan':'Kazakhstan','Kuwait':'Kuwait','Libano':'Lebanon','Malesia':'Malaysia',
+    'Mongolia':'Mongolia','Nepal':'Nepal','Oman':'Oman','Pakistan':'Pakistan','Qatar':'Qatar','Singapore':'Singapore',
+    'Siria':'Syria','Sri Lanka':'Sri Lanka','Tailandia':'Thailand','Taiwan':'Taiwan','Turchia':'Turkey','Vietnam':'Vietnam',
+    'Yemen':'Yemen',
+    'Algeria':'Algeria','Angola':'Angola','Camerun':'Cameroon',"Costa d'Avorio":'Ivory Coast','Egitto':'Egypt',
+    'Etiopia':'Ethiopia','Ghana':'Ghana','Kenya':'Kenya','Libia':'Libya','Marocco':'Morocco','Mozambico':'Mozambique',
+    'Nigeria':'Nigeria','Repubblica Democratica del Congo':'Democratic Republic of the Congo','Senegal':'Senegal',
+    'Sudafrica':'South Africa','Tanzania':'Tanzania','Tunisia':'Tunisia','Uganda':'Uganda',
+    'Australia':'Australia','Nuova Zelanda':'New Zealand',
+  };
+  const GROUP_LABELS_EN = { 'Europa':'Europe', 'Americhe':'Americas', 'Asia':'Asia', 'Africa':'Africa', 'Oceania':'Oceania' };
+
   function populateSelectOptions() {
     // countries: Italia pinned first, then grouped by continent
     const italiaOpt = new Option('Italia', 'Italia', true, true);
@@ -404,6 +785,7 @@
     Object.keys(COUNTRY_GROUPS).forEach(groupName => {
       const group = document.createElement('optgroup');
       group.label = groupName;
+      group.dataset.itLabel = groupName;
       COUNTRY_GROUPS[groupName].forEach(name => group.appendChild(new Option(name, name)));
       ckCountryEl.appendChild(group);
     });
@@ -417,14 +799,34 @@
   }
   populateSelectOptions();
 
+  function applyCountryLanguage(lang) {
+    const italiaOpt = ckCountryEl.querySelector('option[value="Italia"]');
+    if (italiaOpt) italiaOpt.textContent = lang === 'en' ? 'Italy' : 'Italia';
+    ckCountryEl.querySelectorAll('optgroup').forEach(group => {
+      const itLabel = group.dataset.itLabel;
+      group.label = lang === 'en' ? (GROUP_LABELS_EN[itLabel] || itLabel) : itLabel;
+      Array.from(group.children).forEach(opt => {
+        opt.textContent = lang === 'en' ? (COUNTRY_EN[opt.value] || opt.value) : opt.value;
+      });
+    });
+  }
+
+  function applyRegionProvincePlaceholders() {
+    if (ckRegionEl.options[0] && ckRegionEl.options[0].value === '') ckRegionEl.options[0].textContent = t('checkout.selectRegion');
+    if (ckProvinceEl.options[0] && ckProvinceEl.options[0].value === '') {
+      const hasRegion = ckRegionEl.value && ITALY_REGIONS[ckRegionEl.value];
+      ckProvinceEl.options[0].textContent = hasRegion ? t('checkout.selectProvince') : t('checkout.selectProvinceFirst');
+    }
+  }
+
   function updateProvinceOptions(region, selectedProvince) {
     ckProvinceEl.innerHTML = '';
     const provinces = ITALY_REGIONS[region];
     if (!provinces) {
-      ckProvinceEl.appendChild(new Option('Seleziona prima la regione', '', true, true));
+      ckProvinceEl.appendChild(new Option(t('checkout.selectProvinceFirst'), '', true, true));
       return;
     }
-    ckProvinceEl.appendChild(new Option('Seleziona la provincia', '', true, true));
+    ckProvinceEl.appendChild(new Option(t('checkout.selectProvince'), '', true, true));
     provinces.forEach(p => ckProvinceEl.appendChild(new Option(p, p, false, p === selectedProvince)));
   }
   ckRegionEl.addEventListener('change', () => updateProvinceOptions(ckRegionEl.value));
@@ -499,12 +901,14 @@
   // written into a blank tab, nothing is ever sent anywhere. All
   // user-typed fields are HTML-escaped before insertion.
   function openConfirmationWindow(data) {
+    const lang = currentLang;
     const itemsHtml = data.items.map(i => `
       <div class="conf-item"><span>${escapeHtml(i.name)}<br><em>${escapeHtml(i.realm)}</em></span><span>${formatEUR(i.price)}</span></div>
     `).join('');
+    const itemWord = data.itemCount === 1 ? t('checkout.itemSingular') : t('checkout.itemPlural');
     const html = `<!doctype html>
-<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pantheon Divino — Conferma del Rito</title>
+<html lang="${lang}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(t('popup.title'))}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
   *{box-sizing:border-box;}
@@ -538,27 +942,27 @@
 </style></head>
 <body>
   <div class="card">
-    <div class="badge">Ambiente dimostrativo — nessun addebito reale</div>
+    <div class="badge">${escapeHtml(t('popup.demoBadge'))}</div>
     <div class="ring">✦</div>
-    <span class="eyebrow">Il Rito è Compiuto</span>
-    <h1>Χαῖρε</h1>
-    <p class="sub">Salve — il tuo omaggio è stato accolto</p>
-    <h2>Grazie, ${escapeHtml(data.firstName)}</h2>
-    <p class="msg">Hai consacrato ${data.itemCount} ${data.itemCount === 1 ? 'oggetto' : 'oggetti'} per un totale di ${formatEUR(data.total)}, con spedizione gratuita.</p>
+    <span class="eyebrow">${escapeHtml(t('checkout.successEyebrow'))}</span>
+    <h1>${t('popup.h1')}</h1>
+    <p class="sub">${escapeHtml(t('checkout.successSub'))}</p>
+    <h2>${escapeHtml(t('checkout.thanksPrefix'))}${escapeHtml(data.firstName)}</h2>
+    <p class="msg">${escapeHtml(tf('popup.msg', { count: data.itemCount, word: itemWord, total: formatEUR(data.total) }))}</p>
     <div class="items">
       ${itemsHtml}
-      <div class="row"><span>Spedizione</span><span style="color:#7fe0a6;font-style:italic;">Gratuita</span></div>
-      ${data.codFee ? `<div class="row"><span>Contrassegno</span><span>+${formatEUR(data.codFee)}</span></div>` : ''}
-      <div class="row total-row"><span>Totale</span><span>${formatEUR(data.total)}</span></div>
+      <div class="row"><span>${escapeHtml(t('checkout.shippingLabel'))}</span><span style="color:#7fe0a6;font-style:italic;">${escapeHtml(t('checkout.shippingFree'))}</span></div>
+      ${data.codFee ? `<div class="row"><span>${escapeHtml(t('checkout.codFeeLabel'))}</span><span>+${formatEUR(data.codFee)}</span></div>` : ''}
+      <div class="row total-row"><span>${escapeHtml(t('checkout.totalLabel'))}</span><span>${formatEUR(data.total)}</span></div>
     </div>
     <div class="codes">
-      <div class="code-pill">Ordine: ${escapeHtml(data.orderId)}</div>
-      <div class="code-pill">Tracciamento: ${escapeHtml(data.trackingNumber)}</div>
+      <div class="code-pill">${escapeHtml(t('popup.orderLabel'))} ${escapeHtml(data.orderId)}</div>
+      <div class="code-pill">${escapeHtml(t('popup.trackingLabel'))} ${escapeHtml(data.trackingNumber)}</div>
     </div>
-    <p class="addr">Spedizione a: ${escapeHtml(data.shippingAddress)}<br>Pagamento: ${escapeHtml(data.paymentLabel)}</p>
-    <p class="email-note">Ti abbiamo inviato un'email di conferma a <strong>${escapeHtml(data.email)}</strong>. (Simulazione — nessuna email reale è stata inviata.)</p>
-    ${data.newsletter ? `<p class="email-note">Ti sei iscritto/a anche alla newsletter del Pantheon. (Simulazione — nessuna iscrizione reale è stata effettuata.)</p>` : ''}
-    <button onclick="window.close()">Chiudi questa finestra</button>
+    <p class="addr">${tf('popup.addrLine', { addr: escapeHtml(data.shippingAddress), payment: escapeHtml(data.paymentLabel) })}</p>
+    <p class="email-note">${escapeHtml(t('checkout.emailNotePrefix'))}<strong>${escapeHtml(data.email)}</strong>${escapeHtml(t('checkout.emailNoteSuffix'))}</p>
+    ${data.newsletter ? `<p class="email-note">${escapeHtml(t('popup.newsletterNote'))}</p>` : ''}
+    <button onclick="window.close()">${escapeHtml(t('popup.closeBtn'))}</button>
   </div>
 </body></html>`;
     const win = window.open('', '_blank');
@@ -639,28 +1043,28 @@
     if (paymentMethod === 'card') {
       const cardDigits = document.getElementById('ckCardNumber').value.replace(/\D/g, '');
       if (cardDigits.length !== 16) {
-        showCheckoutError('Il numero della carta deve avere 16 cifre.');
+        showCheckoutError(t('checkout.errorCardDigits'));
         return;
       }
       const expiryMatch = document.getElementById('ckCardExpiry').value.match(/^(\d{2})\/(\d{2})$/);
       if (!expiryMatch) {
-        showCheckoutError('Inserisci la scadenza nel formato MM/AA.');
+        showCheckoutError(t('checkout.errorExpiryFormat'));
         return;
       }
       const month = parseInt(expiryMatch[1], 10);
       const year = 2000 + parseInt(expiryMatch[2], 10);
       if (month < 1 || month > 12) {
-        showCheckoutError('Il mese di scadenza non è valido.');
+        showCheckoutError(t('checkout.errorExpiryMonth'));
         return;
       }
       const now = new Date();
       const expiryDate = new Date(year, month, 0);
       if (expiryDate < now) {
-        showCheckoutError('La carta risulta scaduta.');
+        showCheckoutError(t('checkout.errorExpired'));
         return;
       }
       if (!/^\d{3,4}$/.test(document.getElementById('ckCardCvv').value)) {
-        showCheckoutError('Il CVV deve avere 3 o 4 cifre.');
+        showCheckoutError(t('checkout.errorCvv'));
         return;
       }
     }
@@ -680,8 +1084,8 @@
     const total = cartSubtotal() + codFee;
     const orderId = 'PTH-' + Date.now().toString(36).toUpperCase().slice(-6);
     const trackingNumber = randomTrackingCode();
-    const itemWord = itemCount === 1 ? 'oggetto' : 'oggetti';
-    const paymentLabels = { card: 'Carta di credito/debito', cod: 'Contrassegno alla consegna', bank: 'Bonifico bancario' };
+    const itemWord = itemCount === 1 ? t('checkout.itemSingular') : t('checkout.itemPlural');
+    const paymentLabels = { card: t('checkout.payLabelCard'), cod: t('checkout.payLabelCod'), bank: t('checkout.payLabelBank') };
     const paymentLabel = paymentLabels[paymentMethod] || paymentLabels.card;
     const shippingAddress = `${address}, ${zip} ${city}${province ? ' (' + province + ')' : ''}, ${country}`;
     const orderItemsSnapshot = cart.map(i => ({ name: i.name, realm: i.realm, price: i.price }));
@@ -691,10 +1095,11 @@
     addToCustomerHistory({ firstName, lastName, email, address, city });
     populateSuggestionDatalists();
 
+    const noteVars = { count: itemCount, word: itemWord, total: formatEUR(total), fee: formatEUR(codFee) };
     const paymentNotes = {
-      card: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa. (Simulazione — nessun addebito reale è stato effettuato.)`,
-      cod: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)} (spedizione gratuita, supplemento contrassegno di ${formatEUR(codFee)} incluso): pagherai al corriere alla consegna. (Simulazione — nessuna spedizione reale verrà effettuata.)`,
-      bank: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa, da completare tramite bonifico. (Simulazione — nessuna email reale viene inviata.)`,
+      card: tf('checkout.noteCard', noteVars),
+      cod: tf('checkout.noteCod', noteVars),
+      bank: tf('checkout.noteBank', noteVars),
     };
 
     const popup = openConfirmationWindow({
@@ -706,16 +1111,16 @@
       // The full confirmation lives in the new tab — no need to duplicate
       // it here too, so just close the checkout and let the tab speak.
       closeCheckout();
-      showToast(`Grazie, ${firstName}! Controlla la nuova scheda per la conferma del tuo Rito.`);
+      showToast(`${t('checkout.thanksPrefix')}${firstName}${t('checkout.thanksToastSuffix')}`);
     } else {
       // Popup blocked by the browser — show the full confirmation inline
       // so nothing is lost.
-      checkoutSuccessName.textContent = `Grazie, ${firstName}`;
+      checkoutSuccessName.textContent = `${t('checkout.thanksPrefix')}${firstName}`;
       checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
       checkoutOrderId.textContent = orderId;
       checkoutTrackingId.textContent = trackingNumber;
-      checkoutEmailNote.textContent = `Ti abbiamo inviato un'email di conferma a ${email}. (Simulazione — nessuna email reale è stata inviata.)`
-        + (newsletter ? ' Ti sei iscritto/a anche alla newsletter del Pantheon. (Simulazione.)' : '');
+      checkoutEmailNote.textContent = `${t('checkout.emailNotePrefix')}${email}${t('checkout.emailNoteSuffix')}`
+        + (newsletter ? t('checkout.newsletterNote') : '');
       checkoutPopupNote.hidden = true;
       checkoutFormView.hidden = true;
       checkoutSuccessView.hidden = false;
@@ -732,5 +1137,42 @@
   document.getElementById('backToTop').addEventListener('click', () => {
     document.getElementById('olympus').scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
   });
+
+  /* ---------------------------------------------------------------------
+     Language toggle
+  --------------------------------------------------------------------- */
+  const langToggleBtn = document.getElementById('langToggle');
+
+  function applyLanguage(lang) {
+    currentLang = lang === 'en' ? 'en' : 'it';
+    try { localStorage.setItem(LANG_KEY, currentLang); } catch (e) {}
+    document.documentElement.lang = currentLang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
+
+    langToggleBtn.setAttribute('aria-label', t('lang.switchAria'));
+    const langCur = langToggleBtn.querySelector('.lang-cur');
+    const langOther = langToggleBtn.querySelector('.lang-other');
+    if (langCur && langOther) {
+      langCur.textContent = currentLang === 'en' ? 'EN' : 'IT';
+      langOther.textContent = currentLang === 'en' ? 'IT' : 'EN';
+    }
+
+    audioToggleBtn.setAttribute('aria-label', audioEnabled ? t('audio.disable') : t('audio.enable'));
+
+    applyCountryLanguage(currentLang);
+    applyRegionProvincePlaceholders();
+
+    renderCart();
+  }
+
+  langToggleBtn.addEventListener('click', () => applyLanguage(currentLang === 'en' ? 'it' : 'en'));
+
+  applyLanguage(currentLang);
 
 })();

@@ -22,38 +22,47 @@
     <path d="M50 14 L58 42 L86 42 L63 58 L71 86 L50 68 L29 86 L37 58 L14 42 L42 42 Z" fill="#d9b878" opacity=".85"/>
   </svg>
   <h1 class="gold-text">Pantheon&nbsp;Divino</h1>
-  <p>Una discesa dall'Olimpo agli Inferi, in oro, marmo e ombra.</p>
-  <button class="enter" id="enterBtn">Varca la Soglia</button>
+  <p data-i18n="curtain.subtitle">Una discesa dall'Olimpo agli Inferi, in oro, marmo e ombra.</p>
+  <button class="enter" id="enterBtn" data-i18n="curtain.enter">Varca la Soglia</button>
 </div>
 
 <!-- BRAND + CART -->
 <div class="brandmark">Pantheon Divino</div>
-<button class="cart-toggle" id="cartToggle" aria-label="Apri la teca">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-  Teca <span class="cart-count" id="cartCount">0</span>
-</button>
+<div class="top-controls">
+  <button class="audio-toggle muted" id="audioToggle" aria-label="Attiva audio ambientale">
+    <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5c1.2 1 1.2 6 0 7"/><path d="M18.5 6c2.2 2 2.2 10 0 12"/></svg>
+    <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>
+  </button>
+  <button class="cart-toggle" id="cartToggle" aria-label="Apri la teca" data-i18n-aria="nav.cartAria">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+    <span data-i18n="nav.cart">Teca</span> <span class="cart-count" id="cartCount">0</span>
+  </button>
+  <button class="lang-toggle" id="langToggle" aria-label="Switch language / Cambia lingua">
+    <span class="lang-cur">IT</span><span class="lang-sep">/</span><span class="lang-other">EN</span>
+  </button>
+</div>
 
 <!-- SIDE THREAD NAV -->
 <nav class="thread" id="thread">
-  <div class="thread-dot" data-target="olympus"><span class="label">Olimpo</span></div>
-  <div class="thread-dot" data-target="temple"><span class="label">Tempio</span></div>
-  <div class="thread-dot" data-target="forge"><span class="label">Fucine</span></div>
-  <div class="thread-dot" data-target="grove"><span class="label">Ulivo Sacro</span></div>
-  <div class="thread-dot" data-target="underworld"><span class="label">Oltretomba</span></div>
+  <div class="thread-dot" data-target="olympus"><span class="label" data-i18n="thread.olympus">Olimpo</span></div>
+  <div class="thread-dot" data-target="temple"><span class="label" data-i18n="thread.temple">Tempio</span></div>
+  <div class="thread-dot" data-target="forge"><span class="label" data-i18n="thread.forge">Fucine</span></div>
+  <div class="thread-dot" data-target="grove"><span class="label" data-i18n="thread.grove">Ulivo Sacro</span></div>
+  <div class="thread-dot" data-target="underworld"><span class="label" data-i18n="thread.underworld">Oltretomba</span></div>
 </nav>
 
 <!-- CART DRAWER -->
 <div class="scrim" id="scrim"></div>
 <aside class="cart-drawer" id="cartDrawer">
   <button class="close-btn" id="closeCart">&times;</button>
-  <h3 class="gold-text">La Tua Teca Sacra</h3>
+  <h3 class="gold-text" data-i18n="cart.title">La Tua Teca Sacra</h3>
   <div class="cart-items" id="cartItems">
-    <p class="cart-empty">La teca è vuota. Nessuna offerta è stata ancora scelta.</p>
+    <p class="cart-empty" data-i18n="cart.empty">La teca è vuota. Nessuna offerta è stata ancora scelta.</p>
   </div>
   <div class="cart-footer">
-    <div class="cart-shipping"><span>Spedizione</span><span class="shipping-free">Gratuita</span></div>
-    <div class="cart-total"><span>Totale</span><span id="cartTotal">€0</span></div>
-    <button class="checkout-btn" id="checkoutBtn">Consacra l'Acquisto</button>
+    <div class="cart-shipping"><span data-i18n="checkout.shippingLabel">Spedizione</span><span class="shipping-free" data-i18n="checkout.shippingFree">Gratuita</span></div>
+    <div class="cart-total"><span data-i18n="checkout.totalLabel">Totale</span><span id="cartTotal">€0</span></div>
+    <button class="checkout-btn" id="checkoutBtn" data-i18n="cart.checkoutBtn">Consacra l'Acquisto</button>
   </div>
 </aside>
 
@@ -71,6 +80,20 @@
     <div class="cloud-layer l1"></div>
     <div class="cloud-layer l2"></div>
     <div class="lightning" id="lightningFlash"></div>
+    <svg class="sky-bolts" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <g class="sky-bolt bolt1">
+        <path d="M430 0 L390 160 L440 160 L360 380 L470 190 L420 190 L470 40 Z" fill="none" stroke="#f4dfa3" stroke-width="4"/>
+        <path d="M430 0 L390 160 L440 160 L360 380 L470 190 L420 190 L470 40 Z" fill="#f4dfa3" opacity=".5"/>
+      </g>
+      <g class="sky-bolt bolt2">
+        <path d="M800 0 L750 140 L800 140 L710 340 L830 170 L780 170 L830 30 Z" fill="none" stroke="#fff8e2" stroke-width="3"/>
+        <path d="M800 0 L750 140 L800 140 L710 340 L830 170 L780 170 L830 30 Z" fill="#fff8e2" opacity=".5"/>
+      </g>
+      <g class="sky-bolt bolt3">
+        <path d="M610 0 L575 110 L615 110 L555 270 L645 130 L605 130 L645 20 Z" fill="none" stroke="#dbeaff" stroke-width="3"/>
+        <path d="M610 0 L575 110 L615 110 L555 270 L645 130 L605 130 L645 20 Z" fill="#dbeaff" opacity=".5"/>
+      </g>
+    </svg>
   </div>
   <div class="motes" id="motes-olympus"></div>
 
@@ -134,12 +157,12 @@
   </div>
 
   <div class="realm-content">
-    <span class="eyebrow fx">Capitolo I</span>
-    <h2 class="gold-text fx d1">L'Olimpo Celeste</h2>
-    <p class="lede fx d2">Sopra le nubi, dove il cielo si piega in cobalto e i troni sono d'oro battuto, Zeus ed Era dettano il principio di ogni cosa. Qui nasce l'ornamento che non conosce tramonto.</p>
+    <span class="eyebrow fx" data-i18n="realm.olympus.chapter">Capitolo I</span>
+    <h2 class="gold-text fx d1" data-i18n="realm.olympus.title">L'Olimpo Celeste</h2>
+    <p class="lede fx d2" data-i18n="realm.olympus.lede">Sopra le nubi, dove il cielo si piega in cobalto e i troni sono d'oro battuto, Zeus ed Era dettano il principio di ogni cosa. Qui nasce l'ornamento che non conosce tramonto.</p>
     <div class="realm-actions fx d3">
-      <button class="reveal-btn" data-open="scheda-zeus">Il Dono di Zeus</button>
-      <button class="reveal-btn" data-open="scheda-era">Il Dono di Era</button>
+      <button class="reveal-btn" data-open="scheda-zeus" data-i18n="realm.olympus.btnZeus">Il Dono di Zeus</button>
+      <button class="reveal-btn" data-open="scheda-era" data-i18n="realm.olympus.btnEra">Il Dono di Era</button>
     </div>
   </div>
 </section>
@@ -206,12 +229,12 @@
   </div>
 
   <div class="realm-content">
-    <span class="eyebrow fx">Capitolo II</span>
-    <h2 class="gold-text fx d1">Il Tempio di Ares e Afrodite</h2>
-    <p class="lede fx d2">Tra colonne di marmo antico, dove petali di rosa cadono come sangue e desiderio, guerra e bellezza si fondono in un solo giuramento d'argento e rubino.</p>
+    <span class="eyebrow fx" data-i18n="realm.temple.chapter">Capitolo II</span>
+    <h2 class="gold-text fx d1" data-i18n="realm.temple.title">Il Tempio di Ares e Afrodite</h2>
+    <p class="lede fx d2" data-i18n="realm.temple.lede">Tra colonne di marmo antico, dove petali di rosa cadono come sangue e desiderio, guerra e bellezza si fondono in un solo giuramento d'argento e rubino.</p>
     <div class="realm-actions fx d3">
-      <button class="reveal-btn" data-open="scheda-ares">Il Dono di Ares</button>
-      <button class="reveal-btn" data-open="scheda-afrodite">Il Dono di Afrodite</button>
+      <button class="reveal-btn" data-open="scheda-ares" data-i18n="realm.temple.btnAres">Il Dono di Ares</button>
+      <button class="reveal-btn" data-open="scheda-afrodite" data-i18n="realm.temple.btnAfrodite">Il Dono di Afrodite</button>
     </div>
   </div>
 </section>
@@ -276,11 +299,11 @@
   </div>
 
   <div class="realm-content">
-    <span class="eyebrow fx">Capitolo III</span>
-    <h2 class="gold-text fx d1">Le Fucine di Efesto</h2>
-    <p class="lede fx d2">Nel ventre della montagna, dove il metallo canta e la scintilla danza come una preghiera, Efesto piega la materia grezza alla volontà dell'arte.</p>
+    <span class="eyebrow fx" data-i18n="realm.forge.chapter">Capitolo III</span>
+    <h2 class="gold-text fx d1" data-i18n="realm.forge.title">Le Fucine di Efesto</h2>
+    <p class="lede fx d2" data-i18n="realm.forge.lede">Nel ventre della montagna, dove il metallo canta e la scintilla danza come una preghiera, Efesto piega la materia grezza alla volontà dell'arte.</p>
     <div class="realm-actions fx d3">
-      <button class="reveal-btn" data-open="scheda-efesto">Il Dono di Efesto</button>
+      <button class="reveal-btn" data-open="scheda-efesto" data-i18n="realm.forge.btnEfesto">Il Dono di Efesto</button>
     </div>
   </div>
 </section>
@@ -346,11 +369,11 @@
   </div>
 
   <div class="realm-content">
-    <span class="eyebrow fx">Capitolo IV</span>
-    <h2 class="gold-text fx d1">L'Albero Sacro di Ermes</h2>
-    <p class="lede fx d2">Ai confini del mondo noto, sotto un ulivo millenario che ha visto mille crepuscoli, il messaggero degli dèi cesella ornamenti leggeri come un pensiero in volo.</p>
+    <span class="eyebrow fx" data-i18n="realm.grove.chapter">Capitolo IV</span>
+    <h2 class="gold-text fx d1" data-i18n="realm.grove.title">L'Albero Sacro di Ermes</h2>
+    <p class="lede fx d2" data-i18n="realm.grove.lede">Ai confini del mondo noto, sotto un ulivo millenario che ha visto mille crepuscoli, il messaggero degli dèi cesella ornamenti leggeri come un pensiero in volo.</p>
     <div class="realm-actions fx d3">
-      <button class="reveal-btn" data-open="scheda-ermes">Il Dono di Ermes</button>
+      <button class="reveal-btn" data-open="scheda-ermes" data-i18n="realm.grove.btnErmes">Il Dono di Ermes</button>
     </div>
   </div>
 </section>
@@ -432,12 +455,12 @@
   </div>
 
   <div class="realm-content">
-    <span class="eyebrow fx">Capitolo V</span>
-    <h2 class="gold-text fx d1">L'Oltretomba di Ade e Persefone</h2>
-    <p class="lede fx d2">La terra si spacca e rivela fiotti di luce eterea, blu e oro contro l'ossidiana. Qui il regno più oscuro custodisce la collezione più preziosa: dove la fine ritorna, sempre, principio.</p>
+    <span class="eyebrow fx" data-i18n="realm.underworld.chapter">Capitolo V</span>
+    <h2 class="gold-text fx d1" data-i18n="realm.underworld.title">L'Oltretomba di Ade e Persefone</h2>
+    <p class="lede fx d2" data-i18n="realm.underworld.lede">La terra si spacca e rivela fiotti di luce eterea, blu e oro contro l'ossidiana. Qui il regno più oscuro custodisce la collezione più preziosa: dove la fine ritorna, sempre, principio.</p>
     <div class="realm-actions fx d3">
-      <button class="reveal-btn" data-open="scheda-ade">Il Dono di Ade</button>
-      <button class="reveal-btn" data-open="scheda-persefone">Il Dono di Persefone</button>
+      <button class="reveal-btn" data-open="scheda-ade" data-i18n="realm.underworld.btnAde">Il Dono di Ade</button>
+      <button class="reveal-btn" data-open="scheda-persefone" data-i18n="realm.underworld.btnPersefone">Il Dono di Persefone</button>
     </div>
   </div>
 </section>
@@ -446,14 +469,14 @@
 <section class="finale">
   <div>
     <div class="ring"></div>
-    <span class="eyebrow">Epilogo</span>
+    <span class="eyebrow" data-i18n="finale.eyebrow">Epilogo</span>
     <h2 class="gold-text">Τὸ τέλος ἀρχὴ γίνεται</h2>
-    <p>"La fine diventa principio." Il tuo viaggio attraverso il Pantheon si chiude qui — ma ogni gioiello scelto porta con sé il seme di un nuovo inizio.</p>
-    <button class="back-to-top" id="backToTop">Risali all'Olimpo</button>
+    <p data-i18n="finale.text">"La fine diventa principio." Il tuo viaggio attraverso il Pantheon si chiude qui — ma ogni gioiello scelto porta con sé il seme di un nuovo inizio.</p>
+    <button class="back-to-top" id="backToTop" data-i18n="finale.button">Risali all'Olimpo</button>
   </div>
 </section>
 
-<footer class="credits">Pantheon Divino — un'esperienza immersiva. Ogni pezzo è forgiato su ordinazione, come un mito che si racconta una sola volta.</footer>
+<footer class="credits" data-i18n="footer.text">Pantheon Divino — un'esperienza immersiva. Ogni pezzo è forgiato su ordinazione, come un mito che si racconta una sola volta.</footer>
 
 </main>
 
@@ -490,14 +513,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Olimpo — Zeus</span>
-      <h3>Folgore Regale</h3>
-      <p class="set-name">Bracciale rigido in oro 18k con fulmine in zaffiro</p>
-      <p class="desc">Un bracciale rigido in oro 18 carati, aperto come un abbraccio regale, che racchiude uno zaffiro tagliato a forma di fulmine. Il metallo conserva il calore del tuono; la pietra, la sua luce trattenuta.</p>
-      <div class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»<span class="translit">Principio e fine di ogni cosa</span></div>
+      <span class="eyebrow" data-i18n="product.zeus.eyebrow">Collezione dell'Olimpo — Zeus</span>
+      <h3 data-i18n="product.zeus.title">Folgore Regale</h3>
+      <p class="set-name" data-i18n="product.zeus.setname">Bracciale rigido in oro 18k con fulmine in zaffiro</p>
+      <p class="desc" data-i18n="product.zeus.desc">Un bracciale rigido in oro 18 carati, aperto come un abbraccio regale, che racchiude uno zaffiro tagliato a forma di fulmine. Il metallo conserva il calore del tuono; la pietra, la sua luce trattenuta.</p>
+      <div class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»<span class="translit" data-i18n="translit.Principioefinediogni">Principio e fine di ogni cosa</span></div>
       <div class="scheda-actions">
         <span class="total-price">€2.680</span>
-        <button class="add-cart-btn" data-add data-name="Folgore Regale — Bracciale di Zeus" data-realm="Olimpo" data-price="2680" data-color="#d9b878">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Folgore Regale — Bracciale di Zeus" data-realm="Olimpo" data-price="2680" data-color="#d9b878" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -537,14 +560,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Olimpo — Era</span>
-      <h3>Corona di Giunone</h3>
-      <p class="set-name">Diadema in oro con perle e pietra verde-pavone</p>
-      <p class="desc">Un diadema in oro con perle candide e uno smeraldo dai riflessi di pavone incastonato al centro, ispirato alle piume che vegliano su ogni segreto dell'Olimpo. Regalità che non chiede permesso.</p>
-      <div class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»<span class="translit">Principio e fine di ogni cosa</span></div>
+      <span class="eyebrow" data-i18n="product.era.eyebrow">Collezione dell'Olimpo — Era</span>
+      <h3 data-i18n="product.era.title">Corona di Giunone</h3>
+      <p class="set-name" data-i18n="product.era.setname">Diadema in oro con perle e pietra verde-pavone</p>
+      <p class="desc" data-i18n="product.era.desc">Un diadema in oro con perle candide e uno smeraldo dai riflessi di pavone incastonato al centro, ispirato alle piume che vegliano su ogni segreto dell'Olimpo. Regalità che non chiede permesso.</p>
+      <div class="greek">«Ἀρχὴ ἁπάντων καὶ τέλος»<span class="translit" data-i18n="translit.Principioefinediogni">Principio e fine di ogni cosa</span></div>
       <div class="scheda-actions">
         <span class="total-price">€3.240</span>
-        <button class="add-cart-btn" data-add data-name="Corona di Giunone — Diadema di Era" data-realm="Olimpo" data-price="3240" data-color="#f4dfa3">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Corona di Giunone — Diadema di Era" data-realm="Olimpo" data-price="3240" data-color="#f4dfa3" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -578,14 +601,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione del Tempio — Ares</span>
-      <h3>Lama Ardente</h3>
-      <p class="set-name">Anello in argento brunito con rubino</p>
-      <p class="desc">Un anello in argento brunito, teso come una lama in tensione, incastonato con un rubino sfaccettato che arde come una ferita di guerra mai del tutto rimarginata.</p>
-      <div class="greek">«Ἔρος ἀνίκατε μάχαν»<span class="translit">Amore, vincitore nella battaglia</span></div>
+      <span class="eyebrow" data-i18n="product.ares.eyebrow">Collezione del Tempio — Ares</span>
+      <h3 data-i18n="product.ares.title">Lama Ardente</h3>
+      <p class="set-name" data-i18n="product.ares.setname">Anello in argento brunito con rubino</p>
+      <p class="desc" data-i18n="product.ares.desc">Un anello in argento brunito, teso come una lama in tensione, incastonato con un rubino sfaccettato che arde come una ferita di guerra mai del tutto rimarginata.</p>
+      <div class="greek">«Ἔρος ἀνίκατε μάχαν»<span class="translit" data-i18n="translit.Amore,vincitorenella">Amore, vincitore nella battaglia</span></div>
       <div class="scheda-actions">
         <span class="total-price">€1.480</span>
-        <button class="add-cart-btn" data-add data-name="Lama Ardente — Anello di Ares" data-realm="Tempio" data-price="1480" data-color="#c9c9d2">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Lama Ardente — Anello di Ares" data-realm="Tempio" data-price="1480" data-color="#c9c9d2" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -617,14 +640,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione del Tempio — Afrodite</span>
-      <h3>Cuore di Rose</h3>
-      <p class="set-name">Collana in oro rosa con pendente rubino</p>
-      <p class="desc">Una collana in oro rosa con pendente a forma di petalo, incastonato con un rubino che pulsa come una rosa appena recisa. Desiderio reso eterno nel metallo.</p>
-      <div class="greek">«Ἔρος ἀνίκατε μάχαν»<span class="translit">Amore, vincitore nella battaglia</span></div>
+      <span class="eyebrow" data-i18n="product.afrodite.eyebrow">Collezione del Tempio — Afrodite</span>
+      <h3 data-i18n="product.afrodite.title">Cuore di Rose</h3>
+      <p class="set-name" data-i18n="product.afrodite.setname">Collana in oro rosa con pendente rubino</p>
+      <p class="desc" data-i18n="product.afrodite.desc">Una collana in oro rosa con pendente a forma di petalo, incastonato con un rubino che pulsa come una rosa appena recisa. Desiderio reso eterno nel metallo.</p>
+      <div class="greek">«Ἔρος ἀνίκατε μάχαν»<span class="translit" data-i18n="translit.Amore,vincitorenella">Amore, vincitore nella battaglia</span></div>
       <div class="scheda-actions">
         <span class="total-price">€2.140</span>
-        <button class="add-cart-btn" data-add data-name="Cuore di Rose — Collana di Afrodite" data-realm="Tempio" data-price="2140" data-color="#d99a8a">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Cuore di Rose — Collana di Afrodite" data-realm="Tempio" data-price="2140" data-color="#d99a8a" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -657,14 +680,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione delle Fucine — Efesto</span>
-      <h3>Morso della Forgia</h3>
-      <p class="set-name">Anello in metallo grezzo con pietra lavica</p>
-      <p class="desc">Un anello massiccio in metallo grezzo, martellato a caldo, che porta ancora i segni dell'incudine. Al centro, una pietra lavica cattura l'ultimo bagliore della fiamma.</p>
-      <div class="greek">«Τέχνῃ κρατεῖται φύσις»<span class="translit">L'arte domina la natura</span></div>
+      <span class="eyebrow" data-i18n="product.efesto.eyebrow">Collezione delle Fucine — Efesto</span>
+      <h3 data-i18n="product.efesto.title">Morso della Forgia</h3>
+      <p class="set-name" data-i18n="product.efesto.setname">Anello in metallo grezzo con pietra lavica</p>
+      <p class="desc" data-i18n="product.efesto.desc">Un anello massiccio in metallo grezzo, martellato a caldo, che porta ancora i segni dell'incudine. Al centro, una pietra lavica cattura l'ultimo bagliore della fiamma.</p>
+      <div class="greek">«Τέχνῃ κρατεῖται φύσις»<span class="translit" data-i18n="translit.Lartedominalanatura">L'arte domina la natura</span></div>
       <div class="scheda-actions">
         <span class="total-price">€1.120</span>
-        <button class="add-cart-btn" data-add data-name="Morso della Forgia — Anello di Efesto" data-realm="Fucine" data-price="1120" data-color="#c96a2f">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Morso della Forgia — Anello di Efesto" data-realm="Fucine" data-price="1120" data-color="#c96a2f" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -699,14 +722,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Ulivo Sacro — Ermes</span>
-      <h3>Ali Veloci</h3>
-      <p class="set-name">Bracciale in oro bianco con diamanti</p>
-      <p class="desc">Un bracciale in oro bianco, alato su entrambi i lati, tempestato di piccoli diamanti che scintillano come pensieri in volo. Leggero, veloce, irrequieto.</p>
-      <div class="greek">«Νοῦς ὁδὸν εὑρίσκει»<span class="translit">L'ingegno trova la via</span></div>
+      <span class="eyebrow" data-i18n="product.ermes.eyebrow">Collezione dell'Ulivo Sacro — Ermes</span>
+      <h3 data-i18n="product.ermes.title">Ali Veloci</h3>
+      <p class="set-name" data-i18n="product.ermes.setname">Bracciale in oro bianco con diamanti</p>
+      <p class="desc" data-i18n="product.ermes.desc">Un bracciale in oro bianco, alato su entrambi i lati, tempestato di piccoli diamanti che scintillano come pensieri in volo. Leggero, veloce, irrequieto.</p>
+      <div class="greek">«Νοῦς ὁδὸν εὑρίσκει»<span class="translit" data-i18n="translit.Lingegnotrovalavia">L'ingegno trova la via</span></div>
       <div class="scheda-actions">
         <span class="total-price">€1.780</span>
-        <button class="add-cart-btn" data-add data-name="Ali Veloci — Bracciale di Ermes" data-realm="Ulivo Sacro" data-price="1780" data-color="#c9c9d2">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Ali Veloci — Bracciale di Ermes" data-realm="Ulivo Sacro" data-price="1780" data-color="#c9c9d2" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -738,14 +761,14 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Oltretomba — Ade</span>
-      <h3>Sigillo dell'Abisso</h3>
-      <p class="set-name">Anello in oro antico con onice</p>
-      <p class="desc">Un anello in oro antico ossidato, che custodisce un onice sfaccettato dai riflessi viola. Il sigillo di chi regna dove la luce non osa scendere.</p>
-      <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit">La fine diventa principio</span></div>
+      <span class="eyebrow" data-i18n="product.ade.eyebrow">Collezione dell'Oltretomba — Ade</span>
+      <h3 data-i18n="product.ade.title">Sigillo dell'Abisso</h3>
+      <p class="set-name" data-i18n="product.ade.setname">Anello in oro antico con onice</p>
+      <p class="desc" data-i18n="product.ade.desc">Un anello in oro antico ossidato, che custodisce un onice sfaccettato dai riflessi viola. Il sigillo di chi regna dove la luce non osa scendere.</p>
+      <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit" data-i18n="translit.Lafinediventaprincip">La fine diventa principio</span></div>
       <div class="scheda-actions">
         <span class="total-price">€1.960</span>
-        <button class="add-cart-btn" data-add data-name="Sigillo dell'Abisso — Anello di Ade" data-realm="Oltretomba" data-price="1960" data-color="#382a54">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Sigillo dell'Abisso — Anello di Ade" data-realm="Oltretomba" data-price="1960" data-color="#382a54" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -812,31 +835,31 @@
     </div>
     <div class="scheda-body">
       <button class="scheda-close" data-close>&times;</button>
-      <span class="eyebrow">Collezione dell'Oltretomba — Persefone</span>
-      <h3>Semi di Melagrana</h3>
-      <p class="set-name">Collana in oro antico con granati &middot; orecchini in cristallo scuro</p>
-      <p class="desc">Una collana in oro antico con pendente a grappolo di granati, come semi di melagrana appena schiusi, abbinata a orecchini in cristallo scuro che catturano la luce eterea degli Inferi.</p>
-      <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit">La fine diventa principio</span></div>
+      <span class="eyebrow" data-i18n="product.persefone.eyebrow">Collezione dell'Oltretomba — Persefone</span>
+      <h3 data-i18n="product.persefone.title">Semi di Melagrana</h3>
+      <p class="set-name" data-i18n="product.persefone.setname">Collana in oro antico con granati &middot; orecchini in cristallo scuro</p>
+      <p class="desc" data-i18n="product.persefone.desc">Una collana in oro antico con pendente a grappolo di granati, come semi di melagrana appena schiusi, abbinata a orecchini in cristallo scuro che catturano la luce eterea degli Inferi.</p>
+      <div class="greek">«Τὸ τέλος ἀρχὴ γίνεται»<span class="translit" data-i18n="translit.Lafinediventaprincip">La fine diventa principio</span></div>
       <div class="option-group" id="persOptions">
         <label class="option-card">
           <input type="radio" name="persOption" value="set" data-name="Semi di Melagrana — Set di Persefone" data-price="2980" checked>
-          <span class="option-label">Set completo — Collana e Orecchini</span>
+          <span class="option-label" data-i18n="persOpt.set">Set completo — Collana e Orecchini</span>
           <span class="option-price">€2.980</span>
         </label>
         <label class="option-card">
           <input type="radio" name="persOption" value="necklace" data-name="Semi di Melagrana — Collana di Persefone" data-price="1980">
-          <span class="option-label">Solo la Collana</span>
+          <span class="option-label" data-i18n="persOpt.necklace">Solo la Collana</span>
           <span class="option-price">€1.980</span>
         </label>
         <label class="option-card">
           <input type="radio" name="persOption" value="earrings" data-name="Semi di Melagrana — Orecchini di Persefone" data-price="1000">
-          <span class="option-label">Solo gli Orecchini</span>
+          <span class="option-label" data-i18n="persOpt.earrings">Solo gli Orecchini</span>
           <span class="option-price">€1.000</span>
         </label>
       </div>
       <div class="scheda-actions">
         <span class="total-price" id="persTotalPrice">€2.980</span>
-        <button class="add-cart-btn" data-add data-name="Semi di Melagrana — Set di Persefone" data-realm="Oltretomba" data-price="2980" data-color="#6a4fb3">Aggiungi alla Teca</button>
+        <button class="add-cart-btn" data-add data-name="Semi di Melagrana — Set di Persefone" data-realm="Oltretomba" data-price="2980" data-color="#6a4fb3" data-i18n="btn.addToCart">Aggiungi alla Teca</button>
       </div>
     </div>
   </div>
@@ -849,123 +872,123 @@
   <div class="backdrop" data-checkout-close></div>
   <div class="checkout-panel">
     <button class="scheda-close checkout-close" data-checkout-close aria-label="Chiudi">&times;</button>
-    <div class="checkout-demo-badge">Ambiente dimostrativo &middot; nessun pagamento reale &middot; nessun dato viene inviato o conservato</div>
+    <div class="checkout-demo-badge" data-i18n="checkout.demoBadge">Ambiente dimostrativo &middot; nessun pagamento reale &middot; nessun dato viene inviato o conservato</div>
 
     <div class="checkout-view" id="checkoutFormView">
       <div class="checkout-grid">
         <div class="checkout-summary">
-          <span class="eyebrow">Riepilogo dell'Offerta</span>
-          <h3>La Tua Teca</h3>
+          <span class="eyebrow" data-i18n="checkout.summaryEyebrow">Riepilogo dell'Offerta</span>
+          <h3 data-i18n="checkout.summaryTitle">La Tua Teca</h3>
           <div class="checkout-summary-items" id="checkoutSummaryItems"></div>
-          <div class="checkout-summary-shipping"><span>Spedizione</span><span class="shipping-free">Gratuita</span></div>
-          <div class="checkout-summary-shipping" id="checkoutCodFeeRow" hidden><span>Contrassegno</span><span id="checkoutCodFeeAmount">+€5</span></div>
+          <div class="checkout-summary-shipping"><span data-i18n="checkout.shippingLabel">Spedizione</span><span class="shipping-free" data-i18n="checkout.shippingFree">Gratuita</span></div>
+          <div class="checkout-summary-shipping" id="checkoutCodFeeRow" hidden><span data-i18n="checkout.codFeeLabel">Contrassegno</span><span id="checkoutCodFeeAmount">+€5</span></div>
           <div class="checkout-summary-total">
-            <span>Totale</span>
+            <span data-i18n="checkout.totalLabel">Totale</span>
             <span id="checkoutSummaryTotal">€0</span>
           </div>
         </div>
 
         <form class="checkout-form" id="checkoutForm" autocomplete="off">
-          <span class="eyebrow">Dati del Devoto</span>
+          <span class="eyebrow" data-i18n="checkout.dataEyebrow">Dati del Devoto</span>
           <div class="form-row">
             <div class="field">
-              <label for="ckFirstName">Nome</label>
+              <label for="ckFirstName" data-i18n="checkout.firstName">Nome</label>
               <input type="text" id="ckFirstName" required autocomplete="off" list="dlFirstName">
               <datalist id="dlFirstName"></datalist>
             </div>
             <div class="field">
-              <label for="ckLastName">Cognome</label>
+              <label for="ckLastName" data-i18n="checkout.lastName">Cognome</label>
               <input type="text" id="ckLastName" required autocomplete="off" list="dlLastName">
               <datalist id="dlLastName"></datalist>
             </div>
           </div>
           <div class="field">
-            <label for="ckEmail">Email</label>
+            <label for="ckEmail" data-i18n="checkout.email">Email</label>
             <input type="email" id="ckEmail" required autocomplete="off" list="dlEmail">
             <datalist id="dlEmail"></datalist>
           </div>
           <label class="newsletter-check">
             <input type="checkbox" id="ckNewsletter">
-            <span>Desidero iscrivermi alla newsletter del Pantheon, per ricevere in anteprima nuove collezioni e offerte.</span>
+            <span data-i18n="checkout.newsletter">Desidero iscrivermi alla newsletter del Pantheon, per ricevere in anteprima nuove collezioni e offerte.</span>
           </label>
           <div class="form-row">
             <div class="field field-grow">
-              <label for="ckAddress">Indirizzo</label>
+              <label for="ckAddress" data-i18n="checkout.address">Indirizzo</label>
               <input type="text" id="ckAddress" required autocomplete="off" list="dlAddress">
               <datalist id="dlAddress"></datalist>
             </div>
             <div class="field field-small">
-              <label for="ckZip">CAP</label>
+              <label for="ckZip" data-i18n="checkout.zip">CAP</label>
               <input type="text" id="ckZip" required autocomplete="off" inputmode="numeric">
             </div>
           </div>
           <div class="form-row">
             <div class="field">
-              <label for="ckCity">Città</label>
+              <label for="ckCity" data-i18n="checkout.city">Città</label>
               <input type="text" id="ckCity" required autocomplete="off" list="dlCity">
               <datalist id="dlCity"></datalist>
             </div>
             <div class="field">
-              <label for="ckCountry">Paese</label>
+              <label for="ckCountry" data-i18n="checkout.country">Paese</label>
               <select id="ckCountry" required></select>
             </div>
           </div>
           <div class="form-row" id="ckItalyFields">
             <div class="field">
-              <label for="ckRegion">Regione</label>
+              <label for="ckRegion" data-i18n="checkout.region">Regione</label>
               <select id="ckRegion"></select>
             </div>
             <div class="field">
-              <label for="ckProvince">Provincia</label>
+              <label for="ckProvince" data-i18n="checkout.province">Provincia</label>
               <select id="ckProvince"></select>
             </div>
           </div>
 
-          <span class="eyebrow ck-payment-label">Modalità di Pagamento</span>
+          <span class="eyebrow ck-payment-label" data-i18n="checkout.paymentEyebrow">Modalità di Pagamento</span>
           <div class="field">
-            <label for="ckPaymentMethod">Scegli come pagare</label>
+            <label for="ckPaymentMethod" data-i18n="checkout.chooseMethod">Scegli come pagare</label>
             <select id="ckPaymentMethod">
-              <option value="card">Carta di credito / debito</option>
-              <option value="cod">Contrassegno — paga alla consegna</option>
-              <option value="bank">Bonifico bancario</option>
+              <option value="card" data-i18n="checkout.payCard">Carta di credito / debito</option>
+              <option value="cod" data-i18n="checkout.payCod">Contrassegno — paga alla consegna</option>
+              <option value="bank" data-i18n="checkout.payBank">Bonifico bancario</option>
             </select>
           </div>
 
           <div id="ckCardFields">
             <div class="field">
-              <label for="ckCardName">Titolare della carta</label>
+              <label for="ckCardName" data-i18n="checkout.cardName">Titolare della carta</label>
               <input type="text" id="ckCardName" autocomplete="off">
             </div>
             <div class="field">
-              <label for="ckCardNumber">Numero carta</label>
+              <label for="ckCardNumber" data-i18n="checkout.cardNumber">Numero carta</label>
               <input type="text" id="ckCardNumber" autocomplete="off" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19">
             </div>
             <div class="form-row">
               <div class="field">
-                <label for="ckCardExpiry">Scadenza (MM/AA)</label>
+                <label for="ckCardExpiry" data-i18n="checkout.cardExpiry">Scadenza (MM/AA)</label>
                 <input type="text" id="ckCardExpiry" autocomplete="off" inputmode="numeric" placeholder="MM/AA" maxlength="5">
               </div>
               <div class="field">
-                <label for="ckCardCvv">CVV</label>
+                <label for="ckCardCvv" data-i18n="checkout.cardCvv">CVV</label>
                 <input type="text" id="ckCardCvv" autocomplete="off" inputmode="numeric" placeholder="123" maxlength="4">
               </div>
             </div>
           </div>
-          <p class="checkout-cod-note" id="checkoutCodNote" hidden>Pagherai in contanti o con carta direttamente al corriere alla consegna. Il contrassegno prevede un supplemento di €5.</p>
-          <p class="checkout-cod-note" id="checkoutBankNote" hidden>Riceverai le coordinate bancarie via email per completare il bonifico (simulazione).</p>
+          <p class="checkout-cod-note" id="checkoutCodNote" hidden data-i18n="checkout.codNote">Pagherai in contanti o con carta direttamente al corriere alla consegna. Il contrassegno prevede un supplemento di €5.</p>
+          <p class="checkout-cod-note" id="checkoutBankNote" hidden data-i18n="checkout.bankNote">Riceverai le coordinate bancarie via email per completare il bonifico (simulazione).</p>
 
           <p class="checkout-error" id="checkoutError" hidden></p>
 
-          <button type="submit" class="checkout-submit-btn">Consacra il Rito — <span id="checkoutSubmitTotal">€0</span></button>
+          <button type="submit" class="checkout-submit-btn"><span data-i18n="checkout.submitPrefix">Consacra il Rito —</span> <span id="checkoutSubmitTotal">€0</span></button>
         </form>
       </div>
     </div>
 
     <div class="checkout-view checkout-success" id="checkoutSuccessView" hidden>
       <div class="finale-ring"><span>✦</span></div>
-      <span class="eyebrow">Il Rito è Compiuto</span>
+      <span class="eyebrow" data-i18n="checkout.successEyebrow">Il Rito è Compiuto</span>
       <h2 class="gold-text">Χαῖρε</h2>
-      <p class="checkout-success-sub">Salve — il tuo omaggio è stato accolto</p>
+      <p class="checkout-success-sub" data-i18n="checkout.successSub">Salve — il tuo omaggio è stato accolto</p>
       <p class="checkout-success-name" id="checkoutSuccessName"></p>
       <p class="checkout-success-msg" id="checkoutSuccessMsg"></p>
       <div class="checkout-codes">
@@ -973,8 +996,8 @@
         <div class="checkout-order-id">Tracciamento: <span id="checkoutTrackingId"></span></div>
       </div>
       <p class="checkout-email-note" id="checkoutEmailNote"></p>
-      <p class="checkout-popup-note" id="checkoutPopupNote">Abbiamo aperto anche una scheda separata con il riepilogo completo dell'ordine.</p>
-      <button class="back-to-top" id="checkoutBackBtn">Torna al Pantheon</button>
+      <p class="checkout-popup-note" id="checkoutPopupNote" data-i18n="checkout.popupNote">Abbiamo aperto anche una scheda separata con il riepilogo completo dell'ordine.</p>
+      <button class="back-to-top" id="checkoutBackBtn" data-i18n="checkout.backBtn">Torna al Pantheon</button>
     </div>
   </div>
 </div>
