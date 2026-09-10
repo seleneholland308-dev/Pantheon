@@ -693,19 +693,28 @@
       bank: `Hai consacrato ${itemCount} ${itemWord} per un totale di ${formatEUR(total)}, spedizione gratuita inclusa, da completare tramite bonifico. (Simulazione — nessuna email reale viene inviata.)`,
     };
 
-    checkoutSuccessName.textContent = `Grazie, ${firstName}`;
-    checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
-    checkoutOrderId.textContent = orderId;
-    checkoutTrackingId.textContent = trackingNumber;
-    checkoutEmailNote.textContent = `Ti abbiamo inviato un'email di conferma a ${email}. (Simulazione — nessuna email reale è stata inviata.)`;
-    checkoutFormView.hidden = true;
-    checkoutSuccessView.hidden = false;
-
     const popup = openConfirmationWindow({
       firstName, email, orderId, trackingNumber, itemCount, total,
       items: orderItemsSnapshot, shippingAddress, paymentLabel,
     });
-    checkoutPopupNote.hidden = !popup;
+
+    if (popup) {
+      // The full confirmation lives in the new tab — no need to duplicate
+      // it here too, so just close the checkout and let the tab speak.
+      closeCheckout();
+      showToast(`Grazie, ${firstName}! Controlla la nuova scheda per la conferma del tuo Rito.`);
+    } else {
+      // Popup blocked by the browser — show the full confirmation inline
+      // so nothing is lost.
+      checkoutSuccessName.textContent = `Grazie, ${firstName}`;
+      checkoutSuccessMsg.textContent = paymentNotes[paymentMethod] || paymentNotes.card;
+      checkoutOrderId.textContent = orderId;
+      checkoutTrackingId.textContent = trackingNumber;
+      checkoutEmailNote.textContent = `Ti abbiamo inviato un'email di conferma a ${email}. (Simulazione — nessuna email reale è stata inviata.)`;
+      checkoutPopupNote.hidden = true;
+      checkoutFormView.hidden = true;
+      checkoutSuccessView.hidden = false;
+    }
 
     cart = [];
     saveCart();
